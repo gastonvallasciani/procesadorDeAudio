@@ -23,3 +23,7 @@ Se midió la latencia de adquisición y generación de audio entre la entrada y 
 Se obtuvieron imágenes de las mediciones con el osciloscopio y se encuentran guardadas en la carpeta de google drive del proyecto a la cual se accede mediante el siguiente enlace https://drive.google.com/open?id=11r3HlkTrEa5hAmaeK2yz8cP0KFATxhbh. 
 
 Se realizó el diseño de un filtro FIR pasabajos cuya frecuencia de corte es de 15kHz, y a su vez, posee 20dB de atenuación entre 15KHz y 22KHz. Se generó el header file correpondiente en el cual se encuentra el vector con los coeficientes del filtro. Este se puede obvservar en la carpeta de google drive del proyecto a la que se accede mediante el enlace siguiente https://drive.google.com/open?id=1xjvo2t-v5r0JmQ1fiHiX1UNMOeUb9hF4.
+
+
+FECHA: 13/09/2018
+Se creó la rama developFilter.
