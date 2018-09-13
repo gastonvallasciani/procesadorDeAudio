@@ -26,4 +26,5 @@ Se realizó el diseño de un filtro FIR pasabajos cuya frecuencia de corte es de
 
 
 FECHA: 13/09/2018
+
 Se creó la rama developFilter.
