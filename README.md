@@ -28,3 +28,7 @@ Se realizó el diseño de un filtro FIR pasabajos cuya frecuencia de corte es de
 FECHA: 13/09/2018
 
 Se creó la rama developFilter.
+
+COMMIT 9:
+
+Se realizo la implementacion de un manejador de filrtros FIR al cual se le pasa como parametros la longitud de los coeficientes del filtro, la longitud del vector de entrada, el vector de coeficientes de entrada, el vector de coeficientes del filtro y el vector de salida donde se entrega la senal filtrada. Se testeo con vectores de prueba basicos un filtro pasabajos de 15khz de atenuacion 20db por decada y respondio de forma acorde a la esperada. Todavia se debe testear con vectores patron que simulen distintos tonos de entrada generados con octave.
