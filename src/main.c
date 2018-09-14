@@ -12,6 +12,7 @@
 #include "ADC_proxyClient.h"
 #include "DAC_hardwareProxy.h"
 #include "sapi_timer.h"
+//#include "filterManagement.h"
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
 /*==================[definiciones de datos internos]=========================*/
@@ -19,6 +20,11 @@ DEBUG_PRINT_ENABLE
 #define NOLED LEDR+6
 #define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
 #define TIMER1 1
+
+#define LPC_FILTER_ORDER_15KHZ 11
+
+int16_t lpf15Khz[11] = {564, -1409, 2642, -3963, 4986, 27395, 4986, -3963, 2642, -1409, 564}; // low pass filter 15KHz
+
 
 typedef struct{
 	uint16_t audioLeftChannel;
@@ -30,10 +36,15 @@ gpioMap_t LED = LEDR;
 delay_t waitDelay;
 char buffer [33];
 audioChannel_t audioChannel;
+int16_t inpVector[500];
+int32_t outVector[500];
+
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
+void filterProcessing(uint8_t filterLength, uint16_t inputLength, int16_t *coeffVector, int16_t *inputVector, int32_t *outputVector);
+
 /*==================[declaraciones de funciones externas]====================*/
 /*==================[funcion principal]======================================*/
 int main( void ){
@@ -82,14 +93,20 @@ int main( void ){
 
    // Inicializacion TIMER 1 desborde con una frecuencia de 100KHz
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
-
+   uint16_t j;
    while( TRUE ){
-	   // Se extrae un dato del buffer circular de adquisicion del ADC
-	   if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
 
+	   for (j=0; j<500;j++){
+		   inpVector[j]=j;
 	   }
+
+	   filterProcessing(11, 500, &lpf15Khz[0], &inpVector[0], &outVector[0]);
+	   // Se extrae un dato del buffer circular de adquisicion del ADC
+	   //if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
+	   //}
+
 	   // Actualizacion de la salida DAC con el dato obtenido del buffer circular del adc
-	   DACPROXYCLIENT_mutate(audioChannel.audioRightChannel);
+	   //DACPROXYCLIENT_mutate(audioChannel.audioRightChannel);
 	   //Debug
 	   if (!waitDelay.running){
 				delayConfig(&waitDelay,WAIT_DELAY);
@@ -118,6 +135,23 @@ void tickTimerHandler( void *ptr ){
 		}
 
 }
+
+// Funcion de procesamiento de filtrados
+// Hay que agregar esta funcion en un .c y .h nuevos para manejar filtros unicamente
+void filterProcessing(uint8_t filterLength, uint16_t inputLength, int16_t *coeffVector, int16_t *inputVector, int32_t *outputVector){
+	int32_t filterAcumulator = 0;
+	uint16_t filterCounter = 0,i;
+
+	for(i = 0; i < inputLength;i++){
+		for(filterCounter = 0; filterCounter < filterLength; filterCounter++){
+			//paso de resolucion 16 bits del filtro a 10 bits que seria la de la adquisicion del ADC
+			filterAcumulator +=  (((coeffVector[filterCounter])/64) * (inputVector[i+filterCounter]));
+		}
+		outputVector[i] = filterAcumulator;
+		filterAcumulator = 0;
+	}
+}
+
 /*==================[definiciones de funciones externas]=====================*/
 
 /*==================[fin del archivo]========================================*/
