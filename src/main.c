@@ -99,7 +99,7 @@ int main( void ){
    gpioWrite(LED3,ON); // Board Alive
 
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
-   lpf.filterGain = continousFilterGain(filterSize, &lpf15Khz[0]);
+   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
 
    // Inicializacion TIMER 1 desborde con una frecuencia de 100KHz
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
@@ -107,7 +107,7 @@ int main( void ){
    while( TRUE ){
 
 	   for (j=0; j<500;j++){
-		   inpVector[j]=1;
+		   inpVector[j]=j;
 	   }
 
 	   filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
