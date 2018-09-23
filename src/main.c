@@ -12,7 +12,8 @@
 #include "ADC_proxyClient.h"
 #include "DAC_hardwareProxy.h"
 #include "sapi_timer.h"
-//#include "filterManagement.h"
+#include "filterManager.h"
+
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
 /*==================[definiciones de datos internos]=========================*/
@@ -20,31 +21,36 @@ DEBUG_PRINT_ENABLE
 #define NOLED LEDR+6
 #define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
 #define TIMER1 1
-
-#define LPC_FILTER_ORDER_15KHZ 11
-
-int16_t lpf15Khz[11] = {564, -1409, 2642, -3963, 4986, 27395, 4986, -3963, 2642, -1409, 564}; // low pass filter 15KHz
-
+#define INPUT_VECTOR_SIZE 500
+#define OUTPUT_VECTOR_SIZE 500
 
 typedef struct{
 	uint16_t audioLeftChannel;
 	uint16_t audioRightChannel;
 }audioChannel_t;
 
+typedef struct{
+	uint8_t filterSize;
+	int32_t filterGain;
+}filterData_t;
 /*==================[definiciones de datos internos]=========================*/
 gpioMap_t LED = LEDR;
 delay_t waitDelay;
 char buffer [33];
 audioChannel_t audioChannel;
-int16_t inpVector[500];
-int32_t outVector[500];
+int16_t inpVector[INPUT_VECTOR_SIZE];
+int32_t outVector[OUTPUT_VECTOR_SIZE];
+uint8_t filterSize;
+int32_t filterGain;
 
+int16_t lpf15Khz[11] = {564, -1409, 2642, -3963, 4986, 27395, 4986, -3963,
+								2642, -1409, 564}; // low pass filter 15KHz
+
+filterData_t lpf;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
-void filterProcessing(uint8_t filterLength, uint16_t inputLength, int16_t *coeffVector, int16_t *inputVector, int32_t *outputVector);
-
 /*==================[declaraciones de funciones externas]====================*/
 /*==================[funcion principal]======================================*/
 int main( void ){
@@ -90,6 +96,10 @@ int main( void ){
    debugPrintlnString("ADC Configurado\n\r");
 
    gpioWrite(LED2,ON); // Board Alive
+   gpioWrite(LED3,ON); // Board Alive
+
+   lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
+   lpf.filterGain = continousFilterGain(filterSize, &lpf15Khz[0]);
 
    // Inicializacion TIMER 1 desborde con una frecuencia de 100KHz
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
@@ -97,10 +107,13 @@ int main( void ){
    while( TRUE ){
 
 	   for (j=0; j<500;j++){
-		   inpVector[j]=j;
+		   inpVector[j]=1;
 	   }
 
-	   filterProcessing(11, 500, &lpf15Khz[0], &inpVector[0], &outVector[0]);
+	   filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
+			   &inpVector[0], &outVector[0]);
+
+	   //filterProcessing(lpf.filterSize, INPUT_VECTOR_SIZE, &lpf15Khz[0], &inpVector[0], &outVector[0]);
 	   // Se extrae un dato del buffer circular de adquisicion del ADC
 	   //if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
 	   //}
@@ -126,32 +139,13 @@ int main( void ){
    return 0;
 }
 /*==================[definiciones de funciones internas]=====================*/
-
 // Funcion que se ejecuta cada vez que se desborda el TIMER 1
 // El TIMER 1 se desborda con una frecuencia de 100KHz
 void tickTimerHandler( void *ptr ){
 	if(ADCPROXYCLIENT_access(adcUpdateValue, &audioChannel.audioRightChannel) == bufferLleno){
 			//Buffer lleno
 		}
-
 }
-
-// Funcion de procesamiento de filtrados
-// Hay que agregar esta funcion en un .c y .h nuevos para manejar filtros unicamente
-void filterProcessing(uint8_t filterLength, uint16_t inputLength, int16_t *coeffVector, int16_t *inputVector, int32_t *outputVector){
-	int32_t filterAcumulator = 0;
-	uint16_t filterCounter = 0,i;
-
-	for(i = 0; i < inputLength;i++){
-		for(filterCounter = 0; filterCounter < filterLength; filterCounter++){
-			//paso de resolucion 16 bits del filtro a 10 bits que seria la de la adquisicion del ADC
-			filterAcumulator +=  (((coeffVector[filterCounter])/64) * (inputVector[i+filterCounter]));
-		}
-		outputVector[i] = filterAcumulator;
-		filterAcumulator = 0;
-	}
-}
-
 /*==================[definiciones de funciones externas]=====================*/
 
 /*==================[fin del archivo]========================================*/
