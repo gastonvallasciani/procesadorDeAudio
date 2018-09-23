@@ -1,9 +1,10 @@
-/*
- * filterManager.c
- *
- *  Created on: 22/9/2018
- *      Author: gastonvallasciani
- */
+/**
+  @file filterManager.c
+  @brief Funciones de manejo de filtros FIR
+
+  @author Gaston Vallasciani
+  @date 22/09/2018
+*/
 /*=========================[inclusiones]============================================*/
 #include "filterManager.h"
 #include "sapi.h"        //  sAPI lib
@@ -15,7 +16,12 @@
 /*=========================[declaraciones de funciones internas]====================*/
 /*=========================[definiciones de funciones publicas]=====================*/
 #ifdef FIXED_POINT_FILTER
-
+/**
+* @brief Funcion que calcula la ganancia de continua del filtro FIR
+* @param filterLength cantidad de elementos del filtro FIR
+* @param coeffVector puntero al vector de coeficientes del filtro FIR
+* @return filterAcumulator ganancia de continua del filtro
+*/
 int32_t continousFilterGain(uint8_t filterLength,int16_t *coeffVector){
 	int32_t filterAcumulator = 0;
 	uint16_t filterCounter = 0;
@@ -24,7 +30,16 @@ int32_t continousFilterGain(uint8_t filterLength,int16_t *coeffVector){
 			}
 	return filterAcumulator;
 }
-
+/**
+* @brief Funcion manejadora de filtros FIR, procesa los datos de entrada sin FPU
+* @param filterLength cantidad de elementos del filtro FIR
+* @param continousGain ganancia de continua del filtro FIR
+* @param coeffVector puntero al vector de coeficientes del filtro FIR
+* @param inputLength cantidad de elementos del vector de entrada a procesar
+* @param inputVector puntero al vector de entrada
+* @param outputVector puntero al vector de salida
+* @return empty
+*/
 void filterProcessing(uint8_t filterLength, int32_t continousGain,
 										int16_t *coeffVector, uint16_t inputLength,
 										int16_t *inputVector, int32_t *outputVector){
@@ -42,10 +57,14 @@ void filterProcessing(uint8_t filterLength, int32_t continousGain,
 		filterAcumulator = 0;
 	}
 }
-
-
 #else
 	#ifdef FLOATING_POINT_FILTER
+	/**
+	* @brief Funcion que calcula la ganancia de continua del filtro FIR
+	* @param filterLength cantidad de elementos del filtro FIR
+	* @param coeffVector puntero al vector de coeficientes del filtro FIR
+	* @return filterAcumulator ganancia de continua del filtro
+	*/
 	int32_t continousFilterGain(uint8_t filterLength,int16_t *coeffVector){
 		int32_t filterAcumulator = 0;
 		uint16_t filterCounter = 0;
@@ -54,6 +73,16 @@ void filterProcessing(uint8_t filterLength, int32_t continousGain,
 				}
 		return filterAcumulator;
 	}
+	/**
+	* @brief Funcion manejadora de filtros FIR, procesa los datos de entrada con la FPU
+	* @param filterLength cantidad de elementos del filtro FIR
+	* @param continousGain ganancia de continua del filtro FIR
+	* @param coeffVector puntero al vector de coeficientes del filtro FIR
+	* @param inputLength cantidad de elementos del vector de entrada a procesar
+	* @param inputVector puntero al vector de entrada
+	* @param outputVector puntero al vector de salida
+	* @return empty
+	*/
 	void filterProcessing(uint8_t filterLength, int32_t continousGain,
 										int16_t *coeffVector, uint16_t inputLength,
 										int16_t *inputVector, int32_t *outputVector){
