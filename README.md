@@ -6,13 +6,9 @@ Este archivo sera utilizado para describir las tareas que se desarrollen durante
 
 El proyecto se desarrolla sobre la placa EDU-CIAA-NXP que posee el microcontrolador LPC4337.
 
-COMMIT 1:
-
 FECHA: 27/08/2018
 
 Creación del repositorio y commit inicial.
-
-COMMIT 2:
 
 FECHA: 27/08/2018
 
@@ -29,6 +25,16 @@ FECHA: 13/09/2018
 
 Se creó la rama developFilter.
 
-COMMIT 9:
+Se realizó la implementación de un manejador de filtros FIR en el archivo filterManager.c. A esta función se le pasa como parámetros la longitud de los coeficientes del filtro, la longitud del vector de entrada, el vector de coeficientes de entrada, el vector de coeficientes del filtro y el vector de salida donde se entrega la senal filtrada. Se testeo con vectores de prueba basicos un filtro pasabajos de 15khz de atenuación 20db por década y este respondio de forma acorde a la esperada. Todavía se debe testear con vectores patrón que simulen distintos tonos de entrada generados con MATLAB.
 
-Se realizó la implementación de un manejador de filrtros FIR al cual se le pasa como parámetros la longitud de los coeficientes del filtro, la longitud del vector de entrada, el vector de coeficientes de entrada, el vector de coeficientes del filtro y el vector de salida donde se entrega la senal filtrada. Se testeo con vectores de prueba basicos un filtro pasabajos de 15khz de atenuación 20db por década y respondio de forma acorde a la esperada. Todavía se debe testear con vectores patrón que simulen distintos tonos de entrada generados con octave.
+FECHA: 21/09/2018
+
+Se crea una función en filterManager.c para realizar el procesamiento del filtro con variables de tipo float para poder trabajar con el filtro normalizado. Para ello fue necesario crear una función que calcule la ganancia de continua del filtro. Se utiliza una compilación condicional para poder cambiar entre el calculo con coma flotante o punto fijo.
+
+FECHA: 24/09/2018
+
+Se crean distintos tonos puros en MATLAB para realizar el testeo offline de filtros. Se accede a la carpeta contenedora de google drive de estos tonos mediante el enlace siguiente https://drive.google.com/open?id=1xxAgcvk6ieFr17po1qhK-adxpBRgl_FO.
+
+FECHA: 25/09/2018
+
+Se crea eel archivo test.c en el que se agregan los vectores de prueba generados mediante MATLAB. Se crea una función en filterManager.c para eliminar el nivel de continua del vector de entrada. Se testeo el filtro de 15KHz con los vectores de prueba generados con MATLAB de forma offline. Falta calcular la latencia del filtro de manera offline. Verificar el filtrado mediante la fft en MATLAB. Hacer un procesamiento online y medir latencia online para ello faltan hacer algunos cambios en el código. 
