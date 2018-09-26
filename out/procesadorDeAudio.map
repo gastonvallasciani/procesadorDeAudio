@@ -1204,6 +1204,10 @@ Discarded input sections
  .text          0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
  .data          0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
  .bss           0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
+ .data.inVector1Khz
+                0x0000000000000000      0x3e8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
+ .data.inVector5Khz
+                0x0000000000000000      0x3e8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
  .data.inVector15Khz
                 0x0000000000000000      0x3e8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
  .data.inVector20Khz
@@ -14294,46 +14298,46 @@ END GROUP
                 0xffffffff53ff5762                PROVIDE (__valid_user_code_checksum, (0x0 - ((((((_vStackTop + (ResetISR + 0x1)) + (NMI_Handler + 0x1)) + (HardFault_Handler + 0x1)) + (DEFINED (MemManage_Handler)?MemManage_Handler:0x0 + 0x1)) + (DEFINED (BusFault_Handler)?BusFault_Handler:0x0 + 0x1)) + (DEFINED (UsageFault_Handler)?UsageFault_Handler:0x0 + 0x1))))
 OUTPUT(MisProyectos/procesadorDeAudio/out/procesadorDeAudio.elf elf32-littlearm)
 
-.debug_info     0x0000000000000000    0x17024
+.debug_info     0x0000000000000000    0x17046
  .debug_info    0x0000000000000000      0x954 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
  .debug_info    0x0000000000000954      0x7b5 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/DAC_hardwareProxy.o
  .debug_info    0x0000000000001109     0x1597 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_hardwareProxy.o
  .debug_info    0x00000000000026a0      0xf67 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
- .debug_info    0x0000000000003607      0x5e0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
- .debug_info    0x0000000000003be7      0x263 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
- .debug_info    0x0000000000003e4a      0x690 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_cyclesCounter.o
- .debug_info    0x00000000000044da     0x125d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_gpio.o
- .debug_info    0x0000000000005737      0xc7d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_tick.o
- .debug_info    0x00000000000063b4     0x1a8e MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_uart.o
- .debug_info    0x0000000000007e42      0x35c MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_delay.o
- .debug_info    0x000000000000819e     0x14a0 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_timer.o
- .debug_info    0x000000000000963e      0x493 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_print.o
- .debug_info    0x0000000000009ad1      0x5ec MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_board.o
- .debug_info    0x000000000000a0bd     0x1e7f MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board.o
- .debug_info    0x000000000000bf3c      0x110 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/sysinit.o
- .debug_info    0x000000000000c04c      0xcaf MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board_sysinit.o
- .debug_info    0x000000000000ccfb     0x1345 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/i2c_18xx_43xx.o
- .debug_info    0x000000000000e040     0x1687 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/uart_18xx_43xx.o
- .debug_info    0x000000000000f6c7      0xae4 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/adc_18xx_43xx.o
- .debug_info    0x00000000000101ab      0xcc4 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/chip_18xx_43xx.o
- .debug_info    0x0000000000010e6f     0x18f5 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/clock_18xx_43xx.o
- .debug_info    0x0000000000012764      0x564 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/timer_18xx_43xx.o
- .debug_info    0x0000000000012cc8      0x450 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/dac_18xx_43xx.o
- .debug_info    0x0000000000013118      0x14c MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/fpu_init.o
- .debug_info    0x0000000000013264      0x212 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/gpio_18xx_43xx.o
- .debug_info    0x0000000000013476      0xa9d MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/sysinit_18xx_43xx.o
- .debug_info    0x0000000000013f13     0x15b2 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/ssp_18xx_43xx.o
- .debug_info    0x00000000000154c5       0x3f MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/crp.o
- .debug_info    0x0000000000015504      0x83f MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/cr_startup_lpc43xx.o
- .debug_info    0x0000000000015d43       0xbd /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_aeabi_uldivmod.o)
- .debug_info    0x0000000000015e00      0x164 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(bpabi.o)
- .debug_info    0x0000000000015f64       0xc1 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_dvmd_tls.o)
- .debug_info    0x0000000000016025      0x5bc /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_divdi3.o)
- .debug_info    0x00000000000165e1      0x57c /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_udivdi3.o)
- .debug_info    0x0000000000016b5d      0x105 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-init.o)
- .debug_info    0x0000000000016c62      0x16d /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-itoa.o)
- .debug_info    0x0000000000016dcf       0xd3 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-memset.o)
- .debug_info    0x0000000000016ea2      0x182 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-utoa.o)
+ .debug_info    0x0000000000003607      0x602 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
+ .debug_info    0x0000000000003c09      0x263 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
+ .debug_info    0x0000000000003e6c      0x690 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_cyclesCounter.o
+ .debug_info    0x00000000000044fc     0x125d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_gpio.o
+ .debug_info    0x0000000000005759      0xc7d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_tick.o
+ .debug_info    0x00000000000063d6     0x1a8e MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_uart.o
+ .debug_info    0x0000000000007e64      0x35c MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_delay.o
+ .debug_info    0x00000000000081c0     0x14a0 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_timer.o
+ .debug_info    0x0000000000009660      0x493 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_print.o
+ .debug_info    0x0000000000009af3      0x5ec MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_board.o
+ .debug_info    0x000000000000a0df     0x1e7f MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board.o
+ .debug_info    0x000000000000bf5e      0x110 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/sysinit.o
+ .debug_info    0x000000000000c06e      0xcaf MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board_sysinit.o
+ .debug_info    0x000000000000cd1d     0x1345 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/i2c_18xx_43xx.o
+ .debug_info    0x000000000000e062     0x1687 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/uart_18xx_43xx.o
+ .debug_info    0x000000000000f6e9      0xae4 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/adc_18xx_43xx.o
+ .debug_info    0x00000000000101cd      0xcc4 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/chip_18xx_43xx.o
+ .debug_info    0x0000000000010e91     0x18f5 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/clock_18xx_43xx.o
+ .debug_info    0x0000000000012786      0x564 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/timer_18xx_43xx.o
+ .debug_info    0x0000000000012cea      0x450 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/dac_18xx_43xx.o
+ .debug_info    0x000000000001313a      0x14c MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/fpu_init.o
+ .debug_info    0x0000000000013286      0x212 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/gpio_18xx_43xx.o
+ .debug_info    0x0000000000013498      0xa9d MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/sysinit_18xx_43xx.o
+ .debug_info    0x0000000000013f35     0x15b2 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/ssp_18xx_43xx.o
+ .debug_info    0x00000000000154e7       0x3f MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/crp.o
+ .debug_info    0x0000000000015526      0x83f MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/cr_startup_lpc43xx.o
+ .debug_info    0x0000000000015d65       0xbd /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_aeabi_uldivmod.o)
+ .debug_info    0x0000000000015e22      0x164 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(bpabi.o)
+ .debug_info    0x0000000000015f86       0xc1 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_dvmd_tls.o)
+ .debug_info    0x0000000000016047      0x5bc /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_divdi3.o)
+ .debug_info    0x0000000000016603      0x57c /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_udivdi3.o)
+ .debug_info    0x0000000000016b7f      0x105 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-init.o)
+ .debug_info    0x0000000000016c84      0x16d /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-itoa.o)
+ .debug_info    0x0000000000016df1       0xd3 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-memset.o)
+ .debug_info    0x0000000000016ec4      0x182 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-utoa.o)
 
 .debug_abbrev   0x0000000000000000     0x40a5
  .debug_abbrev  0x0000000000000000      0x19a MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
@@ -14704,7 +14708,7 @@ OUTPUT(MisProyectos/procesadorDeAudio/out/procesadorDeAudio.elf elf32-littlearm)
  .debug_line    0x000000000000f5e1       0xf1 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-memset.o)
  .debug_line    0x000000000000f6d2      0x105 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-utoa.o)
 
-.debug_str      0x0000000000000000    0x1f0e9
+.debug_str      0x0000000000000000    0x1f103
  .debug_str     0x0000000000000000    0x1a73a MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
                                       0x1a9d6 (size before relaxing)
  .debug_str     0x000000000001a73a      0x19b MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/DAC_hardwareProxy.o
@@ -14713,70 +14717,70 @@ OUTPUT(MisProyectos/procesadorDeAudio/out/procesadorDeAudio.elf elf32-littlearm)
                                       0x1aff9 (size before relaxing)
  .debug_str     0x000000000001b00b      0x3f2 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
                                       0x1ad26 (size before relaxing)
- .debug_str     0x000000000001b3fd       0x54 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
-                                      0x1a665 (size before relaxing)
- .debug_str     0x000000000001b451       0xec MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
+ .debug_str     0x000000000001b3fd       0x6e MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
+                                      0x1a67f (size before relaxing)
+ .debug_str     0x000000000001b46b       0xec MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
                                       0x19d04 (size before relaxing)
- .debug_str     0x000000000001b53d       0xd1 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_cyclesCounter.o
+ .debug_str     0x000000000001b557       0xd1 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_cyclesCounter.o
                                       0x186a6 (size before relaxing)
- .debug_str     0x000000000001b60e      0x247 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_gpio.o
+ .debug_str     0x000000000001b628      0x247 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_gpio.o
                                       0x189b5 (size before relaxing)
- .debug_str     0x000000000001b855      0x19e MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_tick.o
+ .debug_str     0x000000000001b86f      0x19e MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_tick.o
                                       0x18b0d (size before relaxing)
- .debug_str     0x000000000001b9f3      0x5b5 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_uart.o
+ .debug_str     0x000000000001ba0d      0x5b5 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_uart.o
                                       0x192ba (size before relaxing)
- .debug_str     0x000000000001bfa8       0x94 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_delay.o
+ .debug_str     0x000000000001bfc2       0x94 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_delay.o
                                       0x17d4c (size before relaxing)
- .debug_str     0x000000000001c03c      0x3a0 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_timer.o
+ .debug_str     0x000000000001c056      0x3a0 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_timer.o
                                       0x18de4 (size before relaxing)
- .debug_str     0x000000000001c3dc       0xdc MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_print.o
+ .debug_str     0x000000000001c3f6       0xdc MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_print.o
                                       0x180d7 (size before relaxing)
- .debug_str     0x000000000001c4b8       0x3d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_board.o
+ .debug_str     0x000000000001c4d2       0x3d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.1/src/sapi_board.o
                                       0x17eab (size before relaxing)
- .debug_str     0x000000000001c4f5      0x8d6 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board.o
+ .debug_str     0x000000000001c50f      0x8d6 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board.o
                                       0x19397 (size before relaxing)
- .debug_str     0x000000000001cdcb       0x67 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/sysinit.o
+ .debug_str     0x000000000001cde5       0x67 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/sysinit.o
                                       0x17b60 (size before relaxing)
- .debug_str     0x000000000001ce32      0x261 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board_sysinit.o
+ .debug_str     0x000000000001ce4c      0x261 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_board_ciaa_edu_4337/src/board_sysinit.o
                                       0x18940 (size before relaxing)
- .debug_str     0x000000000001d093      0x5da MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/i2c_18xx_43xx.o
+ .debug_str     0x000000000001d0ad      0x5da MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/i2c_18xx_43xx.o
                                       0x1583b (size before relaxing)
- .debug_str     0x000000000001d66d      0x32b MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/uart_18xx_43xx.o
+ .debug_str     0x000000000001d687      0x32b MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/uart_18xx_43xx.o
                                       0x15709 (size before relaxing)
- .debug_str     0x000000000001d998       0xd8 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/adc_18xx_43xx.o
+ .debug_str     0x000000000001d9b2       0xd8 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/adc_18xx_43xx.o
                                       0x150a4 (size before relaxing)
- .debug_str     0x000000000001da70      0x158 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/chip_18xx_43xx.o
+ .debug_str     0x000000000001da8a      0x158 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/chip_18xx_43xx.o
                                       0x15666 (size before relaxing)
- .debug_str     0x000000000001dbc8      0x4d9 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/clock_18xx_43xx.o
+ .debug_str     0x000000000001dbe2      0x4d9 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/clock_18xx_43xx.o
                                       0x15acf (size before relaxing)
- .debug_str     0x000000000001e0a1      0x115 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/timer_18xx_43xx.o
+ .debug_str     0x000000000001e0bb      0x115 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/timer_18xx_43xx.o
                                       0x14d65 (size before relaxing)
- .debug_str     0x000000000001e1b6       0x9a MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/dac_18xx_43xx.o
+ .debug_str     0x000000000001e1d0       0x9a MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/dac_18xx_43xx.o
                                       0x14ccb (size before relaxing)
- .debug_str     0x000000000001e250       0xc9 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/fpu_init.o
+ .debug_str     0x000000000001e26a       0xc9 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/fpu_init.o
                                        0x8dc4 (size before relaxing)
- .debug_str     0x000000000001e319       0x45 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/gpio_18xx_43xx.o
+ .debug_str     0x000000000001e333       0x45 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/gpio_18xx_43xx.o
                                       0x1485b (size before relaxing)
- .debug_str     0x000000000001e35e       0xbf MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/sysinit_18xx_43xx.o
+ .debug_str     0x000000000001e378       0xbf MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/sysinit_18xx_43xx.o
                                       0x1555a (size before relaxing)
- .debug_str     0x000000000001e41d      0x3e4 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/ssp_18xx_43xx.o
+ .debug_str     0x000000000001e437      0x3e4 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_chip_43xx/src/ssp_18xx_43xx.o
                                       0x1529a (size before relaxing)
- .debug_str     0x000000000001e801       0x46 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/crp.o
+ .debug_str     0x000000000001e81b       0x46 MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/crp.o
                                        0x24d6 (size before relaxing)
- .debug_str     0x000000000001e847      0x1ed MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/cr_startup_lpc43xx.o
+ .debug_str     0x000000000001e861      0x1ed MisProyectos/procesadorDeAudio/out/libs/vendor_libs/lpc_startup/src/cr_startup_lpc43xx.o
                                       0x1874c (size before relaxing)
- .debug_str     0x000000000001ea34      0x1d3 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(bpabi.o)
+ .debug_str     0x000000000001ea4e      0x1d3 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(bpabi.o)
                                         0x1f8 (size before relaxing)
- .debug_str     0x000000000001ec07      0x18f /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_divdi3.o)
+ .debug_str     0x000000000001ec21      0x18f /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_divdi3.o)
                                         0x2a6 (size before relaxing)
- .debug_str     0x000000000001ed96      0x2a7 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_udivdi3.o)
- .debug_str     0x000000000001ed96      0x1ca /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-init.o)
+ .debug_str     0x000000000001edb0      0x2a7 /usr/lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/libgcc.a(_udivdi3.o)
+ .debug_str     0x000000000001edb0      0x1ca /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-init.o)
                                         0x281 (size before relaxing)
- .debug_str     0x000000000001ef60       0xb3 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-itoa.o)
+ .debug_str     0x000000000001ef7a       0xb3 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-itoa.o)
                                         0x237 (size before relaxing)
- .debug_str     0x000000000001f013       0xa0 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-memset.o)
+ .debug_str     0x000000000001f02d       0xa0 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-memset.o)
                                         0x222 (size before relaxing)
- .debug_str     0x000000000001f0b3       0x36 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-utoa.o)
+ .debug_str     0x000000000001f0cd       0x36 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-utoa.o)
                                         0x23a (size before relaxing)
 
 .comment        0x0000000000000000       0x70
@@ -15875,8 +15879,10 @@ i2cWrite                                          MisProyectos/procesadorDeAudio
 inVector10Khz                                     MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
                                                   MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 inVector15Khz                                     MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
+inVector1Khz                                      MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
 inVector20Khz                                     MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
 inVector400Hz                                     MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
+inVector5Khz                                      MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/test.o
 indexReadRx                                       MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_hardwareProxy.o
                                                   MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
 indexWriteRx                                      MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_hardwareProxy.o
