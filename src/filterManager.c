@@ -72,7 +72,6 @@ void filterProcessing(uint8_t filterLength, int32_t continousGain,
 				}
 		return 1;
 	}
-
 	/**
 	* @brief Funcion que calcula la ganancia de continua del filtro FIR
 	* @param filterLength cantidad de elementos del filtro FIR
