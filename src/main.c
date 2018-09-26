@@ -40,7 +40,7 @@ delay_t waitDelay;
 char buffer [33];
 audioChannel_t audioChannel;
 int16_t inpVector[INPUT_VECTOR_SIZE];
-int32_t outVector[OUTPUT_VECTOR_SIZE];
+int16_t outVector[OUTPUT_VECTOR_SIZE];
 uint8_t filterSize;
 int32_t filterGain;
 

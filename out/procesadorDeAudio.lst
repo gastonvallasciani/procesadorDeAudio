@@ -9,7 +9,7 @@ Program Header:
 0x70000001 off    0x00012c2c vaddr 0x1a002c2c paddr 0x1a002c2c align 2**2
          filesz 0x00000008 memsz 0x00000008 flags r--
     LOAD off    0x00000000 vaddr 0x10000000 paddr 0x10000000 align 2**16
-         filesz 0x000000b4 memsz 0x00005f04 flags rw-
+         filesz 0x000000b4 memsz 0x00005b1c flags rw-
     LOAD off    0x00010000 vaddr 0x1a000000 paddr 0x1a000000 align 2**16
          filesz 0x00002c34 memsz 0x00002c34 flags r-x
     LOAD off    0x00020000 vaddr 0x10000000 paddr 0x1a002c34 align 2**16
@@ -30,7 +30,7 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS
   5 .data_RAM5    00000000  2000c000  2000c000  00020480  2**2
                   CONTENTS
-  6 .bss          00005a84  10000480  10000480  00000480  2**3
+  6 .bss          0000569c  10000480  10000480  00000480  2**3
                   ALLOC
   7 .bss_RAM2     00000000  10080000  10080000  00020480  2**2
                   CONTENTS
@@ -52,29 +52,29 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS
  16 .noinit_RAM5  00000000  2000c000  2000c000  00020480  2**2
                   CONTENTS
- 17 .noinit       00000000  10005f04  10005f04  00020480  2**2
+ 17 .noinit       00000000  10005b1c  10005b1c  00020480  2**2
                   CONTENTS
- 18 .debug_info   00016ff2  00000000  00000000  00020480  2**0
+ 18 .debug_info   00017024  00000000  00000000  00020480  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_abbrev 000040bf  00000000  00000000  00037472  2**0
+ 19 .debug_abbrev 000040a5  00000000  00000000  000374a4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 20 .debug_loc    000093f4  00000000  00000000  0003b531  2**0
+ 20 .debug_loc    00009460  00000000  00000000  0003b549  2**0
                   CONTENTS, READONLY, DEBUGGING
- 21 .debug_aranges 00000be0  00000000  00000000  00044928  2**3
+ 21 .debug_aranges 00000be8  00000000  00000000  000449b0  2**3
                   CONTENTS, READONLY, DEBUGGING
- 22 .debug_ranges 00000b40  00000000  00000000  00045508  2**0
+ 22 .debug_ranges 00000b48  00000000  00000000  00045598  2**0
                   CONTENTS, READONLY, DEBUGGING
- 23 .debug_macro  0000c564  00000000  00000000  00046048  2**0
+ 23 .debug_macro  0000c564  00000000  00000000  000460e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 24 .debug_line   0000f7b4  00000000  00000000  000525ac  2**0
+ 24 .debug_line   0000f7d7  00000000  00000000  00052644  2**0
                   CONTENTS, READONLY, DEBUGGING
- 25 .debug_str    0001f0ce  00000000  00000000  00061d60  2**0
+ 25 .debug_str    0001f0e9  00000000  00000000  00061e1b  2**0
                   CONTENTS, READONLY, DEBUGGING
- 26 .comment      00000070  00000000  00000000  00080e2e  2**0
+ 26 .comment      00000070  00000000  00000000  00080f04  2**0
                   CONTENTS, READONLY
- 27 .ARM.attributes 00000039  00000000  00000000  00080e9e  2**0
+ 27 .ARM.attributes 00000039  00000000  00000000  00080f74  2**0
                   CONTENTS, READONLY
- 28 .debug_frame  00001aa8  00000000  00000000  00080ed8  2**2
+ 28 .debug_frame  00001ab8  00000000  00000000  00080fb0  2**2
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 1a000000 l    d  .text	00000000 .text
@@ -94,7 +94,7 @@ SYMBOL TABLE:
 20000000 l    d  .noinit_RAM3	00000000 .noinit_RAM3
 20008000 l    d  .noinit_RAM4	00000000 .noinit_RAM4
 2000c000 l    d  .noinit_RAM5	00000000 .noinit_RAM5
-10005f04 l    d  .noinit	00000000 .noinit
+10005b1c l    d  .noinit	00000000 .noinit
 00000000 l    d  .debug_info	00000000 .debug_info
 00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
 00000000 l    d  .debug_loc	00000000 .debug_loc
@@ -242,20 +242,20 @@ SYMBOL TABLE:
 1a0001a8  w    F .text	00000002 SGPIO_IRQHandler
 10000480 g     O .bss	00000001 adcDataReadyFlag
 1a002164 g     F .text	00000000 .hidden __aeabi_uldivmod
-10005f04 g       .noinit	00000000 _noinit
+10005b1c g       .noinit	00000000 _noinit
 1a000e64 g     F .text	00000018 uartWriteString
-10005f00 g     O .bss	00000004 SystemCoreClock
+10005b18 g     O .bss	00000004 SystemCoreClock
 100052e8 g     O .bss	00000004 audioChannel
 1a001534 g     F .text	00000054 Chip_UART_Init
 1a001e34 g     F .text	00000010 Chip_DAC_UpdateValue
 1a0004d4 g     F .text	00000020 ADC0_IRQHandler
 1a001700 g     F .text	00000018 readAdcVal
-100052ec g     O .bss	000007d0 outVector
+100052ec g     O .bss	000003e8 outVector
 1a000194  w    F .text	00000002 UsageFault_Handler
 1a001d98 g     F .text	0000004c Chip_Clock_GetRate
 1a0001a8  w    F .text	00000002 GPIO6_IRQHandler
 1a00110c g     F .text	0000000e printInitUart
-10005ef0 g     O .bss	00000008 tickCounter
+10005b08 g     O .bss	00000008 tickCounter
 1a0004f4 g     F .text	0000015c adcChannelEnable
 1a00141c g     F .text	0000006c Board_SetupClocking
 20008000 g       *ABS*	00000000 __top_RamAHB32
@@ -263,8 +263,8 @@ SYMBOL TABLE:
 1a002a78 g     O .text	00000004 ExtRateIn
 1a0001a8  w    F .text	00000002 IntDefaultHandler
 1a000300 g       .text	00000000 __CRP_WORD_END__
-10005ac0 g     O .bss	00000018 waitDelay
-10005ad8 g     O .bss	00000008 lpf
+100056d8 g     O .bss	00000018 waitDelay
+100056f0 g     O .bss	00000008 lpf
 1a0001a8  w    F .text	00000002 GPIO1_IRQHandler
 1a0001a8  w    F .text	00000002 SSP0_IRQHandler
 1a002c2c g       .ARM.exidx	00000000 __exidx_start
@@ -278,7 +278,7 @@ SYMBOL TABLE:
 1a002160 g     F .text	00000002 _init
 1a000114 g       .text	00000000 __data_section_table
 1a0001a8  w    F .text	00000002 RTC_IRQHandler
-10005f04 g       .bss	00000000 _ebss
+10005b1c g       .bss	00000000 _ebss
 1a001818 g     F .text	00000026 Chip_ADC_EnableChannel
 1a001010 g     F .text	0000003c TIMER0_IRQHandler
 1a000c48 g     F .text	0000007c tickInit
@@ -316,15 +316,15 @@ SYMBOL TABLE:
 1a000e94 g     F .text	00000020 delayInit
 1a0001a8  w    F .text	00000002 I2S1_IRQHandler
 1a002064 g     F .text	0000003e Chip_SSP_SetBitRate
-10005ae0 g     O .bss	00000021 buffer
+100056f8 g     O .bss	00000021 buffer
 1a001ed0 g     F .text	00000002 Chip_GPIO_Init
 1a002a74 g     O .text	00000004 OscRateIn
 1a000dcc g     F .text	0000007c uartInit
-10005f04 g       .noinit	00000000 _end_noinit
+10005b1c g       .noinit	00000000 _end_noinit
 10008000 g       *ABS*	00000000 _vStackTop
 1a0001a8  w    F .text	00000002 SSP1_IRQHandler
 1a001e10 g     F .text	0000000c Chip_TIMER_Init
-10005b01 g     O .bss	00000001 filterSize
+10005719 g     O .bss	00000001 filterSize
 1a000178 g       .text	00000000 __bss_section_table_end
 1a0009c0 g     F .text	0000019c gpioInit
 1a0021f4  w    F .text	00000002 .hidden __aeabi_ldiv0
@@ -348,7 +348,7 @@ SYMBOL TABLE:
 1a001d28 g     F .text	0000003c Chip_Clock_EnableOpts
 1a001af0 g     F .text	000000b8 Chip_Clock_GetClockInputHz
 1a001e78 g     F .text	00000058 fpuInit
-10005b04 g     O .bss	00000004 filterGain
+1000571c g     O .bss	00000004 filterGain
 1a000300 g     F .text	00000028 ADCPROXYCLIENT_initialize
 1a001ba8 g     F .text	00000080 Chip_Clock_CalcMainPLLValue
 1a0013cc g     F .text	0000001c SystemInit
@@ -361,7 +361,7 @@ SYMBOL TABLE:
 1a0013e8 g     F .text	00000034 Board_SetupMuxing
 1a0015c8 g     F .text	000000e4 Chip_UART_SetBaudFDR
 1a000c24 g     F .text	0000000c tickRead
-10005ef8 g     O .bss	00000008 tickRateMS
+10005b10 g     O .bss	00000008 tickRateMS
 1a001840 g     F .text	00000022 Chip_ADC_SetBurstCmd
 1a0008dc g     F .text	00000020 continousFilterGain
 1a0001a8  w    F .text	00000002 ETH_IRQHandler
@@ -372,7 +372,7 @@ SYMBOL TABLE:
 1a0001a8  w    F .text	00000002 CAN0_IRQHandler
 10000000 g       .data	00000000 _data
 1a0003ec g     F .text	00000010 ADCHARDWAREPROXY_initialize
-10005f04 g       .bss	00000000 _pvHeapStart
+10005b1c g       .bss	00000000 _pvHeapStart
 1a000178 g       .text	00000000 __section_table_end
 1a0020a4 g     F .text	00000038 Chip_SSP_Init
 1a0001a8  w    F .text	00000002 GINT0_IRQHandler
@@ -385,7 +385,7 @@ SYMBOL TABLE:
 10000480 g       .data	00000000 _edata
 1a001494 g     F .text	00000020 Chip_I2C_EventHandler
 1a0001a8  w    F .text	00000002 M0SUB_IRQHandler
-10005b08 g     O .bss	000003e8 inpVector
+10005720 g     O .bss	000003e8 inpVector
 1a00034c g     F .text	00000074 ADCPROXYCLIENT_access
 1a001ed4 g     F .text	00000150 Chip_SetupCoreClock
 1a0001a8  w    F .text	00000002 GPIO0_IRQHandler
@@ -456,7 +456,7 @@ Disassembly of section .text:
 
 1a000150 <__bss_section_table>:
 1a000150:	10000480 	.word	0x10000480
-1a000154:	00005a84 	.word	0x00005a84
+1a000154:	0000569c 	.word	0x0000569c
 1a000158:	10080000 	.word	0x10080000
 1a00015c:	00000000 	.word	0x00000000
 1a000160:	20000000 	.word	0x20000000
@@ -1668,14 +1668,14 @@ int main( void ){
 1a0008a8:	00061a80 	.word	0x00061a80
 1a0008ac:	1a002884 	.word	0x1a002884
 1a0008b0:	1a002898 	.word	0x1a002898
-1a0008b4:	10005ad8 	.word	0x10005ad8
+1a0008b4:	100056f0 	.word	0x100056f0
 1a0008b8:	10000000 	.word	0x10000000
 1a0008bc:	1a0006d9 	.word	0x1a0006d9
 1a0008c0:	10000018 	.word	0x10000018
 1a0008c4:	100052ec 	.word	0x100052ec
-1a0008c8:	10005ac0 	.word	0x10005ac0
+1a0008c8:	100056d8 	.word	0x100056d8
 1a0008cc:	10000016 	.word	0x10000016
-1a0008d0:	10005ae0 	.word	0x10005ae0
+1a0008d0:	100056f8 	.word	0x100056f8
 1a0008d4:	100052e8 	.word	0x100052e8
 1a0008d8:	1a002844 	.word	0x1a002844
 
@@ -1725,11 +1725,11 @@ int main( void ){
 
 1a0008fc <filterProcessing>:
 	* @param outputVector puntero al vector de salida
-	* @return empty
+	* @return 1 cuando termino el procesamiento
 	*/
-	void filterProcessing(uint8_t filterLength, int32_t continousGain,
+	uint8_t filterProcessing(uint8_t filterLength, int32_t continousGain,
 										int16_t *coeffVector, uint16_t inputLength,
-										int16_t *inputVector, int32_t *outputVector){
+										int16_t *inputVector, int16_t *outputVector){
 1a0008fc:	b4f0      	push	{r4, r5, r6, r7}
 1a0008fe:	ee05 1a10 	vmov	s10, r1
 1a000902:	9e04      	ldr	r6, [sp, #16]
@@ -1759,7 +1759,7 @@ int main( void ){
 1a000930:	ed9f 7a0f 	vldr	s14, [pc, #60]	; 1a000970 <filterProcessing+0x74>
 1a000934:	eec7 7a87 	vdiv.f32	s15, s15, s14
 1a000938:	ee75 5aa7 	vadd.f32	s11, s11, s15
-										int16_t *inputVector, int32_t *outputVector){
+										int16_t *inputVector, int16_t *outputVector){
 		float filterAcumulator = 0, coefFilter = 0, filterGain = 0, inputVectorValue = 0;
 		uint16_t filterCounter = 0,i;
 
@@ -1778,14 +1778,14 @@ int main( void ){
 
 				filterAcumulator +=  ((coefFilter/(filterGain)) * (inputVectorValue)/1023);
 			}
-			outputVector[i] = (int32_t)(filterAcumulator*1023);
+			outputVector[i] = (int16_t)(filterAcumulator*1023);
 1a00094e:	eddf 7a08 	vldr	s15, [pc, #32]	; 1a000970 <filterProcessing+0x74>
 1a000952:	ee65 5aa7 	vmul.f32	s11, s11, s15
-1a000956:	eefd 5ae5 	vcvt.s32.f32	s11, s11
-1a00095a:	ee15 1a90 	vmov	r1, s11
-1a00095e:	f847 1025 	str.w	r1, [r7, r5, lsl #2]
+1a000956:	eefd 7ae5 	vcvt.s32.f32	s15, s11
+1a00095a:	ee17 1a90 	vmov	r1, s15
+1a00095e:	f827 1015 	strh.w	r1, [r7, r5, lsl #1]
 										int16_t *coeffVector, uint16_t inputLength,
-										int16_t *inputVector, int32_t *outputVector){
+										int16_t *inputVector, int16_t *outputVector){
 		float filterAcumulator = 0, coefFilter = 0, filterGain = 0, inputVectorValue = 0;
 		uint16_t filterCounter = 0,i;
 
@@ -1794,15 +1794,15 @@ int main( void ){
 1a000964:	b2ad      	uxth	r5, r5
 1a000966:	429d      	cmp	r5, r3
 1a000968:	d3eb      	bcc.n	1a000942 <filterProcessing+0x46>
-				filterAcumulator +=  ((coefFilter/(filterGain)) * (inputVectorValue)/1023);
 			}
-			outputVector[i] = (int32_t)(filterAcumulator*1023);
+			outputVector[i] = (int16_t)(filterAcumulator*1023);
 			filterAcumulator = 0;
 		}
+		return 1;
 	}
-1a00096a:	bcf0      	pop	{r4, r5, r6, r7}
-1a00096c:	4770      	bx	lr
-1a00096e:	bf00      	nop
+1a00096a:	2001      	movs	r0, #1
+1a00096c:	bcf0      	pop	{r4, r5, r6, r7}
+1a00096e:	4770      	bx	lr
 1a000970:	447fc000 	.word	0x447fc000
 1a000974:	00000000 	.word	0x00000000
 
@@ -2304,7 +2304,7 @@ tick_t tickRead( void )
 1a000c24:	4b01      	ldr	r3, [pc, #4]	; (1a000c2c <tickRead+0x8>)
 1a000c26:	e9d3 0100 	ldrd	r0, r1, [r3]
 1a000c2a:	4770      	bx	lr
-1a000c2c:	10005ef0 	.word	0x10005ef0
+1a000c2c:	10005b08 	.word	0x10005b08
 
 1a000c30 <tickPowerSet>:
 }
@@ -2441,8 +2441,8 @@ bool_t tickInit( tick_t tickRateMSvalue )
    #endif
 }
 1a000cb2:	bd10      	pop	{r4, pc}
-1a000cb4:	10005ef8 	.word	0x10005ef8
-1a000cb8:	10005f00 	.word	0x10005f00
+1a000cb4:	10005b10 	.word	0x10005b10
+1a000cb8:	10005b18 	.word	0x10005b18
 1a000cbc:	e000e010 	.word	0xe000e010
 1a000cc0:	e000ed00 	.word	0xe000ed00
 
@@ -2473,7 +2473,7 @@ void tickerCallback( void )   // Before SysTick_Handler
 1a000ce2:	6810      	ldr	r0, [r2, #0]
 1a000ce4:	4798      	blx	r3
 1a000ce6:	bd08      	pop	{r3, pc}
-1a000ce8:	10005ef0 	.word	0x10005ef0
+1a000ce8:	10005b08 	.word	0x10005b08
 1a000cec:	10000490 	.word	0x10000490
 1a000cf0:	10000494 	.word	0x10000494
 
@@ -2870,7 +2870,7 @@ void delayInit( delay_t * delay, tick_t duration )
 1a000eaa:	2300      	movs	r3, #0
 1a000eac:	7423      	strb	r3, [r4, #16]
 1a000eae:	bd10      	pop	{r4, pc}
-1a000eb0:	10005ef8 	.word	0x10005ef8
+1a000eb0:	10005b10 	.word	0x10005b10
 
 1a000eb4 <delayRead>:
 }
@@ -3632,7 +3632,7 @@ void boardInit(void)
 1a00121c:	2101      	movs	r1, #1
 1a00121e:	f7ff fbcf 	bl	1a0009c0 <gpioInit>
 1a001222:	bd08      	pop	{r3, pc}
-1a001224:	10005f00 	.word	0x10005f00
+1a001224:	10005b18 	.word	0x10005b18
 
 1a001228 <Board_LED_Init>:
 #define GPIO_BUTTONS_SIZE   (sizeof(GpioButtons) / sizeof(struct gpio_t))
@@ -5100,7 +5100,7 @@ void SystemCoreClockUpdate(void)
 1a00186e:	6018      	str	r0, [r3, #0]
 1a001870:	bd08      	pop	{r3, pc}
 1a001872:	bf00      	nop
-1a001874:	10005f00 	.word	0x10005f00
+1a001874:	10005b18 	.word	0x10005b18
 
 1a001878 <pll_calc_divs>:
 		return -val;

@@ -60,6 +60,20 @@ void filterProcessing(uint8_t filterLength, int32_t continousGain,
 #else
 	#ifdef FLOATING_POINT_FILTER
 	/**
+	* @brief Funcion que elimina la continua del vector de datos de entrada
+	* @param inputLength cantidad de elementos del vector de entrada
+	* @param inputVector puntero a los elementos del vector de entrada
+	* @return 1 cuando se completa el procesamiento del vector
+	*/
+	uint8_t eliminateContinous(uint16_t inputLength, int16_t *inputVector){
+		uint16_t counter;
+		for(counter = 0; counter < inputLength; counter++){
+			inputVector[counter] = inputVector[counter]-512;
+				}
+		return 1;
+	}
+
+	/**
 	* @brief Funcion que calcula la ganancia de continua del filtro FIR
 	* @param filterLength cantidad de elementos del filtro FIR
 	* @param coeffVector puntero al vector de coeficientes del filtro FIR
@@ -81,11 +95,11 @@ void filterProcessing(uint8_t filterLength, int32_t continousGain,
 	* @param inputLength cantidad de elementos del vector de entrada a procesar
 	* @param inputVector puntero al vector de entrada
 	* @param outputVector puntero al vector de salida
-	* @return empty
+	* @return 1 cuando termino el procesamiento
 	*/
-	void filterProcessing(uint8_t filterLength, int32_t continousGain,
+	uint8_t filterProcessing(uint8_t filterLength, int32_t continousGain,
 										int16_t *coeffVector, uint16_t inputLength,
-										int16_t *inputVector, int32_t *outputVector){
+										int16_t *inputVector, int16_t *outputVector){
 		float filterAcumulator = 0, coefFilter = 0, filterGain = 0, inputVectorValue = 0;
 		uint16_t filterCounter = 0,i;
 
@@ -97,9 +111,10 @@ void filterProcessing(uint8_t filterLength, int32_t continousGain,
 
 				filterAcumulator +=  ((coefFilter/(filterGain)) * (inputVectorValue)/1023);
 			}
-			outputVector[i] = (int32_t)(filterAcumulator*1023);
+			outputVector[i] = (int16_t)(filterAcumulator*1023);
 			filterAcumulator = 0;
 		}
+		return 1;
 	}
 	#endif
 #endif
