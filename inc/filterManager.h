@@ -1,17 +1,15 @@
-/*
- * filterManager.h
- *
- *  Created on: 22/9/2018
- *      Author: gastonvallasciani
- */
+/**
+  @file filterManager.h
+  @brief Funciones de manejo de filtros FIR
 
+  @author Gaston Vallasciani
+  @date 22/09/2018
+*/
 #ifndef _FILTERMANAGER_H_
 #define _FILTERMANAGER_H_
-
 /*==================[inclusiones]============================================*/
 #include "sapi.h"        //  sAPI lib
 #include "stdint.h"
-
 /*==================[definiciones de datos internos]=========================*/
 /*==================[definiciones de datos externos]=========================*/
 /*==================[definiciones de funciones publicas]=====================*/

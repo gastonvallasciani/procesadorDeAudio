@@ -13,6 +13,7 @@
 #include "DAC_hardwareProxy.h"
 #include "sapi_timer.h"
 #include "filterManager.h"
+#include "test.h"
 
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
@@ -49,6 +50,10 @@ int16_t lpf15Khz[11] = {564, -1409, 2642, -3963, 4986, 27395, 4986, -3963,
 filterData_t lpf;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
+extern int16_t inVector400Hz[500];
+extern int16_t inVector20Khz[500];
+extern int16_t inVector15Khz[500];
+extern int16_t inVector10Khz[500];
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
 /*==================[declaraciones de funciones externas]====================*/
@@ -106,12 +111,19 @@ int main( void ){
    uint16_t j;
    while( TRUE ){
 
-	   for (j=0; j<500;j++){
+	  /* for (j=0; j<500;j++){
 		   inpVector[j]=j;
-	   }
+	   }*/
 
+	   for (j=0; j<500;j++){
+		   //inVector400Hz[j] = inVector400Hz[j]/2;
+		   inVector10Khz[j] = inVector10Khz[j]/2;
+	   	   }
+
+	   //filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
+	   	   	   	   //&inpVector[0], &outVector[0]);
 	   filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
-			   &inpVector[0], &outVector[0]);
+	   			   &inVector10Khz[0], &outVector[0]);
 
 	   //filterProcessing(lpf.filterSize, INPUT_VECTOR_SIZE, &lpf15Khz[0], &inpVector[0], &outVector[0]);
 	   // Se extrae un dato del buffer circular de adquisicion del ADC
