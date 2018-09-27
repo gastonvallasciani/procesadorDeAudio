@@ -17,6 +17,7 @@
 
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
+#define TEST_OFFLINE_ENABLE
 /*==================[definiciones de datos internos]=========================*/
 #define WAIT_DELAY 50
 #define NOLED LEDR+6
@@ -48,22 +49,38 @@ int16_t lpf15Khz[11] = {564, -1409, 2642, -3963, 4986, 27395, 4986, -3963,
 								2642, -1409, 564}; // low pass filter 15KHz
 
 filterData_t lpf;
+
+
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
+
+#ifdef TEST_OFFLINE_ENABLE
 extern int16_t inVector400Hz[500];
 extern int16_t inVector20Khz[500];
 extern int16_t inVector15Khz[500];
 extern int16_t inVector10Khz[500];
+extern int16_t inVector5Khz[500];
+extern int16_t inVector1Khz[500];
+#endif
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
 /*==================[declaraciones de funciones externas]====================*/
 /*==================[funcion principal]======================================*/
 int main( void ){
 // ---------------------CONFIGURACIONES INICIALES-----------------------------
+#ifdef TEST_OFFLINE_ENABLE
+	volatile uint32_t * DWT_CTRL   = (uint32_t *)0xE0001000;
+	volatile uint32_t * DWT_CYCCNT = (uint32_t *)0xE0001004;
 
+	volatile uint32_t cyclesC=0;
+#endif
    // Inicializacion y configuracion de la plataforma
    boardConfig();
    ADCHARDWAREPROXY_acquireDisable();
+
+#ifdef TEST_OFFLINE_ENABLE
+   *DWT_CTRL  |= 1;
+#endif
 
    // Inicializacion de UART_USB como salida de consola de debug
    debugPrintConfigUart( UART_USB, 115200 );
@@ -106,26 +123,31 @@ int main( void ){
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
    lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
 
+   uint16_t j;
+
+   for (j=0; j<500;j++){
+   // se dividen los coeficientes del filtro por dos porque porque los vectores de
+   // test fueron calculados con amplitud 1023, entonces se divide por dos asi se
+   // tiene el fondo de escala de adquisicion del ADC y es real
+	   inVector10Khz[j] = inVector10Khz[j]/2;
+   }
+
    // Inicializacion TIMER 1 desborde con una frecuencia de 100KHz
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
-   uint16_t j;
+
    while( TRUE ){
 
-	  /* for (j=0; j<500;j++){
-		   inpVector[j]=j;
-	   }*/
+#ifdef TEST_OFFLINE_ENABLE
+	   *DWT_CYCCNT = 0;// Se inicializa el contador para medir la cantidad de ciclos de clock
+	   	   	   	   	   // que tarda la funcion de filtrado en ejecutarse
+#endif
 
-	   for (j=0; j<500;j++){
-		   //inVector400Hz[j] = inVector400Hz[j]/2;
-		   inVector10Khz[j] = inVector10Khz[j]/2;
-	   	   }
-
-	   //filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
-	   	   	   	   //&inpVector[0], &outVector[0]);
 	   filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
 	   			   &inVector10Khz[0], &outVector[0]);
 
-	   //filterProcessing(lpf.filterSize, INPUT_VECTOR_SIZE, &lpf15Khz[0], &inpVector[0], &outVector[0]);
+#ifdef TEST_OFFLINE_ENABLE
+	   cyclesC=*DWT_CYCCNT; // mido la cantidad de ciclos de clock usa para procesar el filtro
+#endif
 	   // Se extrae un dato del buffer circular de adquisicion del ADC
 	   //if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
 	   //}
