@@ -16,9 +16,12 @@ Se agregó el código al repositorio. Este posee la adquisición de audio con el
 
 Se midió la latencia de adquisición y generación de audio entre la entrada y la salida del microcontrolador. Esto se realizó generando tonos de audio de 1KHz, 5KHz, 10KHz y 15KHz con el software Audacity. Una vez generado el tono, se conectó la salida de la placa de audio de la PC a la entrada del ADC 1 del LPC4337 y se regeneró la señal de audio medida mediante el DAC. Luego, se midió la diferencia de tiempos entre la señal de entrada y de salida con un osciloscopio para obtener la latencia. 
 
-Se obtuvieron imágenes de las mediciones con el osciloscopio y se encuentran guardadas en la carpeta de google drive del proyecto a la cual se accede mediante el siguiente enlace https://drive.google.com/open?id=11r3HlkTrEa5hAmaeK2yz8cP0KFATxhbh. 
+Se obtuvieron imágenes de las mediciones con el osciloscopio y se encuentran guardadas en la carpeta de google drive del proyecto a la cual se accede mediante el siguiente enlace 
+
+https://drive.google.com/open?id=11r3HlkTrEa5hAmaeK2yz8cP0KFATxhbh. 
 
 Se realizó el diseño de un filtro FIR pasabajos cuya frecuencia de corte es de 15kHz, y a su vez, posee 20dB de atenuación entre 15KHz y 22KHz. Se generó el header file correpondiente en el cual se encuentra el vector con los coeficientes del filtro. Este se puede obvservar en la carpeta de google drive del proyecto a la que se accede mediante el enlace siguiente,
+
 https://drive.google.com/open?id=1xjvo2t-v5r0JmQ1fiHiX1UNMOeUb9hF4.
 
 
@@ -35,6 +38,7 @@ Se crea una función en filterManager.c para realizar el procesamiento del filtr
 FECHA: 24/09/2018
 
 Se crean distintos tonos puros en MATLAB para realizar el testeo offline de filtros. Se accede a la carpeta contenedora de google drive de estos tonos mediante el enlace siguiente,
+
 https://drive.google.com/open?id=1xxAgcvk6ieFr17po1qhK-adxpBRgl_FO.
 
 FECHA: 25/09/2018
@@ -45,6 +49,7 @@ FECHA: 27/09/2018
 
 Se generaron 3 filtros FIR en MATLAB para ser utilizados en el main.c. Un filtro pasabajos de 60 db de atenuación entre 15KHz y 22KHz, un filtro pasabajos de 4 db de atenuación entre 4KHz y 8KHz, y por último, un filtro pasa-altos de 40 db de atenuación entre 4Hz y 4KHz.
 Los archivos de matlab, header file e imágenes se encuentran en la carpeta de google drive siguiente,
+
 https://drive.google.com/open?id=1SkKYLhn-Xu6lMNjhMThhnJoZ-xsGrob5.
 
 Además, se midió el tiempo de procesamiento de los filtros de forma offline obteniendose los siguientes resultados:
