@@ -43,7 +43,8 @@ FECHA: 27/09/2018
 Se generaron 3 filtros FIR en MATLAB para ser utilizados en el main.c. Un filtro pasabajos de 60 db de atenuación entre 15KHz y 22KHz, un filtro pasabajos de 4 db de atenuación entre 4KHz y 8KHz, y por último, un filtro pasa-altos de 40 db de atenuación entre 4Hz y 4KHz.
 Los archivos de matlab, header file e imágenes se encuentran en la carpeta de google drive siguiente,
 https://drive.google.com/open?id=1SkKYLhn-Xu6lMNjhMThhnJoZ-xsGrob5.
-Además, se midión el tiempo de procesamiento de los filtros de forma offline obteniendose los siguientes resultados:
+
+Además, se midió el tiempo de procesamiento de los filtros de forma offline obteniendose los siguientes resultados:
 Filtro pasabajos 15khz: 2.77ms contador:565868
 Filtro pasabajos 4khz: 3.67ms  contador:749238
 Filtro pasaaltos 4khz: 4.03ms 823048
