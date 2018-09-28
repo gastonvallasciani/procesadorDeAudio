@@ -42,25 +42,25 @@ char buffer [33];
 audioChannel_t audioChannel;
 int16_t inpVector[INPUT_VECTOR_SIZE];
 int16_t outVector[OUTPUT_VECTOR_SIZE];
-uint8_t filterSize;
-int32_t filterGain;
-
-int16_t lpf15Khz[11] = {564, -1409, 2642, -3963, 4986, 27395, 4986, -3963,
-								2642, -1409, 564}; // low pass filter 15KHz
-
-filterData_t lpf;
-
-
+filterData_t lpf, hpf;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
-
+/**
+ * Filtros definidos en el archivo filterManager.c
+ */
+extern int16_t lpf15Khz[12];
+extern int16_t lpf4Khz[16];
+extern int16_t hpf4Khz[17];
+/**
+ * Vectores de entrada definidos en el archivo test.c para testeo offline
+ */
 #ifdef TEST_OFFLINE_ENABLE
-extern int16_t inVector400Hz[500];
-extern int16_t inVector20Khz[500];
-extern int16_t inVector15Khz[500];
-extern int16_t inVector10Khz[500];
-extern int16_t inVector5Khz[500];
-extern int16_t inVector1Khz[500];
+	extern int16_t inVector400Hz[500];
+	extern int16_t inVector20Khz[500];
+	extern int16_t inVector15Khz[500];
+	extern int16_t inVector10Khz[500];
+	extern int16_t inVector5Khz[500];
+	extern int16_t inVector1Khz[500];
 #endif
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
@@ -120,8 +120,11 @@ int main( void ){
    gpioWrite(LED2,ON); // Board Alive
    gpioWrite(LED3,ON); // Board Alive
 
-   lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
-   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
+   lpf.filterSize = sizeof(lpf4Khz)/sizeof(int16_t);
+   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf4Khz[0]);
+
+   hpf.filterSize = sizeof(hpf4Khz)/sizeof(int16_t);
+   hpf.filterGain = continousFilterGain(lpf.filterSize, &hpf4Khz[0]);
 
    uint16_t j;
 
@@ -142,8 +145,10 @@ int main( void ){
 	   	   	   	   	   // que tarda la funcion de filtrado en ejecutarse
 #endif
 
-	   filterProcessing(lpf.filterSize, lpf.filterGain, &lpf15Khz[0], INPUT_VECTOR_SIZE,
-	   			   &inVector10Khz[0], &outVector[0]);
+	   //filterProcessing(lpf.filterSize, lpf.filterGain, &lpf4Khz[0], INPUT_VECTOR_SIZE,
+	   //			   &inVector10Khz[0], &outVector[0]);
+	   filterProcessing(hpf.filterSize, hpf.filterGain, &hpf4Khz[0], INPUT_VECTOR_SIZE,
+	   	   			   &inVector10Khz[0], &outVector[0]);
 
 #ifdef TEST_OFFLINE_ENABLE
 	   cyclesC=*DWT_CYCCNT; // mido la cantidad de ciclos de clock usa para procesar el filtro

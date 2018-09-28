@@ -13,6 +13,16 @@
 //#define FIXED_POINT_FILTER
 #define FLOATING_POINT_FILTER
 /*=========================[definiciones de datos externos]=========================*/
+/**
+ * @brief Definicion de filtros utilizados en el archivo main.c
+ */
+int16_t lpf15Khz[12] = {971, -1271, 1192, 148, -4008, 19777, 19777, -4008, 148,
+	     	 	 	 1192, -1271, 971};
+int16_t lpf4Khz[16] = {-346, -1078, -1283, -888, 836, 3502, 6343, 8158, 8158,
+                     6343, 3502, 836, -888, -1283, -1078, -346};
+int16_t hpf4Khz[17] = {-620, -785, -1187, -1635, -2092, -2512, -2851, -3072,
+					 29620, -3072, -2851, -2512, -2092, -1635, -1187, -785,
+					 -620};
 /*=========================[declaraciones de funciones internas]====================*/
 /*=========================[definiciones de funciones publicas]=====================*/
 #ifdef FIXED_POINT_FILTER
