@@ -56,3 +56,11 @@ Además, se midió el tiempo de procesamiento de los filtros de forma offline ob
 Filtro pasabajos 15khz: 2.77ms contador:565868
 Filtro pasabajos 4khz: 3.67ms  contador:749238
 Filtro pasaaltos 4khz: 4.03ms 823048
+
+FECHA: 30/09/2018
+
+Se corrigio la forma de procesamiento de los filtros fir en el archivo filterManageer.c. Faltaba el corrimiento del vector de entrada en el procesamiento. Por lo tanto, se recalcularon los tiempo de procesamiento offline de la funcion y se obtuvieron los siguientes valores.
+
+Filtro Pasabajos 15KHz (vector de 500 muestras de entrada): 2.19ms contador:448643
+Filtro Pasabajos 4KHz (vector de 500 muestras de entrada): 2.8ms contador:571142
+El filtro pasaaltos hay que recalcularlo.
