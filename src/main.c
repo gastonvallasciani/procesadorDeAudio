@@ -1,10 +1,10 @@
-/*============================================================================
- * Autor:Gastón Vallasciani
- * Proyecto: Procesador de Audio Para radios Online
- * Licencia: None
- * Fecha: 05-05-2018
- *===========================================================================*/
+/**
+  @file main.c
+  @brief Procesador de Audio Digital
 
+  @author Gaston Vallasciani
+  @date 05/05/2018
+*/
 /*==================[inclusiones]============================================*/
 #include "sapi.h"        //  sAPI lib
 #include "sapi_peripheral_map.h"
@@ -22,6 +22,7 @@ DEBUG_PRINT_ENABLE
 #define WAIT_DELAY 50
 #define NOLED LEDR+6
 #define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
+#define ACQUISITION_FRECUENCY_44100HZ() Timer_microsecondsToTicks( 22 )
 #define TIMER1 1
 #define INPUT_VECTOR_SIZE 500
 #define OUTPUT_VECTOR_SIZE 500
@@ -120,23 +121,23 @@ int main( void ){
    gpioWrite(LED2,ON); // Board Alive
    gpioWrite(LED3,ON); // Board Alive
 
-   lpf.filterSize = sizeof(lpf4Khz)/sizeof(int16_t);
-   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf4Khz[0]);
+   lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
+   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
 
    hpf.filterSize = sizeof(hpf4Khz)/sizeof(int16_t);
-   hpf.filterGain = continousFilterGain(lpf.filterSize, &hpf4Khz[0]);
+   hpf.filterGain = continousFilterGain(hpf.filterSize, &hpf4Khz[0]);
 
+#ifdef TEST_OFFLINE_ENABLE
    uint16_t j;
-
    for (j=0; j<500;j++){
    // se dividen los coeficientes del filtro por dos porque porque los vectores de
    // test fueron calculados con amplitud 1023, entonces se divide por dos asi se
    // tiene el fondo de escala de adquisicion del ADC y es real
 	   inVector10Khz[j] = inVector10Khz[j]/2;
    }
-
+#endif
    // Inicializacion TIMER 1 desborde con una frecuencia de 100KHz
-   Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
+   Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler );
 
    while( TRUE ){
 
@@ -144,12 +145,9 @@ int main( void ){
 	   *DWT_CYCCNT = 0;// Se inicializa el contador para medir la cantidad de ciclos de clock
 	   	   	   	   	   // que tarda la funcion de filtrado en ejecutarse
 #endif
-
-	   //filterProcessing(lpf.filterSize, lpf.filterGain, &lpf4Khz[0], INPUT_VECTOR_SIZE,
-	   //			   &inVector10Khz[0], &outVector[0]);
-	   filterProcessing(hpf.filterSize, hpf.filterGain, &hpf4Khz[0], INPUT_VECTOR_SIZE,
-	   	   			   &inVector10Khz[0], &outVector[0]);
-
+	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],
+			   	   	   	   	 INPUT_VECTOR_SIZE,&inVector10Khz[0],
+							 &outVector[0]);
 #ifdef TEST_OFFLINE_ENABLE
 	   cyclesC=*DWT_CYCCNT; // mido la cantidad de ciclos de clock usa para procesar el filtro
 #endif
@@ -173,13 +171,12 @@ int main( void ){
 		   debugPrintlnString("\n\r");
 		   }
    }
-
    // FIN DEL PROGRAMA
    return 0;
 }
 /*==================[definiciones de funciones internas]=====================*/
 // Funcion que se ejecuta cada vez que se desborda el TIMER 1
-// El TIMER 1 se desborda con una frecuencia de 100KHz
+// El TIMER 1 se desborda con una frecuencia de 44.1KHz
 void tickTimerHandler( void *ptr ){
 	if(ADCPROXYCLIENT_access(adcUpdateValue, &audioChannel.audioRightChannel) == bufferLleno){
 			//Buffer lleno

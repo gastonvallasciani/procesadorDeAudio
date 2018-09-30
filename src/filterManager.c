@@ -10,22 +10,74 @@
 #include "sapi.h"        //  sAPI lib
 #include "stdint.h"        //  sAPI lib
 /*=========================[definiciones de datos internos]=========================*/
-//#define FIXED_POINT_FILTER
-#define FLOATING_POINT_FILTER
+static int16_t xBuffer[18];
 /*=========================[definiciones de datos externos]=========================*/
 /**
  * @brief Definicion de filtros utilizados en el archivo main.c
  */
 int16_t lpf15Khz[12] = {971, -1271, 1192, 148, -4008, 19777, 19777, -4008, 148,
-	     	 	 	 1192, -1271, 971};
+	     	 	 	    1192, -1271, 971};
 int16_t lpf4Khz[16] = {-346, -1078, -1283, -888, 836, 3502, 6343, 8158, 8158,
-                     6343, 3502, 836, -888, -1283, -1078, -346};
+                       6343, 3502, 836, -888, -1283, -1078, -346};
 int16_t hpf4Khz[17] = {-620, -785, -1187, -1635, -2092, -2512, -2851, -3072,
-					 29620, -3072, -2851, -2512, -2092, -1635, -1187, -785,
-					 -620};
+					   29620, -3072, -2851, -2512, -2092, -1635, -1187, -785,
+					   -620};
 /*=========================[declaraciones de funciones internas]====================*/
+void shiftDelayLine(uint8_t htaps, int16_t *x);
+int16_t filterProcessor(uint8_t htaps, int32_t continousGain, int16_t *x,
+						int16_t *h, int16_t inValue);
+/*==========================[definiciones de funciones internas]=====================*/
+/**
+* @brief Funcion que genera un corrimiento en el vector de muestras
+* 		 del filtro FIR
+* @param htaps cantidad de elementos del filtro FIR
+* @param x puntero al vector de entradas del filtro FIR
+* @return none
+*/
+void shiftDelayLine(uint8_t htaps, int16_t *x){
+	uint8_t i;
+	for(i = htaps-1; i>0; i--){
+		x[i]=x[i-1];
+	}
+}
+/**
+* @brief Funcion que calcula el filtrado en funcion
+* 		 de 1 elemento ingresado
+* @param htaps cantidad de elementos del filtro FIR
+* @param continousGain ganancia de continua del filtro FIR
+* @param x puntero al vector de entradas del filtro FIR
+* @param h puntero al vector de coeficientes del filtro FIR
+* @param inValue valor de entrada a ser filtrado
+* @return valor filtrado
+*/
+int16_t filterProcessor(uint8_t htaps, int32_t continousGain,
+						int16_t *x, int16_t *h, int16_t inValue){
+	uint8_t i;
+	float impulseResponse = 0, filterAcumulator = 0, input = 0;
+	shiftDelayLine(htaps,&x[0]);
+	x[0] = inValue;
+
+	for(i=0; i<htaps; i++){
+		input = (float)(x[i]);
+		impulseResponse = (float)(h[i])/(float)(continousGain);
+		filterAcumulator += input*impulseResponse;
+	}
+	return (((int16_t)(filterAcumulator)));
+}
 /*=========================[definiciones de funciones publicas]=====================*/
-#ifdef FIXED_POINT_FILTER
+/**
+* @brief Funcion que elimina la continua del vector de datos de entrada
+* @param inputLength cantidad de elementos del vector de entrada
+* @param inputVector puntero a los elementos del vector de entrada
+* @return 1 cuando se completa el procesamiento del vector
+*/
+uint8_t eliminateContinous(uint16_t inputLength, int16_t *inputVector){
+	uint16_t counter;
+	for(counter = 0; counter < inputLength; counter++){
+		inputVector[counter] = inputVector[counter]-512;
+			}
+	return 1;
+}
 /**
 * @brief Funcion que calcula la ganancia de continua del filtro FIR
 * @param filterLength cantidad de elementos del filtro FIR
@@ -41,92 +93,25 @@ int32_t continousFilterGain(uint8_t filterLength,int16_t *coeffVector){
 	return filterAcumulator;
 }
 /**
-* @brief Funcion manejadora de filtros FIR, procesa los datos de entrada sin FPU
+* @brief Funcion que calcula el filtrado en funcion
+* 	     de un vector de n elementos de entrada
 * @param filterLength cantidad de elementos del filtro FIR
 * @param continousGain ganancia de continua del filtro FIR
 * @param coeffVector puntero al vector de coeficientes del filtro FIR
-* @param inputLength cantidad de elementos del vector de entrada a procesar
-* @param inputVector puntero al vector de entrada
-* @param outputVector puntero al vector de salida
-* @return empty
+* @param inputLength longitud vector de entrada
+* @param inputVector vector de muestras a ser filtrado
+* @param outputVector  vector de salida filtrado
+* @return 1 cuando se termina el procesamiento del vector de entrada
 */
-void filterProcessing(uint8_t filterLength, int32_t continousGain,
-										int16_t *coeffVector, uint16_t inputLength,
-										int16_t *inputVector, int32_t *outputVector){
-	int32_t filterAcumulator = 0;
-	uint16_t filterCounter = 0,i;
+uint8_t filterVectorProcessor(uint8_t filterLength, int32_t continousGain,
+							  int16_t *coeffVector, uint16_t inputLength,
+							  int16_t *inputVector, int16_t *outputVector){
+	uint16_t i;
 
-	for(i = 0; i < inputLength;i++){
-		for(filterCounter = 0; filterCounter < filterLength; filterCounter++){
-			//paso de resolucion 16 bits del filtro a 10 bits que
-			//seria la de la adquisicion del ADC
-			filterAcumulator +=  (((coeffVector[filterCounter])/64) *
-										(inputVector[i+filterCounter]));
-		}
-		outputVector[i] = filterAcumulator;
-		filterAcumulator = 0;
+	for (i=0; i<inputLength ;i++){
+		outputVector[i] = filterProcessor(filterLength, continousGain, &xBuffer[0],
+						  &coeffVector[0], inputVector[i]);
 	}
+	return 1;
 }
-#else
-	#ifdef FLOATING_POINT_FILTER
-	/**
-	* @brief Funcion que elimina la continua del vector de datos de entrada
-	* @param inputLength cantidad de elementos del vector de entrada
-	* @param inputVector puntero a los elementos del vector de entrada
-	* @return 1 cuando se completa el procesamiento del vector
-	*/
-	uint8_t eliminateContinous(uint16_t inputLength, int16_t *inputVector){
-		uint16_t counter;
-		for(counter = 0; counter < inputLength; counter++){
-			inputVector[counter] = inputVector[counter]-512;
-				}
-		return 1;
-	}
-	/**
-	* @brief Funcion que calcula la ganancia de continua del filtro FIR
-	* @param filterLength cantidad de elementos del filtro FIR
-	* @param coeffVector puntero al vector de coeficientes del filtro FIR
-	* @return filterAcumulator ganancia de continua del filtro
-	*/
-	int32_t continousFilterGain(uint8_t filterLength,int16_t *coeffVector){
-		int32_t filterAcumulator = 0;
-		uint16_t filterCounter = 0;
-		for(filterCounter = 0; filterCounter < filterLength; filterCounter++){
-			filterAcumulator += coeffVector[filterCounter];
-				}
-		return filterAcumulator;
-	}
-	/**
-	* @brief Funcion manejadora de filtros FIR, procesa los datos de entrada con la FPU
-	* @param filterLength cantidad de elementos del filtro FIR
-	* @param continousGain ganancia de continua del filtro FIR
-	* @param coeffVector puntero al vector de coeficientes del filtro FIR
-	* @param inputLength cantidad de elementos del vector de entrada a procesar
-	* @param inputVector puntero al vector de entrada
-	* @param outputVector puntero al vector de salida
-	* @return 1 cuando termino el procesamiento
-	*/
-	uint8_t filterProcessing(uint8_t filterLength, int32_t continousGain,
-										int16_t *coeffVector, uint16_t inputLength,
-										int16_t *inputVector, int16_t *outputVector){
-		float filterAcumulator = 0, coefFilter = 0, filterGain = 0, inputVectorValue = 0;
-		uint16_t filterCounter = 0,i;
-
-		for(i = 0; i < inputLength;i++){
-			for(filterCounter = 0; filterCounter < filterLength; filterCounter++){
-				coefFilter = (float)(coeffVector[filterCounter]);
-				filterGain = (float)(continousGain);
-				inputVectorValue = (float)(inputVector[i+filterCounter]);
-
-				filterAcumulator +=  ((coefFilter/(filterGain)) * (inputVectorValue)/1023);
-			}
-			outputVector[i] = (int16_t)(filterAcumulator*1023);
-			filterAcumulator = 0;
-		}
-		return 1;
-	}
-	#endif
-#endif
-/*==========================[definiciones de funciones publicas]=====================*/
-
 /*==========================[fin del archivo]========================================*/
