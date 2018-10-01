@@ -44,6 +44,7 @@ audioChannel_t audioChannel;
 int16_t inpVector[INPUT_VECTOR_SIZE];
 int16_t outVector[OUTPUT_VECTOR_SIZE];
 filterData_t lpf, hpf;
+volatile processBuffer = OFF;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
 /**
@@ -114,15 +115,6 @@ int main( void ){
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
    lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
 
-#ifdef TEST_OFFLINE_ENABLE
-   uint16_t j;
-   for (j=0; j<500;j++){
-   // se dividen los coeficientes del filtro por dos porque porque los vectores de
-   // test fueron calculados con amplitud 1023, entonces se divide por dos asi se
-   // tiene el fondo de escala de adquisicion del ADC y es real
-	   inVector10Khz[j] = inVector10Khz[j]/2;
-   }
-#endif
    // Inicializacion TIMER 1 desborde con una frecuencia de 100KHz
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler );
 
@@ -160,6 +152,7 @@ int main( void ){
 void tickTimerHandler( void *ptr ){
 	if(ADCPROXYCLIENT_access(adcUpdateValue, &audioChannel.audioRightChannel) == bufferLleno){
 			//Buffer lleno
+			processBuffer = ON;
 		}
 }
 /*==================[definiciones de funciones externas]=====================*/

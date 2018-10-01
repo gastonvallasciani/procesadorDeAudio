@@ -1,22 +1,30 @@
+/**
+  @file ADC_proxyClient.c
+  @brief Modulo de abstraccion entre la adquisicion del ADC y el programa
+
+  @author Gaston Vallasciani
+  @date 10/06/2018
+*/
 /*==================[inclusiones]============================================*/
 #include "ADC_hardwareProxy.h"
 #include "ADC_proxyClient.h"
-
 #include "sapi.h"
 #include "board.h"
 #include "uart.h"
 #include "sapi_peripheral_map.h"
 #include "core_cm4.h"
-
 /*==================[macros and definitions]=================================*/
-
 /*==================[definiciones de datos internos]=========================*/
 adcProxyClient_t adcStruct;
 extern uint16_t indexReadRx, indexWriteRx, bufferRx[RX_BUFFER_LENGTH_ADC];
-/*==================[definiciones de funciones externas]=====================*/
-
-/*Funcion publica que inicializa el ADC pro defecto inicializa la frecuencia de meustreo en 400kHz, la resolucion en 10 bits
- *  el canal derecho en el ADC_CH1 y el canal izquierdo en el ADC_CH2*/
+/*==================[definiciones de funciones publicas]=====================*/
+/**
+* @brief Funcion que inicializa el ADC.
+* 		 Default: Fs = 400KHz, Resolucion = 10bits
+* 		 Canal Izquierdo ADC_CH1.
+* 		 Canal Drecho = ADC_CH2.
+* @return none
+*/
 void ADCPROXYCLIENT_initialize(void){
 	ADCHARDWAREPROXY_initialize(CHANNEL0);
 	adcStruct.adcSampleRate = AUDIO_SAMPLE_RATE;
@@ -24,28 +32,28 @@ void ADCPROXYCLIENT_initialize(void){
 	adcStruct.adcRightChannel = ADC_CH1;
 	adcStruct.adcLeftChannel = ADC_CH2;
 }
-
-/*Funcion publica que configura el ADC*/
+/**
+* @brief Funcion publica de configuracion de la adquisicion por ADC.
+* @return none
+*/
 void ADCPROXYCLIENT_config(void){
 	ADCHARDWAREPROXY_config(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel, adcStruct.adcSampleRate, adcStruct.adcResolution);
 }
-
-/*Funcion publica que deshabilita el ADC*/
+/**
+* @brief Funcion que deshabilita el ADC.
+* @return none
+*/
 void ADCPROXYCLIENT_disable(void){
 	ADCHARDWAREPROXY_disable(CHANNEL0);
 }
-
-/*Funcion publica que permite actualizar buffer circular de adquisicion del ADC y levantar un dato del buffer
- * Parametros:
- * 				action -> adcUpdateVale : permite actualizar el buffer.
- * 				action -> adcGetVale : permite levantar un dato del buffer.
- * 				*dataAcquired -> es utilizado para devolver el valor leido del buffer.
- * Retorno:
- * 				bufferActualizado(0) -> Indica que el buffer ha sido actualizado.
- * 				bufferLleno(1) 		 -> Indica que el buffer de adquisicion esta lleno.
- * 				bufferVacio(2) 		 -> Indica que el buffer de adquisicion esta vacio.
- * 				datoAdquirido(3) 	 -> Indica que se ha levantado un dato del buffer de adquisicion.
- **/
+/**
+* @brief Funcion que permite actualizar el buffer circular de adquisicion
+* 		 del ADC y levantar un dato del mismo.
+* @param action adcUpdateValue: permite actualizar el buffer circular
+* 				adcGetValue: permite levantar un dato del buffer
+* @param dataAcquired puntero a la variable de adquisicion
+* @return estado del buffer circular
+*/
 uint8_t ADCPROXYCLIENT_access(accessAction_t  action, uint16_t *dataAcquired){
 	uint8_t state=0;
 	switch(action){
@@ -67,12 +75,15 @@ uint8_t ADCPROXYCLIENT_access(accessAction_t  action, uint16_t *dataAcquired){
 		break;
 	}
 }
-
-/*Funcion publica utilizada para realizar modificaciones en la configuracion del ADC (FALTA DESARROLLARLA)*/
+/**
+* @brief Funcion publica utilizada para realizar modificaciones en la
+* 		 configuracion del ADC. (EN DESARROLLO)
+* @param setAction accion a ejecutar
+* @param adcMultiplexedChannel canal del ADC.
+* @return none
+*/
 void ADCPROXYCLIENT_mutate(uint8_t setAction,ADC_CHANNEL_T adcMultiplexedChannel){
-
 	ADCHARDWAREPROXY_marshal(CHANNEL0, adcMultiplexedChannel, adcStruct.adcSampleRate, adcStruct.adcResolution,setAction);
-
 }
 
 /*==================[fin del archivo]========================================*/

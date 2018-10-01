@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 /*==================[macros]=================================================*/
-#define RX_BUFFER_LENGTH_ADC 10000	// Tamaño buffer de recepcion para la interfaz adc
+#define RX_BUFFER_LENGTH_ADC 500	// Tamaño buffer de recepcion para la interfaz adc
 #define AUDIO_SAMPLE_RATE 400000
 /*==================[typedef]================================================*/
 typedef struct{
