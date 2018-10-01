@@ -47,7 +47,8 @@ filterData_t lpf, hpf;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
 /**
- * Filtros definidos en el archivo filterManager.c
+ * Vectores de coeficientes de filtros FIR definidos en el archivo
+ * filterManager.c
  */
 extern int16_t lpf15Khz[12];
 extern int16_t lpf4Khz[16];
@@ -68,20 +69,9 @@ void tickTimerHandler( void *ptr );
 /*==================[declaraciones de funciones externas]====================*/
 /*==================[funcion principal]======================================*/
 int main( void ){
-// ---------------------CONFIGURACIONES INICIALES-----------------------------
-#ifdef TEST_OFFLINE_ENABLE
-	volatile uint32_t * DWT_CTRL   = (uint32_t *)0xE0001000;
-	volatile uint32_t * DWT_CYCCNT = (uint32_t *)0xE0001004;
-
-	volatile uint32_t cyclesC=0;
-#endif
    // Inicializacion y configuracion de la plataforma
    boardConfig();
    ADCHARDWAREPROXY_acquireDisable();
-
-#ifdef TEST_OFFLINE_ENABLE
-   *DWT_CTRL  |= 1;
-#endif
 
    // Inicializacion de UART_USB como salida de consola de debug
    debugPrintConfigUart( UART_USB, 115200 );
@@ -124,9 +114,6 @@ int main( void ){
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
    lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
 
-   hpf.filterSize = sizeof(hpf4Khz)/sizeof(int16_t);
-   hpf.filterGain = continousFilterGain(hpf.filterSize, &hpf4Khz[0]);
-
 #ifdef TEST_OFFLINE_ENABLE
    uint16_t j;
    for (j=0; j<500;j++){
@@ -141,16 +128,9 @@ int main( void ){
 
    while( TRUE ){
 
-#ifdef TEST_OFFLINE_ENABLE
-	   *DWT_CYCCNT = 0;// Se inicializa el contador para medir la cantidad de ciclos de clock
-	   	   	   	   	   // que tarda la funcion de filtrado en ejecutarse
-#endif
 	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],
 			   	   	   	   	 INPUT_VECTOR_SIZE,&inVector10Khz[0],
 							 &outVector[0]);
-#ifdef TEST_OFFLINE_ENABLE
-	   cyclesC=*DWT_CYCCNT; // mido la cantidad de ciclos de clock usa para procesar el filtro
-#endif
 	   // Se extrae un dato del buffer circular de adquisicion del ADC
 	   //if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
 	   //}
