@@ -17,15 +17,15 @@
 
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
-#define TEST_OFFLINE_ENABLE
+//#define TEST_OFFLINE_ENABLE
 /*==================[definiciones de datos internos]=========================*/
 #define WAIT_DELAY 50
 #define NOLED LEDR+6
 #define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
 #define ACQUISITION_FRECUENCY_44100HZ() Timer_microsecondsToTicks( 22 )
 #define TIMER1 1
-#define INPUT_VECTOR_SIZE 500
-#define OUTPUT_VECTOR_SIZE 500
+#define INPUT_VECTOR_SIZE 200
+#define OUTPUT_VECTOR_SIZE 200
 #define VECTOR_SIZE 200
 
 typedef struct{
@@ -44,9 +44,8 @@ char buffer [33];
 audioChannel_t audioChannel;
 int16_t inpVector[INPUT_VECTOR_SIZE];
 int16_t outVector[OUTPUT_VECTOR_SIZE];
-filterData_t lpf, hpf;
+filterData_t lpf;
 /*----------------------------------ADC SET----------------------------------*/
-static ADC_CLOCK_SETUP_T ADCSet;
 /*----------------------------------PING PONG--------------------------------*/
 //Buffers para la implementacion del PING-PONG
 volatile uint16_t audioBuffer1[VECTOR_SIZE];
@@ -94,57 +93,25 @@ void tickTimerHandler( void *ptr );
 int main( void ){
    // Inicializacion y configuracion de la plataforma
    boardConfig();
-   ADCHARDWAREPROXY_acquireDisable();
 
    // Inicializacion de UART_USB como salida de consola de debug
    debugPrintConfigUart( UART_USB, 115200 );
    debugPrintlnString( "UART_USB configurada.\n\r" );
 
    //Inicializacion y configuracion del conversor digital-analogico DAC
-   debugPrintlnString("Inicializando DAC..");
    DACHARDWAREPROXY_initialize();
-   debugPrintlnString("DAC Inicializado\n\r");
    DACHARDWAREPROXY_config();
-   debugPrintlnString("DAC Configurad0\n\r");
-
-   //Inicializacion y configuracion del conversor analogico-digital ADC
-   debugPrintlnString("Inicializando ADC..");
-
-   //Inicializo DAC
-   debugPrintlnString( "Inicializando DAC.." );
-   DACHARDWAREPROXY_initialize();
-   debugPrintlnString( "DAC Inicializado\n\r" );
-   DACHARDWAREPROXY_config();
-   debugPrintlnString( "DAC Configurado\n\r" );
-
-   //Inicializo ADC
-   debugPrintlnString( "Inicializando ADC.." );
-   //ADCPROXYCLIENT_initialize();
-   /*---------------------------------inicializo ADC---------------------------------------*/
-   /* Disable burst mode */
-   Chip_ADC_SetBurstCmd( LPC_ADC0, DISABLE );
-   /* Set sample rate to 88KHz */
-   Chip_ADC_SetSampleRate( LPC_ADC0, &ADCSet, 88000 );
-   Chip_ADC_SetResolution( LPC_ADC0, &ADCSet, ADC_10BITS);
-   Chip_ADC_EnableChannel( LPC_ADC0,ADC_CH1, ENABLE );
-   //Chip_ADC_Int_SetChannelCmd( LPC_ADC0, ADC_CH1, ENABLE );
-   Chip_ADC_SetStartMode(LPC_ADC0, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
-
-   /*Disable ADC0 Interrupt*/
-   NVIC_DisableIRQ(ADC0_IRQn);
-   /*--------------------------------------------------------------------------------------*/
 
    //Inicializacion de la esctructura de manejo del ADC
    adcStruct.adcSampleRate = AUDIO_SAMPLE_RATE;
    adcStruct.adcResolution = ADC_10BITS;
    adcStruct.adcRightChannel = ADC_CH1;
    adcStruct.adcLeftChannel = ADC_CH2;
-   debugPrintlnString("ADC Inicializado\n\r");
+   //Inicializo ADC
+   ADCPROXYCLIENT_initialize();
+   ADCPROXYCLIENT_configAqcuisition();
 
-   ADCPROXYCLIENT_config();
-   debugPrintlnString("ADC Configurado\n\r");
-
-   gpioWrite(LED2,ON); // Board Alive
+ //  gpioWrite(LED2,ON); // Board Alive
    gpioWrite(LED3,ON); // Board Alive
 
    /*-------------------------Inicializacion ping pong buffer------------------------------*/
@@ -163,18 +130,19 @@ int main( void ){
 
    while( TRUE ){
 
-	   //filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],
-	   //			   	   	   	   	 INPUT_VECTOR_SIZE,&inVector10Khz[0],
-	   //							 &outVector[0]);
+	   eliminateContinous(INPUT_VECTOR_SIZE, &activeBuffer[0]);
+
+	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],INPUT_VECTOR_SIZE, &activeBuffer[0],
+	   							 &outVector[0]);
 	   // Se extrae un dato del buffer circular de adquisicion del ADC
 	   //if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
 	   //}
 
 	   // Actualizacion de la salida DAC con el dato obtenido del buffer circular del adc
-	   //DACPROXYCLIENT_mutate(audioChannel.audioRightChannel);
+	   DACPROXYCLIENT_mutate(audioChannel.audioRightChannel);
 	   uint8_t k;
 	   for(k=0;k<VECTOR_SIZE;k++){
-		//   DACPROXYCLIENT_mutate((uint16_t)(activeBuffer[k]));
+		   DACPROXYCLIENT_mutate(outVector[k]);
 	   }
 		   //Debug
 	   if (!waitDelay.running){
@@ -218,11 +186,9 @@ void tickTimerHandler( void *ptr ){
 	//		//Buffer lleno
 	//	}
 	if(captureActive){
-		Chip_ADC_ReadValue( LPC_ADC0, CH1, &data );
-		backBuffer[currentSample] = data;
-		currentSample++;
 		if(currentSample<VECTOR_SIZE){
-			Chip_ADC_SetStartMode(LPC_ADC0, ADC_START_NOW, ADC_TRIGGERMODE_RISING);
+			ADCHARDWAREPROXY_adcRead(LPC_ADC0, BURST_MODE, CH1, &backBuffer[currentSample]);
+			currentSample++;
 		}
 		else{
 			currentSample=0;

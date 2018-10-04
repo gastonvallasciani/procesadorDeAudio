@@ -31,7 +31,7 @@ enum uint8_t{bufferActualizado,
 
 /*==================[external functions declaration]=========================*/
 void ADCPROXYCLIENT_initialize(void);
-void ADCPROXYCLIENT_config(void);
+void ADCPROXYCLIENT_configAqcuisition(void);
 void ADCPROXYCLIENT_disable(void);
 uint8_t ADCPROXYCLIENT_access(accessAction_t  action, uint16_t *dataAcquired);
 void ADCPROXYCLIENT_mutate(uint8_t setAction,ADC_CHANNEL_T adcMultiplexedChannel);

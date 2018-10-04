@@ -26,7 +26,7 @@ extern uint16_t indexReadRx, indexWriteRx, bufferRx[RX_BUFFER_LENGTH_ADC];
 * @return none
 */
 void ADCPROXYCLIENT_initialize(void){
-	ADCHARDWAREPROXY_initialize(CHANNEL0);
+	ADCHARDWAREPROXY_adcInitialize(CHANNEL0);
 	adcStruct.adcSampleRate = AUDIO_SAMPLE_RATE;
 	adcStruct.adcResolution = ADC_10BITS;
 	adcStruct.adcRightChannel = ADC_CH1;
@@ -36,15 +36,15 @@ void ADCPROXYCLIENT_initialize(void){
 * @brief Funcion publica de configuracion de la adquisicion por ADC.
 * @return none
 */
-void ADCPROXYCLIENT_config(void){
-	ADCHARDWAREPROXY_config(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel, adcStruct.adcSampleRate, adcStruct.adcResolution);
+void ADCPROXYCLIENT_configAqcuisition(void){
+	ADCHARDWAREPROXY_adcConfig(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel, adcStruct.adcSampleRate, adcStruct.adcResolution);
 }
 /**
 * @brief Funcion que deshabilita el ADC.
 * @return none
 */
 void ADCPROXYCLIENT_disable(void){
-	ADCHARDWAREPROXY_disable(CHANNEL0);
+	ADCHARDWAREPROXY_adcDisable(CHANNEL0);
 }
 /**
 * @brief Funcion que permite actualizar el buffer circular de adquisicion
@@ -58,7 +58,7 @@ uint8_t ADCPROXYCLIENT_access(accessAction_t  action, uint16_t *dataAcquired){
 	uint8_t state=0;
 	switch(action){
 	case adcUpdateValue:
-		if(ADCHARDWAREPROXY_unmarshal(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel)){
+		if(ADCHARDWAREPROXY_adcRead(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel,0)){
 			return bufferActualizado; // ADC buffer actualizado
 		}else{
 			return bufferLleno; // Buffer lleno

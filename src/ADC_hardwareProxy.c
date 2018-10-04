@@ -9,11 +9,9 @@
 #include "uart.h"
 #include "sapi_peripheral_map.h"
 #include "core_cm4.h"
-
-
-
 /*==================[macros and definitions]=================================*/
-
+#define PING_PONG_BUFFER
+//#define BUFFER_CIRCULAR
 /*==================[definiciones de datos internos]=========================*/
 
 uint16_t indexReadRx, indexWriteRx, bufferRx[RX_BUFFER_LENGTH_ADC];
@@ -23,17 +21,13 @@ uint8_t acquisitionEnable;
 uint8_t adcDataReadyFlag = FALSE;
 
 /*==================[prototipos de funciones internas]=========================*/
-
-void adcChannelEnable(ADC_CHANNEL_T adcMultiplexedChannel,LPC_ADC_T *channel);
-void adcChannelDisableAll(ADC_CHANNEL_T adcMultiplexedChannel,LPC_ADC_T *channel);
-
 /*==================[definiciones de funciones externas]=====================*/
 
-void ADCHARDWAREPROXY_initialize(LPC_ADC_T *channel){
+void ADCHARDWAREPROXY_adcInitialize(LPC_ADC_T *channel){
 	Chip_ADC_Init( channel, &ADCSetup );
 }
 
-void ADCHARDWAREPROXY_config(LPC_ADC_T *channel,adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel,uint32_t adcSampleRate, uint8_t resolution){
+void ADCHARDWAREPROXY_adcConfig(LPC_ADC_T *channel,adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel,uint32_t adcSampleRate, uint8_t resolution){
 
 	switch(mode){
 
@@ -67,7 +61,7 @@ void ADCHARDWAREPROXY_config(LPC_ADC_T *channel,adcHardwareProxyConfigMode_t mod
 	}
 }
 
-void ADCHARDWAREPROXY_disable(LPC_ADC_T *channel){
+void ADCHARDWAREPROXY_adcDisable(LPC_ADC_T *channel){
 	Chip_ADC_DeInit( channel );
 }
 
@@ -91,21 +85,26 @@ void ADCHARDWAREPROXY_marshal(LPC_ADC_T *channel, ADC_CHANNEL_T adcMultiplexedCh
 }
 
 /* Funcion utilizada para adquirir datos del ADC y guardarlos en el buffer de recepcion*/
-uint8_t ADCHARDWAREPROXY_unmarshal(LPC_ADC_T *channel, adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel){
+uint8_t ADCHARDWAREPROXY_adcRead(LPC_ADC_T *channel, adcHardwareProxyConfigMode_t mode, ADC_CHANNEL_T adcMultiplexedChannel, uint16_t *adcData){
 
-	 uint16_t analogValue = 0;
-
+#ifdef BUFFER_CIRCULAR
 	 if( (indexWriteRx+1)%RX_BUFFER_LENGTH_ADC == indexReadRx )
 	 // Buffer Lleno (error)
 		 return 0;
 	 else{
+#endif
 		switch(mode){
 				case BURST_MODE:
 					if (adcDataReadyFlag == TRUE){
 						adcDataReadyFlag = FALSE;
+#ifdef BUFFER_CIRCULAR
 						bufferRx[indexWriteRx] = dataAcquired;
 						indexWriteRx=(indexWriteRx+1)%RX_BUFFER_LENGTH_ADC;
-						//analogValue = dataAcquired;
+#else
+#ifdef PING_PONG_BUFFER
+						*adcData = dataAcquired;
+#endif
+#endif
 					}
 					break;
 				case DMA_MODE:
@@ -125,23 +124,14 @@ uint8_t ADCHARDWAREPROXY_unmarshal(LPC_ADC_T *channel, adcHardwareProxyConfigMod
 					break;
 		}
 		return 1;
+#ifdef BUFFER_CIRCULAR
 	 }
-	//return analogValue;
+#endif
 }
-
-void ADCHARDWAREPROXY_acquireEnable(void){
-	acquisitionEnable = TRUE;
-}
-
-void ADCHARDWAREPROXY_acquireDisable(void){
-	acquisitionEnable = FALSE;
-}
-
 
 void ADC0_IRQHandler(void){
 	adcDataReadyFlag = TRUE;
 	Chip_ADC_ReadValue(LPC_ADC0, ADC_CH1, &dataAcquired);
-
 }
 
 void adcChannelEnable(ADC_CHANNEL_T adcMultiplexedChannel,LPC_ADC_T *channel){
