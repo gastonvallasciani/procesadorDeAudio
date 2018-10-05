@@ -68,13 +68,31 @@ int16_t filterProcessor(uint8_t htaps, int32_t continousGain,
 /**
 * @brief Funcion que elimina la continua del vector de datos de entrada
 * @param inputLength cantidad de elementos del vector de entrada
-* @param inputVector puntero a los elementos del vector de entrada
+* @param inputVector puntero al primer byte de los elementos del vector de entrada
+* @param outputVector puntero al primer byte de los elementos del vector de salida
 * @return 1 cuando se completa el procesamiento del vector
 */
-uint8_t eliminateContinous(uint16_t inputLength, int16_t *inputVector){
+uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
+						   int16_t *outputVector){
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-		inputVector[counter] = inputVector[counter]-512;
+		outputVector[counter] = ((int16_t)(inputVector[counter]))-512;
+			}
+	return 1;
+}
+/**
+* @brief Funcion que suma el valor de continua restado a la entrada al vector de
+* 		 datos de salida
+* @param inputLength cantidad de elementos del vector de entrada a ser incrementados
+* @param inputVector puntero al primer byte de los elementos del vector de entrada
+* @param outputVector puntero al primer byte de los elementos del vector de salida
+* @return 1 cuando se completa el procesamiento del vector
+*/
+uint8_t sumContinous(uint16_t inputLength, uint16_t *inputVector,
+						   int16_t *outputVector){
+	uint16_t counter;
+	for(counter = 0; counter < inputLength; counter++){
+		outputVector[counter] = ((int16_t)(inputVector[counter]))+512;
 			}
 	return 1;
 }

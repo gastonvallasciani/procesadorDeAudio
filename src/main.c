@@ -42,8 +42,9 @@ gpioMap_t LED = LEDR;
 delay_t waitDelay;
 char buffer [33];
 audioChannel_t audioChannel;
-int16_t inpVector[INPUT_VECTOR_SIZE];
-int16_t outVector[OUTPUT_VECTOR_SIZE];
+int16_t inpVector[VECTOR_SIZE];
+int16_t outVector[VECTOR_SIZE];
+int16_t firstOutputBuffer[VECTOR_SIZE];
 filterData_t lpf;
 /*----------------------------------ADC SET----------------------------------*/
 /*----------------------------------PING PONG--------------------------------*/
@@ -107,9 +108,9 @@ int main( void ){
    adcStruct.adcResolution = ADC_10BITS;
    adcStruct.adcRightChannel = ADC_CH1;
    adcStruct.adcLeftChannel = ADC_CH2;
-   //Inicializo ADC
-   ADCPROXYCLIENT_initialize();
-   ADCPROXYCLIENT_configAqcuisition();
+   //Inicializo la adquisicion de datos por el ADC
+   initAqcuisition();
+   configAqcuisition();
 
  //  gpioWrite(LED2,ON); // Board Alive
    gpioWrite(LED3,ON); // Board Alive
@@ -130,19 +131,18 @@ int main( void ){
 
    while( TRUE ){
 
-	   eliminateContinous(INPUT_VECTOR_SIZE, &activeBuffer[0]);
+	   eliminateContinous(INPUT_VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
 
-	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],INPUT_VECTOR_SIZE, &activeBuffer[0],
-	   							 &outVector[0]);
+	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],INPUT_VECTOR_SIZE,
+			   	   	   	   	 &firstOutputBuffer[0], &outVector[0]);
+
 	   // Se extrae un dato del buffer circular de adquisicion del ADC
-	   //if(ADCPROXYCLIENT_access(adcGetValue, &audioChannel.audioRightChannel)==datoAdquirido){
-	   //}
-
+	   //dataAqcuisition(adcGetValue, circularBuffer, &audioChannel.audioRightChannel);
 	   // Actualizacion de la salida DAC con el dato obtenido del buffer circular del adc
 	   DACPROXYCLIENT_mutate(audioChannel.audioRightChannel);
 	   uint8_t k;
 	   for(k=0;k<VECTOR_SIZE;k++){
-		   DACPROXYCLIENT_mutate(outVector[k]);
+		  // DACPROXYCLIENT_mutate(outVector[k]);
 	   }
 		   //Debug
 	   if (!waitDelay.running){
@@ -182,12 +182,12 @@ int main( void ){
 // El TIMER 1 se desborda con una frecuencia de 44.1KHz
 void tickTimerHandler( void *ptr ){
 	uint16_t data;
-	//if(ADCPROXYCLIENT_access(adcUpdateValue, &audioChannel.audioRightChannel) == bufferLleno){
-	//		//Buffer lleno
-	//	}
+	//dataAqcuisition(adcUpdateValue, circularBuffer, &audioChannel.audioRightChannel);
+
 	if(captureActive){
 		if(currentSample<VECTOR_SIZE){
-			ADCHARDWAREPROXY_adcRead(LPC_ADC0, BURST_MODE, CH1, &backBuffer[currentSample]);
+			dataAqcuisition(adcGetValue, pingPongBuffer, &data);
+			backBuffer[currentSample]= data;
 			currentSample++;
 		}
 		else{

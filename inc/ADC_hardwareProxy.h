@@ -30,11 +30,11 @@ typedef enum{SET_RESOLUTION = 1,
 /*==================[external data declaration]==============================*/
 
 /*==================[external functions declaration]=========================*/
-void ADCHARDWAREPROXY_adcInitialize(LPC_ADC_T *channel);
-void ADCHARDWAREPROXY_adcConfig(LPC_ADC_T *channel,adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel,uint32_t adcSampleRate, uint8_t resolution);
-void ADCHARDWAREPROXY_adcDisable(LPC_ADC_T *channel);
-void ADCHARDWAREPROXY_marshal(LPC_ADC_T *channel, ADC_CHANNEL_T adcMultiplexedChannel, uint32_t sampleRate, uint8_t resolution, uint8_t action);
-uint8_t ADCHARDWAREPROXY_adcRead(LPC_ADC_T *channel, adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel, uint16_t *adcData);
+void adcInitialize(LPC_ADC_T *channel);
+void adcConfiguration(LPC_ADC_T *channel,adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel,uint32_t adcSampleRate, uint8_t resolution);
+void adcDisable(LPC_ADC_T *channel);
+void adcSet(LPC_ADC_T *channel, ADC_CHANNEL_T adcMultiplexedChannel, uint32_t sampleRate, uint8_t resolution, uint8_t action);
+uint8_t adcReadData(LPC_ADC_T *channel, adcHardwareProxyConfigMode_t mode,ADC_CHANNEL_T adcMultiplexedChannel, uint16_t *adcData);
 void ADC0_IRQHandler(void);
 void ADCHARDWAREPROXY_acquireEnable(void);
 void ADCHARDWAREPROXY_acquireDisable(void);

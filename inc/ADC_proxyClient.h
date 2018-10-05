@@ -12,7 +12,7 @@ extern "C" {
 #endif
 
 /*==================[macros]=================================================*/
-#define RX_BUFFER_LENGTH_ADC 500	// Tamaño buffer de recepcion para la interfaz adc
+#define RX_BUFFER_LENGTH_ADC 200	// Tamaño buffer de recepcion para la interfaz adc
 #define AUDIO_SAMPLE_RATE 400000
 /*==================[typedef]================================================*/
 typedef struct{
@@ -22,18 +22,21 @@ typedef struct{
 	uint8_t adcResolution;
 }adcProxyClient_t;
 
+typedef enum{circularBuffer, pingPongBuffer}aqcuisitionType_t;
+
 typedef enum{adcUpdateValue,adcGetValue}accessAction_t;
 enum uint8_t{bufferActualizado,
 			 bufferLleno,
 			 bufferVacio,
 			 datoAdquirido};
 /*==================[external data declaration]==============================*/
-
 /*==================[external functions declaration]=========================*/
-void ADCPROXYCLIENT_initialize(void);
-void ADCPROXYCLIENT_configAqcuisition(void);
-void ADCPROXYCLIENT_disable(void);
-uint8_t ADCPROXYCLIENT_access(accessAction_t  action, uint16_t *dataAcquired);
+void initAqcuisition(void);
+void configAqcuisition(void);
+void disableAqcuisition(void);
+uint8_t dataAqcuisition(accessAction_t  action,
+						aqcuisitionType_t aqcuisitionType,
+						uint16_t *dataAcquired);
 void ADCPROXYCLIENT_mutate(uint8_t setAction,ADC_CHANNEL_T adcMultiplexedChannel);
 /*==================[cplusplus]==============================================*/
 
