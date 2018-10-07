@@ -61,7 +61,6 @@ void disableAqcuisition(void){
 uint8_t dataAqcuisition(accessAction_t  action,
 						aqcuisitionType_t aqcuisitionType,
 						uint16_t *dataAcquired){
-	uint8_t state=0;
 	uint16_t dataAqcuire = 0;
 	switch(action){
 	case adcUpdateValue:

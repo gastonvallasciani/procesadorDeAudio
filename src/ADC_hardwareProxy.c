@@ -9,7 +9,6 @@
 #include "ADC_hardwareProxy.h"
 #include "ADC_proxyClient.h"
 #include "adc_18xx_43xx.h"
-#include "cmsis_43xx.h"
 
 #include "sapi.h"
 #include "board.h"
@@ -21,7 +20,8 @@
 static ADC_CLOCK_SETUP_T ADCSetup;
 static uint16_t dataAcquired;
 volatile uint8_t adcDataReadyFlag = FALSE;
-/*==================[prototipos de funciones internas]=========================*/
+/*==================[definiciones de datos publicos]=========================*/
+/*==================[prototipos de funciones internas]=======================*/
 void adcChannelEnable(ADC_CHANNEL_T adcMultiplexedChannel,LPC_ADC_T *channel);
 void adcChannelDisableAll(ADC_CHANNEL_T adcMultiplexedChannel,LPC_ADC_T *channel);
 /*==================[definiciones de funciones externas]=====================*/

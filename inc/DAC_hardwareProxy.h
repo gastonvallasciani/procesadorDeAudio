@@ -7,8 +7,6 @@
 #include "uart.h"
 #include "sapi_peripheral_map.h"
 #include "adc_18xx_43xx.h"
-#include "cmsis_43xx.h"
-
 /*==================[cplusplus]==============================================*/
 
 #ifdef __cplusplus

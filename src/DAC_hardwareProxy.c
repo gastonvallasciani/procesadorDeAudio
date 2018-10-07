@@ -1,7 +1,5 @@
 /*==================[inclusiones]============================================*/
 #include "DAC_hardwareProxy.h"
-
-
 /*==================[macros and definitions]=================================*/
 static uint16_t indexReadTx, indexWriteTx, bufferTx[DAC_TX_BUFFER_LENGTH];
 /*==================[internal data declaration]==============================*/
@@ -25,7 +23,7 @@ void DACHARDWAREPROXY_config(void){
 	Chip_DAC_ConfigDAConverterControl(DAC_CHANNEL, DAC_DMA_ENA);
 	/* DCAR DMA access */
 	/* Update value to DAC buffer*/
-	Chip_DAC_UpdateValue(DAC_CHANNEL, 0);
+	Chip_DAC_UpdateValue(DAC_CHANNEL, 1);
 }
 
 void DACHARDWAREPROXY_disable(void){
@@ -42,6 +40,9 @@ uint8_t DACHARDWAREPROXY_marshal(void){
 		dacData = bufferTx[indexReadTx];
 		if( dacData > 1023 ){
 			dacData = 1023;
+		}
+		else if(dacData<0){
+			dacData = 0;
 		}
 		Chip_DAC_UpdateValue( DAC_CHANNEL, dacData ); // escribe en el DAC
 		indexReadTx = (indexReadTx+1)%DAC_TX_BUFFER_LENGTH;
