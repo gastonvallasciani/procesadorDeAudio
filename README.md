@@ -79,7 +79,7 @@ https://drive.google.com/open?id=1BT_Q2OBRWeaNPGiounUDonTia_VYmWER
 
  En esta se observan 3 carpetas 5KHz, 15KHz y 20KHz, los nombres de las carpetas representan el tono que fue inyectado a la EDU-CIAA-NXP y sensado a la salida de la misma para constatar la respuesta del filtro.
  
- Para realizar dicha implementación fue necesaria fue necesario sincronizar de forma correcta la generación de audio mediante el TIMER2. Esto fue necesario ya que el DAC de la EDU-CIAA-NXP genera datos a uan frecuencia de 400KHz o 1MHZ. Por lo tanto, mediante el TIMER 2 se logra generar audio a una frecuencia de 44.1KHZ, frecuencia a la que fue adquirido el mismo.
+ Para realizar dicha implementación fue necesario sincronizar de forma correcta la generación de audio mediante el TIMER2. Esto fue necesario ya que el DAC de la EDU-CIAA-NXP genera datos a uan frecuencia de 400KHz o 1MHZ. Por lo tanto, mediante el TIMER 2 se logra generar audio a una frecuencia de 44.1KHZ, frecuencia a la que fue adquirido el mismo.
 Fue necesario agrandar los buffers de procesamiento de 200 elementos a 500 elementos para poder generar audio de manera continua. 
 
  En los testeos online se verifica que luego del procesamiento hay un retardo de 140uSeg entre la señal de entrada y la señal de salida.
