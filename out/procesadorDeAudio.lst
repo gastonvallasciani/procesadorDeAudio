@@ -1708,8 +1708,8 @@ int main( void ){
    configAqcuisition();
 1a000892:	f7ff fd49 	bl	1a000328 <configAqcuisition>
    /// Led de debug
-   gpioWrite(LED2,ON); // Board Alive
-1a000896:	202c      	movs	r0, #44	; 0x2c
+   gpioWrite(LED3,ON); // Board Alive
+1a000896:	202d      	movs	r0, #45	; 0x2d
 1a000898:	4621      	mov	r1, r4
 1a00089a:	f001 fbad 	bl	1a001ff8 <gpioWrite>
    /// Inicializacion TIMER 1  y TIMER 2 desborde con una frecuencia de 44.1KHz
