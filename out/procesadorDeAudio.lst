@@ -64,17 +64,17 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  22 .debug_ranges 00000b88  00000000  00000000  00048e18  2**0
                   CONTENTS, READONLY, DEBUGGING
- 23 .debug_macro  0000dc7d  00000000  00000000  000499a0  2**0
+ 23 .debug_macro  0000dc88  00000000  00000000  000499a0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 24 .debug_line   0001136c  00000000  00000000  0005761d  2**0
+ 24 .debug_line   00011383  00000000  00000000  00057628  2**0
                   CONTENTS, READONLY, DEBUGGING
- 25 .debug_str    00024ecc  00000000  00000000  00068989  2**0
+ 25 .debug_str    00024ee3  00000000  00000000  000689ab  2**0
                   CONTENTS, READONLY, DEBUGGING
- 26 .comment      00000070  00000000  00000000  0008d855  2**0
+ 26 .comment      00000070  00000000  00000000  0008d88e  2**0
                   CONTENTS, READONLY
- 27 .ARM.attributes 00000039  00000000  00000000  0008d8c5  2**0
+ 27 .ARM.attributes 00000039  00000000  00000000  0008d8fe  2**0
                   CONTENTS, READONLY
- 28 .debug_frame  00001bcc  00000000  00000000  0008d900  2**2
+ 28 .debug_frame  00001bcc  00000000  00000000  0008d938  2**2
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 1a000000 l    d  .text	00000000 .text
@@ -1708,8 +1708,8 @@ int main( void ){
    configAqcuisition();
 1a000892:	f7ff fd49 	bl	1a000328 <configAqcuisition>
    /// Led de debug
-   gpioWrite(LED3,ON); // Board Alive
-1a000896:	202d      	movs	r0, #45	; 0x2d
+   gpioWrite(LED2,ON); // Board Alive
+1a000896:	202c      	movs	r0, #44	; 0x2c
 1a000898:	4621      	mov	r1, r4
 1a00089a:	f001 fbad 	bl	1a001ff8 <gpioWrite>
    /// Inicializacion TIMER 1  y TIMER 2 desborde con una frecuencia de 44.1KHz

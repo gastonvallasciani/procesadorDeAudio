@@ -14,6 +14,7 @@
 #include "sapi_timer.h"
 #include "filterManager.h"
 #include "test.h"
+#include "compressorManager.h"
 
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
