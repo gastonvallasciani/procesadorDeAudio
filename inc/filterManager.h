@@ -10,6 +10,10 @@
 /*==================[inclusiones]============================================*/
 #include "sapi.h"        //  sAPI lib
 #include "stdint.h"
+/*==================[cplusplus]==============================================*/
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*==================[definiciones de datos internos]=========================*/
 /*==================[definiciones de datos externos]=========================*/
 /*==================[definiciones de funciones publicas]=====================*/

@@ -119,4 +119,5 @@ MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressor
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_magnetometer_hmc5883l.h \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_magnetometer_qmc5883l.h \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_imu_mpu9250.h \
- libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_ultrasonic_hcsr04.h
+ libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_ultrasonic_hcsr04.h \
+ libs/sapi/sapi_v0.5.2/soc/peripherals/inc/sapi_timer.h

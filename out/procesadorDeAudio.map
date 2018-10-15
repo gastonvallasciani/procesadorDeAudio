@@ -73,6 +73,7 @@ backBuffer          0x4               MisProyectos/procesadorDeAudio/out/MisProy
 indexWriteRx        0x2               MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
 audioBuffer1        0x3e8             MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 buffer              0x21              MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
+compressorStruct    0x14              MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
 g_pUsbApi           0x4               MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/usb/device/src/sapi_usb_device.o
 tickRateMS          0x8               MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_tick.o
 transmitBuffer      0x4               MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
@@ -1021,6 +1022,7 @@ Discarded input sections
  .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
  .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
  .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
+ .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
  .text          0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
  .data          0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
  .bss           0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
@@ -1490,11 +1492,33 @@ Discarded input sections
  .text          0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .data          0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .bss           0x0000000000000000        0x0 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
- .debug_info    0x0000000000000000       0xb2 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
- .debug_abbrev  0x0000000000000000       0x4e MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.calculateMaxOutputCompresion
+                0x0000000000000000       0x14 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.peakDetector
+                0x0000000000000000       0x28 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.calculateSamples
+                0x0000000000000000       0x28 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.compressorProccesor
+                0x0000000000000000       0x4c MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.compressorInit
+                0x0000000000000000       0x14 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.compressorDeinit
+                0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.setCompressorRatio
+                0x0000000000000000        0x4 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.setCompressorUmbral
+                0x0000000000000000        0x4 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.setCompressorAttackTime
+                0x0000000000000000       0x10 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .text.setCompressorReleaseTime
+                0x0000000000000000       0x10 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_info    0x0000000000000000      0x900 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_abbrev  0x0000000000000000      0x127 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_loc     0x0000000000000000      0x17d MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .debug_aranges
-                0x0000000000000000       0x18 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
- .debug_macro   0x0000000000000000      0x644 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+                0x0000000000000000       0x68 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_ranges  0x0000000000000000       0x58 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_macro   0x0000000000000000      0x655 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .debug_macro   0x0000000000000000      0x88c MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .debug_macro   0x0000000000000000       0x22 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .debug_macro   0x0000000000000000       0x44 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
@@ -1604,11 +1628,13 @@ Discarded input sections
  .debug_macro   0x0000000000000000       0x64 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .debug_macro   0x0000000000000000      0x1ec MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .debug_macro   0x0000000000000000       0x10 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
- .debug_line    0x0000000000000000      0xc29 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
- .debug_str     0x0000000000000000    0x1da7b MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_line    0x0000000000000000      0xcfa MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_str     0x0000000000000000    0x1e771 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .comment       0x0000000000000000       0x39 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ .debug_frame   0x0000000000000000       0xd4 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .ARM.attributes
                 0x0000000000000000       0x39 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+ COMMON         0x0000000000000000       0x14 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
  .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
  .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
  .group         0x0000000000000000        0x8 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
@@ -15482,7 +15508,7 @@ OUTPUT(MisProyectos/procesadorDeAudio/out/procesadorDeAudio.elf elf32-littlearm)
  .debug_ranges  0x0000000000000b68       0x10 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-init.o)
  .debug_ranges  0x0000000000000b78       0x10 /usr/lib/gcc/arm-none-eabi/4.9.3/../../../arm-none-eabi/lib/armv7e-m/fpu/libc_nano.a(lib_a-memset.o)
 
-.debug_macro    0x0000000000000000     0xdc88
+.debug_macro    0x0000000000000000     0xdc97
  .debug_macro   0x0000000000000000      0x662 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
  .debug_macro   0x0000000000000662      0x88c MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
  .debug_macro   0x0000000000000eee       0x22 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
@@ -15598,38 +15624,39 @@ OUTPUT(MisProyectos/procesadorDeAudio/out/procesadorDeAudio.elf elf32-littlearm)
  .debug_macro   0x000000000000682d      0x658 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/DAC_hardwareProxy.o
  .debug_macro   0x0000000000006e85       0x10 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/DAC_hardwareProxy.o
  .debug_macro   0x0000000000006e95      0x666 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_hardwareProxy.o
- .debug_macro   0x00000000000074fb      0x6c2 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
- .debug_macro   0x0000000000007bbd       0x16 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
- .debug_macro   0x0000000000007bd3      0x644 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
- .debug_macro   0x0000000000008217      0x411 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_board_edu_ciaa_nxp/src/board.o
- .debug_macro   0x0000000000008628      0x3ff MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_board_edu_ciaa_nxp/src/sysinit.o
- .debug_macro   0x0000000000008a27      0x3ff MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_board_edu_ciaa_nxp/src/board_sysinit.o
- .debug_macro   0x0000000000008e26       0xd4 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/core/core_m4/src/fpu_init.o
- .debug_macro   0x0000000000008efa      0x30e MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/i2c_18xx_43xx.o
- .debug_macro   0x0000000000009208      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/uart_18xx_43xx.o
- .debug_macro   0x0000000000009504      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/adc_18xx_43xx.o
- .debug_macro   0x0000000000009800      0x302 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/clock_18xx_43xx.o
- .debug_macro   0x0000000000009b02      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/chip_18xx_43xx.o
- .debug_macro   0x0000000000009dfe      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/timer_18xx_43xx.o
- .debug_macro   0x000000000000a0fa      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/dac_18xx_43xx.o
- .debug_macro   0x000000000000a3f6      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/gpio_18xx_43xx.o
- .debug_macro   0x000000000000a6f2      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/sysinit_18xx_43xx.o
- .debug_macro   0x000000000000a9ee      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/ssp_18xx_43xx.o
- .debug_macro   0x000000000000acea       0x17 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_startup/src/crp.o
- .debug_macro   0x000000000000ad01      0x40b MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_startup/src/cr_startup_lpc43xx.o
- .debug_macro   0x000000000000b10c      0x41d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/core/src/sapi_cyclesCounter.o
- .debug_macro   0x000000000000b529       0x10 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/core/src/sapi_cyclesCounter.o
- .debug_macro   0x000000000000b539      0x456 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_uart.o
- .debug_macro   0x000000000000b98f       0x16 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_uart.o
- .debug_macro   0x000000000000b9a5       0x16 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_uart.o
- .debug_macro   0x000000000000b9bb      0x424 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_tick.o
- .debug_macro   0x000000000000bddf      0x42d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_timer.o
- .debug_macro   0x000000000000c20c      0x427 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_gpio.o
- .debug_macro   0x000000000000c633      0x51a MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/usb/device/src/sapi_usb_device.o
- .debug_macro   0x000000000000cb4d      0x449 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/board/src/sapi_board.o
- .debug_macro   0x000000000000cf96      0x42f MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_delay.o
- .debug_macro   0x000000000000d3c5      0x44d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_print.o
- .debug_macro   0x000000000000d812      0x476 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/external_peripherals/src/sapi_ultrasonic_hcsr04.o
+ .debug_macro   0x00000000000074fb      0x6c1 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
+ .debug_macro   0x0000000000007bbc       0x16 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
+ .debug_macro   0x0000000000007bd2       0x10 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
+ .debug_macro   0x0000000000007be2      0x644 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
+ .debug_macro   0x0000000000008226      0x411 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_board_edu_ciaa_nxp/src/board.o
+ .debug_macro   0x0000000000008637      0x3ff MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_board_edu_ciaa_nxp/src/sysinit.o
+ .debug_macro   0x0000000000008a36      0x3ff MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_board_edu_ciaa_nxp/src/board_sysinit.o
+ .debug_macro   0x0000000000008e35       0xd4 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/core/core_m4/src/fpu_init.o
+ .debug_macro   0x0000000000008f09      0x30e MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/i2c_18xx_43xx.o
+ .debug_macro   0x0000000000009217      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/uart_18xx_43xx.o
+ .debug_macro   0x0000000000009513      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/adc_18xx_43xx.o
+ .debug_macro   0x000000000000980f      0x302 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/clock_18xx_43xx.o
+ .debug_macro   0x0000000000009b11      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/chip_18xx_43xx.o
+ .debug_macro   0x0000000000009e0d      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/timer_18xx_43xx.o
+ .debug_macro   0x000000000000a109      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/dac_18xx_43xx.o
+ .debug_macro   0x000000000000a405      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/gpio_18xx_43xx.o
+ .debug_macro   0x000000000000a701      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/sysinit_18xx_43xx.o
+ .debug_macro   0x000000000000a9fd      0x2fc MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/ssp_18xx_43xx.o
+ .debug_macro   0x000000000000acf9       0x17 MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_startup/src/crp.o
+ .debug_macro   0x000000000000ad10      0x40b MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_startup/src/cr_startup_lpc43xx.o
+ .debug_macro   0x000000000000b11b      0x41d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/core/src/sapi_cyclesCounter.o
+ .debug_macro   0x000000000000b538       0x10 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/core/src/sapi_cyclesCounter.o
+ .debug_macro   0x000000000000b548      0x456 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_uart.o
+ .debug_macro   0x000000000000b99e       0x16 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_uart.o
+ .debug_macro   0x000000000000b9b4       0x16 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_uart.o
+ .debug_macro   0x000000000000b9ca      0x424 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_tick.o
+ .debug_macro   0x000000000000bdee      0x42d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_timer.o
+ .debug_macro   0x000000000000c21b      0x427 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/src/sapi_gpio.o
+ .debug_macro   0x000000000000c642      0x51a MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/usb/device/src/sapi_usb_device.o
+ .debug_macro   0x000000000000cb5c      0x449 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/board/src/sapi_board.o
+ .debug_macro   0x000000000000cfa5      0x42f MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_delay.o
+ .debug_macro   0x000000000000d3d4      0x44d MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_print.o
+ .debug_macro   0x000000000000d821      0x476 MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/external_peripherals/src/sapi_ultrasonic_hcsr04.o
 
 .debug_line     0x0000000000000000    0x11383
  .debug_line    0x0000000000000000      0xcb9 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
@@ -16677,6 +16704,8 @@ bss_init                                          MisProyectos/procesadorDeAudio
 buffer                                            MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 bufferPtr                                         MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 bufferRx                                          MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
+calculateMaxOutputCompresion                      MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+calculateSamples                                  MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
 captureActive                                     MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 cdcUartInit                                       MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/usb/device/src/cdc_uart.o
 cdcUartLpcInit                                    MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/soc/peripherals/usb/device/src/cdc_uart.o
@@ -16689,6 +16718,10 @@ circularBufferFullBufferCallbackSet               MisProyectos/procesadorDeAudio
 circularBufferRead                                MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_circularBuffer.o
 circularBufferWrite                               MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_circularBuffer.o
 circularBuffer_Init                               MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_circularBuffer.o
+compressorDeinit                                  MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+compressorInit                                    MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+compressorProccesor                               MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+compressorStruct                                  MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
 configAqcuisition                                 MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ADC_proxyClient.o
                                                   MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 continousFilterGain                               MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o
@@ -16865,6 +16898,7 @@ mpu9250Init                                       MisProyectos/procesadorDeAudio
 mpu9250Read                                       MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/external_peripherals/src/sapi_imu_mpu9250.o
 outVector                                         MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 outbyte                                           MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_stdio.o
+peakDetector                                      MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
 printEnter                                        MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_print.o
                                                   MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o
 printHex                                          MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/abstract_modules/src/sapi_print.o
@@ -16907,6 +16941,10 @@ servoInitTimers                                   MisProyectos/procesadorDeAudio
 servoIsAttached                                   MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/external_peripherals/src/sapi_servo.o
 servoRead                                         MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/external_peripherals/src/sapi_servo.o
 servoWrite                                        MisProyectos/procesadorDeAudio/out/libs/sapi/sapi_v0.5.2/external_peripherals/src/sapi_servo.o
+setCompressorAttackTime                           MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+setCompressorRatio                                MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+setCompressorReleaseTime                          MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
+setCompressorUmbral                               MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/compressorManager.o
 setStartMode                                      MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/adc_18xx_43xx.o
 setupChannel                                      MisProyectos/procesadorDeAudio/out/libs/lpc_open/lpc_chip_43xx/peripherals/src/gpdma_18xx_43xx.o
 shiftDelayLine                                    MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/filterManager.o

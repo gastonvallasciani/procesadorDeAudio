@@ -90,7 +90,7 @@ extern int16_t lpf15Khz[12];
 	extern int16_t inVector20Khz[500];
 	extern int16_t inVector15Khz[500];
 	extern int16_t inVector10Khz[500];
-	extern int16_t inVector5Khz[500];
+	extern int16_ t inVector5Khz[500];
 	extern int16_t inVector1Khz[500];
 #endif
 /*==================[declaraciones de funciones internas]====================*/
