@@ -54,6 +54,6 @@ void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 							 uint8_t compressorAttackTime);
 void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 							 uint8_t compressorReleaseTime);
-void compressorProccesor(compressorStruct_t *compressorStruct, int16_t input);
+int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input);
 /*==========================[fin del archivo]========================================*/
 #endif /* _COMPRESSORMANAGER_H_ */

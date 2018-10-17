@@ -12,7 +12,6 @@
 /*=========================[definiciones de datos externos]=========================*/
 compressorStruct_t compressorStruct;
 /*=========================[declaracion de funciones internas]======================*/
-void peakDetector(compressorStruct_t *compressorStruct, int16_t input);
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input);
 uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType);
 /*=========================[definiciones de funciones internas]=====================*/
@@ -27,25 +26,6 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
 	compressorStruct->outputMaxLevel = ((((uint16_t)input) - compressorStruct->umbral)/compressorStruct->compressorRatio) +
 										   ((uint16_t)input);
-}
-/**
-* @brief Funcion que detecta picos de amplitud mayores a un valor umbral
-* @param compressorStruct puntero a la estructura de manejo de los parametros del
-*        compresor
-* @param input muestra de la senal de entrada
-* @return none
-*/
-void peakDetector(compressorStruct_t *compressorStruct, int16_t input){
-	if(input < 0){
-		input = input*(-1);
-	}
-	if(input > compressorStruct->umbral){
-		if(compressorStruct->triggerState == DISABLE_STATE){
-			calculateMaxOutputCompresion(compressorStruct, input);
-			compressorStruct->triggerState = ATTACK_STATE;
-			compressorStruct->currentSample = 0;
-		}
-	}
 }
 /**
 * @brief Funcion que calcula la duracion en muestras del tiempo de ataque o release de
@@ -70,11 +50,22 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 
 	return attackSamples;
 }
-void compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
+int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
+	int16_t inputAux;
 	if(compressorStruct->compressorStatus == ENABLE){
-		peakDetector(compressorStruct, input);
 		switch(compressorStruct->triggerState){
 		case DISABLE_STATE:
+			if(input < 0){
+				inputAux = input*(-1);
+			}
+			else{
+				inputAux = input;
+			}
+			if(inputAux > compressorStruct->umbral){
+				calculateMaxOutputCompresion(compressorStruct, input);
+				compressorStruct->triggerState = ATTACK_STATE;
+				compressorStruct->currentSample = 0;
+			}
 			break;
 		case ATTACK_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorSamplesAttackTime){
@@ -98,6 +89,7 @@ void compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
 			break;
 		}
 	}
+	return input;
 }
 /*=========================[definiciones de funciones publicas]=====================*/
 /**
