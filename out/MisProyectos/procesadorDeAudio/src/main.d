@@ -127,4 +127,5 @@ MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o: \
  libs/sapi/sapi_v0.5.2/soc/peripherals/inc/sapi_timer.h \
  MisProyectos/procesadorDeAudio/inc/filterManager.h \
  MisProyectos/procesadorDeAudio/inc/test.h \
- MisProyectos/procesadorDeAudio/inc/compressorManager.h
+ MisProyectos/procesadorDeAudio/inc/compressorManager.h \
+ MisProyectos/procesadorDeAudio/inc/program.h

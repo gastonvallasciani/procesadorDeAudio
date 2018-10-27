@@ -8,12 +8,13 @@
 #include "compressorManager.h"
 #include "sapi.h"
 #include "sapi_timer.h"
+#include "program.h"
 /*=========================[definiciones de datos internos]=========================*/
 /*=========================[definiciones de datos externos]=========================*/
 compressorStruct_t compressorStruct;
 /*=========================[declaracion de funciones internas]======================*/
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input);
-uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType);
+uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType, uint16_t timeBetweenSamplesInUs);
 /*=========================[definiciones de funciones internas]=====================*/
 /**
 * @brief Funcion que calcula la salida maxima en funcion de la relacion de compresion
@@ -25,7 +26,7 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 */
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
 	compressorStruct->outputMaxLevel = ((((uint16_t)input) - compressorStruct->umbral)/compressorStruct->compressorRatio) +
-										   ((uint16_t)input);
+										compressorStruct->umbral;
 }
 /**
 * @brief Funcion que calcula la duracion en muestras del tiempo de ataque o release de
@@ -34,21 +35,23 @@ void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t 
 *        compresor
 * @return devuelve la cantidad de muestra del tiemp ode ataque o release de compresion
 */
-uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType){
-	uint16_t attackSamples;
+uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType, uint16_t timeBetweenSamplesInUs){
+	uint16_t samples;
 
 	switch(timeType){
 	case ATTACK_TIME:
-		attackSamples = compressorStruct->compressorAttackTime/22;
+		samples = compressorStruct->compressorAttackTime->timeValue/timeBetweenSamplesInUs;
 		break;
 	case RELEASE_TIME:
-		attackSamples = compressorStruct->compressorReleaseTime/22;
+		samples = compressorStruct->compressorReleaseTime->timeValue/timeBetweenSamplesInUs;
+		break;
+	case HOLD_TIME:
+		samples = compressorStruct->compressorHoldTime->timeValue/timeBetweenSamplesInUs;
 		break;
 	default:
 		break;
 	}
-
-	return attackSamples;
+	return samples;
 }
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
 	int16_t inputAux;
@@ -68,16 +71,25 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 			}
 			break;
 		case ATTACK_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorSamplesAttackTime){
+			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime->samplesTime){
 				compressorStruct->currentSample++;
 			}
 			else{
 				compressorStruct->currentSample = 0;
-				compressorStruct->triggerState = RELEASE_STATE;
+				compressorStruct->triggerState = HOLD_STATE;
+			}
+			break;
+		case HOLD_STATE:
+			if(compressorStruct->currentSample < compressorStruct->compressorHoldTime->samplesTime){
+				compressorStruct->currentSample++;
+			}
+			else{
+				compressorStruct->currentSample = 0;
+				compressorStruct->triggerState = HOLD_STATE;
 			}
 			break;
 		case RELEASE_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorSamplesReleaseTime){
+			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime->samplesTime){
 				compressorStruct->currentSample++;
 			}
 			else{
@@ -86,6 +98,8 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 			}
 			break;
 		default:
+			compressorStruct->currentSample = 0;
+			compressorStruct->triggerState = DISABLE_STATE;
 			break;
 		}
 	}
@@ -103,6 +117,7 @@ void compressorInit(compressorStruct_t *compressorStruct){
 	compressorStruct->triggerState = DISABLE_STATE;
 	compressorStruct->compressorRatio = 1;
 	compressorStruct->umbral = 512;
+	compressorStruct->timeBetweenInputSamples = TIME_BETWEEN_SAMPLES_IN_US;
 }
 /**
 * @brief Funcion que deshabilita el compressor VCA con valores default
@@ -135,6 +150,17 @@ void setCompressorUmbral(compressorStruct_t *compressorStruct, uint8_t compresso
 	compressorStruct->umbral = compressorUmbral;
 }
 /**
+* @brief Funcion que setea el tiempo entre muestras de entrada que usa el compresor para trabajar
+* @param compressorStruct puntero a la estructura de manejo de los parametros del
+*        compresor
+* @param timeBetweenInputSamplesInUs tiempo entre muestras de entrada en microsegundos
+* @return none
+*/
+void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct, uint16_t timeBetweenInputSamplesInUs){
+	compressorStruct->timeBetweenInputSamples = timeBetweenInputSamplesInUs;
+}
+
+/**
 * @brief Funcion que setea el tiempo de ataque del compresor
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
 *        compresor
@@ -143,9 +169,25 @@ void setCompressorUmbral(compressorStruct_t *compressorStruct, uint8_t compresso
 */
 void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 							 uint8_t compressorAttackTime){
-	compressorStruct->compressorAttackTime = compressorAttackTime;
-	compressorStruct->compressorSamplesAttackTime = calculateSamples(compressorStruct, ATTACK_TIME);
+	compressorStruct->compressorAttackTime->type = ATTACK_TIME;
+ 	compressorStruct->compressorAttackTime->timeValue = compressorAttackTime;
+	compressorStruct->compressorAttackTime->samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorAttackTime->type, compressorStruct->timeBetweenInputSamples);
 }
+
+/**
+* @brief Funcion que setea el tiempo de mantenimiento del compresor
+* @param compressorStruct puntero a la estructura de manejo de los parametros del
+*        compresor
+* @param compressorHoldTime setea el tiempo de mantenimiento del compresor
+* @return none
+*/
+void setCompressorHoldTime(compressorStruct_t *compressorStruct,
+							 uint8_t compressorHoldTime){
+	compressorStruct->compressorHoldTime->type = HOLD_TIME;
+	compressorStruct->compressorHoldTime->timeValue = compressorHoldTime;
+	compressorStruct->compressorHoldTime->samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorHoldTime->type, compressorStruct->timeBetweenInputSamples);
+}
+
 /**
 * @brief Funcion que setea el tiempo de release del compresor
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
@@ -155,8 +197,10 @@ void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 */
 void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 							 uint8_t compressorReleaseTime){
-	compressorStruct->compressorReleaseTime = compressorReleaseTime;
-	compressorStruct->compressorSamplesReleaseTime = calculateSamples(compressorStruct, RELEASE_TIME);
+	compressorStruct->compressorReleaseTime->type = RELEASE_TIME;
+	compressorStruct->compressorReleaseTime->timeValue = compressorReleaseTime;
+	compressorStruct->compressorReleaseTime->samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorReleaseTime->type, compressorStruct->timeBetweenInputSamples);
+
 }
 /*==========================[fin del archivo]========================================*/
 

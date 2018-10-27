@@ -16,7 +16,9 @@ extern "C" {
 #endif
 
 /*==================[macros]=================================================*/
-
+#define TIME_BETWEEN_SAMPLES_IN_US 22
+#define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
+#define ACQUISITION_FRECUENCY_44100HZ() Timer_microsecondsToTicks( 22 )
 /*==================[tipos de datos declarados por el usuario]===============*/
 
 /*==================[declaraciones de datos externos]========================*/

@@ -15,15 +15,13 @@
 #include "filterManager.h"
 #include "test.h"
 #include "compressorManager.h"
+#include "program.h"
 
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
 //#define TEST_OFFLINE_ENABLE
 /*==================[definiciones de datos internos]=========================*/
 #define WAIT_DELAY 50
-#define NOLED LEDR+6
-#define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
-#define ACQUISITION_FRECUENCY_44100HZ() Timer_microsecondsToTicks( 22 )
 /**
  * Se utiliza un VECTOR_SIZE de 500 elementos, con 200 se cortaba la salida
  */
