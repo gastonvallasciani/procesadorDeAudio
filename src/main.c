@@ -19,7 +19,7 @@
 
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
-//#define TEST_OFFLINE_ENABLE
+#define TEST_OFFLINE_ENABLE
 /*==================[definiciones de datos internos]=========================*/
 #define WAIT_DELAY 50
 /**
@@ -73,6 +73,7 @@ volatile uint8_t transmissionStatus = COMPLETE;
 volatile uint16_t *transmitBuffer;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
+extern compressorStruct_t compressorStruct;
 /**
  * Vectores de coeficientes de filtros FIR definidos en el archivo
  * filterManager.c
@@ -88,8 +89,10 @@ extern int16_t lpf15Khz[12];
 	extern int16_t inVector20Khz[500];
 	extern int16_t inVector15Khz[500];
 	extern int16_t inVector10Khz[500];
-	extern int16_ t inVector5Khz[500];
+//	extern int16_ t inVector5Khz[500];
 	extern int16_t inVector1Khz[500];
+	uint16_t invectorCompressorTestOffline[500];
+	uint16_t outTestVector[500];
 #endif
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
@@ -118,6 +121,14 @@ int main( void ){
    /// Inicializacion TIMER 1  y TIMER 2 desborde con una frecuencia de 44.1KHz
     Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler );
     Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerDacHandler );
+
+    compressorInit(&compressorStruct);
+    setCompressorRatio(&compressorStruct, 2);
+    setCompressorUmbral(&compressorStruct, 400);
+    setTimeBetweenInputSamples(&compressorStruct, 22);
+    setCompressorAttackTime(&compressorStruct, 2000);
+    setCompressorHoldTime(&compressorStruct, 1000);
+    setCompressorReleaseTime(&compressorStruct, 20000);
 /**
  * Inicializacion del PING-PONG-BUFFER
  */
@@ -132,6 +143,22 @@ int main( void ){
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
    lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
 
+   uint16_t k;
+   for(k=0;k<500;k++){
+	   if(k<100){
+		   invectorCompressorTestOffline[k] = 200;
+	   }
+	   else if((k>=100)&&(k<400)){
+		   invectorCompressorTestOffline[k] = 500;
+	   }
+	   else{
+		   invectorCompressorTestOffline[k] = 200;
+	   }
+   }
+   for(k=0;k<500;k++){
+	   outTestVector[k] = 0;
+   }
+
    while( TRUE ){
 
 	   ///Led loco para debug
@@ -142,15 +169,17 @@ int main( void ){
 	   if (delayRead(&waitDelay)){
 	   gpioToggle( LED );
 	   }
+
+	   compressorVectorProcessor(500, invectorCompressorTestOffline, outTestVector);
 	   ///Se elimina el valor de continua del vector adquirido
-	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
+	  // eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
 
 	   ///Se procesa el vector con el filtro definido
-	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],VECTOR_SIZE,
-			   	   	   	     &firstOutputBuffer[0], &secondOutputBuffer[0]);
+	  // filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],VECTOR_SIZE,
+	//		   	   	   	     &firstOutputBuffer[0], &secondOutputBuffer[0]);
 
 	   ///Se suma el nivel de continua
-	   sumContinous(VECTOR_SIZE, &secondOutputBuffer[0], &outVector[0]);
+	  // sumContinous(VECTOR_SIZE, &secondOutputBuffer[0], &outVector[0]);
 
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior

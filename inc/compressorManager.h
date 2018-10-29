@@ -48,9 +48,9 @@ typedef struct{
 	uint16_t umbral;
 	uint16_t currentSample;
 	uint16_t timeBetweenInputSamples;      //Tiempo de adquisicion del entrada, tiempo en microsegundos
-	timeStruct_t *compressorAttackTime;
-	timeStruct_t *compressorReleaseTime;
-	timeStruct_t *compressorHoldTime;
+	timeStruct_t compressorAttackTime;
+	timeStruct_t compressorReleaseTime;
+	timeStruct_t compressorHoldTime;
 	uint16_t outputMaxLevel;			   //Maximo nivel de salida de la senial comprimida
 	uint16_t inputMaxLevel;
 }compressorStruct_t;
@@ -61,13 +61,13 @@ void compressorInit(compressorStruct_t *compressorStruct);
 void compressorDeinit(compressorStruct_t *compressorStruct);
 void setCompressorRatio(compressorStruct_t *compressorStruct, uint8_t compressorRatio);
 void setCompressorUmbral(compressorStruct_t *compressorStruct,
-						 uint8_t compressorUmbral);
+						 uint16_t compressorUmbral);
 void setCompressorAttackTime(compressorStruct_t *compressorStruct,
-							 uint8_t compressorAttackTime);
+							 uint16_t compressorAttackTime);
 void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
-							 uint8_t compressorReleaseTime);
+							 uint16_t compressorReleaseTime);
 void setCompressorHoldTime(compressorStruct_t *compressorStruct,
-							 uint8_t compressorHoldTime);
+							 uint16_t compressorHoldTime);
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input);
 void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
 								uint16_t timeBetweenInputSamplesInUs);

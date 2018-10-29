@@ -41,13 +41,13 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 
 	switch(timeType){
 	case ATTACK_TIME:
-		samples = compressorStruct->compressorAttackTime->timeValue/timeBetweenSamplesInUs;
+		samples = compressorStruct->compressorAttackTime.timeValue/timeBetweenSamplesInUs;
 		break;
 	case RELEASE_TIME:
-		samples = compressorStruct->compressorReleaseTime->timeValue/timeBetweenSamplesInUs;
+		samples = compressorStruct->compressorReleaseTime.timeValue/timeBetweenSamplesInUs;
 		break;
 	case HOLD_TIME:
-		samples = compressorStruct->compressorHoldTime->timeValue/timeBetweenSamplesInUs;
+		samples = compressorStruct->compressorHoldTime.timeValue/timeBetweenSamplesInUs;
 		break;
 	default:
 		break;
@@ -64,8 +64,8 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 */
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input){
 	if (input>0){
-		compressorStruct->compressorAttackTime->updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorAttackTime->samplesTime;
-		compressorStruct->compressorReleaseTime->updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorReleaseTime->samplesTime;
+		compressorStruct->compressorAttackTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorAttackTime.samplesTime;
+		compressorStruct->compressorReleaseTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorReleaseTime.samplesTime;
 	}
 }
 /**
@@ -91,62 +91,62 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 				calculateUpdateOutputPeriod(compressorStruct, input);
 				compressorStruct->triggerState = ATTACK_STATE;
 				compressorStruct->currentSample = 0;
-				compressorStruct->compressorAttackTime->currentUpdateSample = 0;
-				compressorStruct->compressorAttackTime->updateValue = 0;
+				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
+				compressorStruct->compressorAttackTime.updateValue = 0;
 			}
 			break;
 		case ATTACK_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime->samplesTime){
+			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime.samplesTime){
 				compressorStruct->currentSample++;
-				compressorStruct->compressorAttackTime->currentUpdateSample++;
-				if(compressorStruct->compressorAttackTime->currentUpdateSample == compressorStruct->compressorAttackTime->updateSamplePeriod){
-					compressorStruct->compressorAttackTime->updateValue++;
-					compressorStruct->compressorAttackTime->currentUpdateSample = 0;
+				compressorStruct->compressorAttackTime.currentUpdateSample++;
+				if(compressorStruct->compressorAttackTime.currentUpdateSample == compressorStruct->compressorAttackTime.updateSamplePeriod){
+					compressorStruct->compressorAttackTime.updateValue++;
+					compressorStruct->compressorAttackTime.currentUpdateSample = 0;
 					if(input > 0){
-					   input = input - (int16_t)(compressorStruct->compressorAttackTime->updateValue);
+					   input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
 					}
 					else{
-						input = input + (int16_t)(compressorStruct->compressorAttackTime->updateValue);
+						input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
 					}
 				}
 			}
 			else{
 				compressorStruct->currentSample = 0;
-				compressorStruct->compressorAttackTime->currentUpdateSample = 0;
-				compressorStruct->compressorAttackTime->updateValue = 0;
+				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
+				compressorStruct->compressorAttackTime.updateValue = 0;
 				compressorStruct->triggerState = HOLD_STATE;
 			}
 			break;
 		case HOLD_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorHoldTime->samplesTime){
+			if(compressorStruct->currentSample < compressorStruct->compressorHoldTime.samplesTime){
 				compressorStruct->currentSample++;
 			}
 			else{
 				compressorStruct->currentSample = 0;
-				compressorStruct->compressorReleaseTime->currentUpdateSample = 0;
-				compressorStruct->compressorReleaseTime->updateValue = 0;
+				compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
+				compressorStruct->compressorReleaseTime.updateValue = 0;
 				compressorStruct->triggerState = RELEASE_STATE;
 			}
 			break;
 		case RELEASE_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime->samplesTime){
+			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime.samplesTime){
 				compressorStruct->currentSample++;
-				compressorStruct->compressorReleaseTime->currentUpdateSample++;
-				if(compressorStruct->compressorReleaseTime->currentUpdateSample == compressorStruct->compressorAttackTime->updateSamplePeriod){
-					compressorStruct->compressorReleaseTime->updateValue++;
-					compressorStruct->compressorReleaseTime->currentUpdateSample = 0;
+				compressorStruct->compressorReleaseTime.currentUpdateSample++;
+				if(compressorStruct->compressorReleaseTime.currentUpdateSample == compressorStruct->compressorAttackTime.updateSamplePeriod){
+					compressorStruct->compressorReleaseTime.updateValue++;
+					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
 					if(input > 0){
-					   input = input - (int16_t)(compressorStruct->compressorReleaseTime->updateValue);
+					   input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
 					}
 					else{
-						input = input + (int16_t)(compressorStruct->compressorReleaseTime->updateValue);
+						input = input + (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
 					}
 				}
 			}
 			else{
 				compressorStruct->currentSample = 0;
-				compressorStruct->compressorReleaseTime->currentUpdateSample = 0;
-				compressorStruct->compressorReleaseTime->updateValue = 0;
+				compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
+				compressorStruct->compressorReleaseTime.updateValue = 0;
 				compressorStruct->triggerState = DISABLE_STATE;
 			}
 			break;
@@ -199,7 +199,7 @@ void setCompressorRatio(compressorStruct_t *compressorStruct, uint8_t compressor
 * @param compressorUmbral umbral a ser seteado en la estructura de manejo del compresor
 * @return none
 */
-void setCompressorUmbral(compressorStruct_t *compressorStruct, uint8_t compressorUmbral){
+void setCompressorUmbral(compressorStruct_t *compressorStruct, uint16_t compressorUmbral){
 	compressorStruct->umbral = compressorUmbral;
 }
 /**
@@ -220,10 +220,10 @@ void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct, uint16_t t
 * @return none
 */
 void setCompressorAttackTime(compressorStruct_t *compressorStruct,
-							 uint8_t compressorAttackTime){
-	compressorStruct->compressorAttackTime->type = ATTACK_TIME;
- 	compressorStruct->compressorAttackTime->timeValue = compressorAttackTime;
-	compressorStruct->compressorAttackTime->samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorAttackTime->type, compressorStruct->timeBetweenInputSamples);
+							 uint16_t compressorAttackTime){
+	compressorStruct->compressorAttackTime.type = ATTACK_TIME;
+ 	compressorStruct->compressorAttackTime.timeValue = compressorAttackTime;
+	compressorStruct->compressorAttackTime.samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorAttackTime.type, compressorStruct->timeBetweenInputSamples);
 }
 
 /**
@@ -234,10 +234,10 @@ void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 * @return none
 */
 void setCompressorHoldTime(compressorStruct_t *compressorStruct,
-							 uint8_t compressorHoldTime){
-	compressorStruct->compressorHoldTime->type = HOLD_TIME;
-	compressorStruct->compressorHoldTime->timeValue = compressorHoldTime;
-	compressorStruct->compressorHoldTime->samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorHoldTime->type, compressorStruct->timeBetweenInputSamples);
+							 uint16_t compressorHoldTime){
+	compressorStruct->compressorHoldTime.type = HOLD_TIME;
+	compressorStruct->compressorHoldTime.timeValue = compressorHoldTime;
+	compressorStruct->compressorHoldTime.samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorHoldTime.type, compressorStruct->timeBetweenInputSamples);
 }
 
 /**
@@ -248,10 +248,10 @@ void setCompressorHoldTime(compressorStruct_t *compressorStruct,
 * @return none
 */
 void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
-							 uint8_t compressorReleaseTime){
-	compressorStruct->compressorReleaseTime->type = RELEASE_TIME;
-	compressorStruct->compressorReleaseTime->timeValue = compressorReleaseTime;
-	compressorStruct->compressorReleaseTime->samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorReleaseTime->type, compressorStruct->timeBetweenInputSamples);
+							 uint16_t compressorReleaseTime){
+	compressorStruct->compressorReleaseTime.type = RELEASE_TIME;
+	compressorStruct->compressorReleaseTime.timeValue = compressorReleaseTime;
+	compressorStruct->compressorReleaseTime.samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorReleaseTime.type, compressorStruct->timeBetweenInputSamples);
 
 }
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector, int16_t *outputVector){
