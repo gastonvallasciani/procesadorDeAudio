@@ -32,7 +32,7 @@ typedef struct{
 	timeType_t type;				//Tipo de tiempo(attack, hold o release)
 	uint16_t timeValue;				//Tiempo en microsegundos
 	uint16_t samplesTime; 			//Tiempo en microsegundos convertido a muestras
-	uint8_t updateSamplePeriod;		//Tiempo de actualizacion de la salida del compresor
+	uint16_t updateSamplePeriod;		//Tiempo de actualizacion de la salida del compresor
 									//para cumplir con el tiempo de attack,hold o release
 	uint16_t currentUpdateSample;
 	uint16_t updateValue;

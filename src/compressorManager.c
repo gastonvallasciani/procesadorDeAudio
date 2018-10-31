@@ -9,6 +9,7 @@
 #include "sapi.h"
 #include "sapi_timer.h"
 #include "program.h"
+#include "math.h"
 /*=========================[definiciones de datos internos]=========================*/
 /*=========================[definiciones de datos externos]=========================*/
 compressorStruct_t compressorStruct;
@@ -63,8 +64,12 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input){
+	uint16_t aux;
 	if (input>0){
-		compressorStruct->compressorAttackTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorAttackTime.samplesTime;
+		aux = (uint16_t)(input)-compressorStruct->outputMaxLevel;
+		aux = (uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)/(float)(aux)));
+		compressorStruct->compressorAttackTime.updateSamplePeriod = aux;
+		//compressorStruct->compressorAttackTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorAttackTime.samplesTime;
 		compressorStruct->compressorReleaseTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorReleaseTime.samplesTime;
 	}
 }
@@ -76,17 +81,10 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
-	int16_t inputAux;
 	if(compressorStruct->compressorStatus == ENABLE){
 		switch(compressorStruct->triggerState){
 		case DISABLE_STATE:
-			if(input < 0){
-				inputAux = input*(-1);
-			}
-			else{
-				inputAux = input;
-			}
-			if(inputAux > compressorStruct->umbral){
+			if(input > (int16_t)(compressorStruct->umbral)){
 				calculateMaxOutputCompresion(compressorStruct, input);
 				calculateUpdateOutputPeriod(compressorStruct, input);
 				compressorStruct->triggerState = ATTACK_STATE;
@@ -102,12 +100,12 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 				if(compressorStruct->compressorAttackTime.currentUpdateSample == compressorStruct->compressorAttackTime.updateSamplePeriod){
 					compressorStruct->compressorAttackTime.updateValue++;
 					compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-					if(input > 0){
-					   input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-					}
-					else{
-						input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-					}
+				}
+				if(input > 0){
+					input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
+				}
+				else{
+					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
 				}
 			}
 			else{

@@ -148,7 +148,7 @@ int main( void ){
 	   if(k<100){
 		   invectorCompressorTestOffline[k] = 200;
 	   }
-	   else if((k>=100)&&(k<400)){
+	   else if((k>=100)&&(k<120)){
 		   invectorCompressorTestOffline[k] = 500;
 	   }
 	   else{
