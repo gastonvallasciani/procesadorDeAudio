@@ -64,13 +64,17 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input){
-	uint16_t aux;
-	if (input>0){
-		aux = (uint16_t)(input)-compressorStruct->outputMaxLevel;
-		aux = (uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)/(float)(aux)));
-		compressorStruct->compressorAttackTime.updateSamplePeriod = aux;
-		//compressorStruct->compressorAttackTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorAttackTime.samplesTime;
-		compressorStruct->compressorReleaseTime.updateSamplePeriod = ((uint16_t)(input) - compressorStruct->outputMaxLevel)/compressorStruct->compressorReleaseTime.samplesTime;
+	uint16_t differenceInputOutMax;
+/*
+ * Hay que validar que la entrada sea distinta de outputMaxLevel porque sino se divide
+ * por cero.
+ */
+	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
+		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
+		compressorStruct->compressorAttackTime.updateSamplePeriod =
+				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)/(float)(differenceInputOutMax)));
+		compressorStruct->compressorReleaseTime.updateSamplePeriod =
+				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)/(float)(differenceInputOutMax)));
 	}
 }
 /**
@@ -109,8 +113,16 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 				}
 			}
 			else{
+				if(input > 0){
+					input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
+				}
+				else{
+					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
+				}
 				compressorStruct->currentSample = 0;
 				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
+				compressorStruct->compressorHoldTime.updateValue = compressorStruct->compressorAttackTime.updateValue;
+				compressorStruct->compressorReleaseTime.updateValue = compressorStruct->compressorAttackTime.updateValue;
 				compressorStruct->compressorAttackTime.updateValue = 0;
 				compressorStruct->triggerState = HOLD_STATE;
 			}
@@ -118,11 +130,23 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 		case HOLD_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorHoldTime.samplesTime){
 				compressorStruct->currentSample++;
+				if(input > 0){
+					input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
+				}
+				else{
+					input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
+				}
 			}
 			else{
+				if(input > 0){
+					input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
+				}
+				else{
+					input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
+				}
 				compressorStruct->currentSample = 0;
 				compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-				compressorStruct->compressorReleaseTime.updateValue = 0;
+				compressorStruct->compressorHoldTime.updateValue = 0;
 				compressorStruct->triggerState = RELEASE_STATE;
 			}
 			break;
@@ -130,15 +154,15 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime.samplesTime){
 				compressorStruct->currentSample++;
 				compressorStruct->compressorReleaseTime.currentUpdateSample++;
-				if(compressorStruct->compressorReleaseTime.currentUpdateSample == compressorStruct->compressorAttackTime.updateSamplePeriod){
-					compressorStruct->compressorReleaseTime.updateValue++;
+				if(compressorStruct->compressorReleaseTime.currentUpdateSample == compressorStruct->compressorReleaseTime.updateSamplePeriod){
+					compressorStruct->compressorReleaseTime.updateValue--;
 					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-					if(input > 0){
-					   input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-					}
-					else{
-						input = input + (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-					}
+				}
+				if(input > 0){
+					input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
+				}
+				else{
+					input = input = (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
 				}
 			}
 			else{
