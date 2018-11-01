@@ -66,15 +66,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  23 .debug_macro  0000e402  00000000  00000000  0004b4c0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 24 .debug_line   000124b9  00000000  00000000  000598c2  2**0
+ 24 .debug_line   000124c1  00000000  00000000  000598c2  2**0
                   CONTENTS, READONLY, DEBUGGING
- 25 .debug_str    00025ab9  00000000  00000000  0006bd7b  2**0
+ 25 .debug_str    00025ab9  00000000  00000000  0006bd83  2**0
                   CONTENTS, READONLY, DEBUGGING
- 26 .comment      00000070  00000000  00000000  00091834  2**0
+ 26 .comment      00000070  00000000  00000000  0009183c  2**0
                   CONTENTS, READONLY
- 27 .ARM.attributes 00000039  00000000  00000000  000918a4  2**0
+ 27 .ARM.attributes 00000039  00000000  00000000  000918ac  2**0
                   CONTENTS, READONLY
- 28 .debug_frame  00001d30  00000000  00000000  000918e0  2**2
+ 28 .debug_frame  00001d30  00000000  00000000  000918e8  2**2
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 1a000000 l    d  .text	00000000 .text
@@ -2016,21 +2016,35 @@ int main( void ){
 * @return none
 */
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
-	compressorStruct->outputMaxLevel = ((((uint16_t)input) - compressorStruct->umbral)/compressorStruct->compressorRatio) +
+	compressorStruct->outputMaxLevel = ((((uint16_t)input) -
 1a000a5c:	b289      	uxth	r1, r1
+			            compressorStruct->umbral)/compressorStruct->compressorRatio) +
 1a000a5e:	8882      	ldrh	r2, [r0, #4]
+*        compresor
+* @param input muestra de la senal de entrada
+* @return none
+*/
+void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
+	compressorStruct->outputMaxLevel = ((((uint16_t)input) -
 1a000a60:	1a8b      	subs	r3, r1, r2
+			            compressorStruct->umbral)/compressorStruct->compressorRatio) +
 1a000a62:	7881      	ldrb	r1, [r0, #2]
 1a000a64:	fb93 f1f1 	sdiv	r1, r3, r1
+*        compresor
+* @param input muestra de la senal de entrada
+* @return none
+*/
+void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
+	compressorStruct->outputMaxLevel = ((((uint16_t)input) -
 1a000a68:	4411      	add	r1, r2
 1a000a6a:	85c1      	strh	r1, [r0, #46]	; 0x2e
 1a000a6c:	4770      	bx	lr
 1a000a6e:	bf00      	nop
 
 1a000a70 <calculateSamples>:
-* @return devuelve la cantidad de muestra del tiempo de ataque o release de compresion
 */
-uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType, uint16_t timeBetweenSamplesInUs){
+uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType,
+						  uint16_t timeBetweenSamplesInUs){
 	uint16_t samples;
 
 	switch(timeType){
@@ -2096,12 +2110,19 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 1a000aaa:	1ac9      	subs	r1, r1, r3
 1a000aac:	b289      	uxth	r1, r1
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
-				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)/(float)(differenceInputOutMax)));
+				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
 1a000aae:	89c3      	ldrh	r3, [r0, #14]
 1a000ab0:	ee07 3a90 	vmov	s15, r3
 1a000ab4:	eef8 7a67 	vcvt.f32.u32	s15, s15
+						/(float)(differenceInputOutMax)));
 1a000ab8:	ee07 1a10 	vmov	s14, r1
 1a000abc:	eeb8 8a47 	vcvt.f32.u32	s16, s14
+ * por cero.
+ */
+	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
+		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
+		compressorStruct->compressorAttackTime.updateSamplePeriod =
+				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
 1a000ac0:	eec7 7a88 	vdiv.f32	s15, s15, s16
 1a000ac4:	ee17 0a90 	vmov	r0, s15
 1a000ac8:	f001 feae 	bl	1a002828 <__aeabi_f2d>
@@ -2116,9 +2137,10 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
 1a000adc:	8220      	strh	r0, [r4, #16]
-				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)/(float)(differenceInputOutMax)));
+				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
+						/(float)(differenceInputOutMax)));
 		compressorStruct->compressorReleaseTime.updateSamplePeriod =
-				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)/(float)(differenceInputOutMax)));
+				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
 1a000ade:	8b63      	ldrh	r3, [r4, #26]
 1a000ae0:	ee07 3a90 	vmov	s15, r3
 1a000ae4:	eef8 7a67 	vcvt.f32.u32	s15, s15
@@ -2129,14 +2151,15 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 1a000af8:	f001 fcde 	bl	1a0024b8 <round>
 1a000afc:	ec51 0b10 	vmov	r0, r1, d0
 1a000b00:	f001 fee6 	bl	1a0028d0 <__aeabi_d2uiz>
- */
 	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
 		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
-				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)/(float)(differenceInputOutMax)));
+				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
+						/(float)(differenceInputOutMax)));
 		compressorStruct->compressorReleaseTime.updateSamplePeriod =
 1a000b04:	83a0      	strh	r0, [r4, #28]
-				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)/(float)(differenceInputOutMax)));
+				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
+						/(float)(differenceInputOutMax)));
 	}
 }
 1a000b06:	ecbd 8b02 	vpop	{d8}
@@ -2203,10 +2226,18 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 1a000b5e:	3301      	adds	r3, #1
 1a000b60:	b29b      	uxth	r3, r3
 1a000b62:	8243      	strh	r3, [r0, #18]
-				if(compressorStruct->compressorAttackTime.currentUpdateSample == compressorStruct->compressorAttackTime.updateSamplePeriod){
+				if(compressorStruct->compressorAttackTime.currentUpdateSample ==
+						compressorStruct->compressorAttackTime.updateSamplePeriod){
 1a000b64:	8a02      	ldrh	r2, [r0, #16]
+			break;
+		case ATTACK_STATE:
+			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime.samplesTime){
+				compressorStruct->currentSample++;
+				compressorStruct->compressorAttackTime.currentUpdateSample++;
+				if(compressorStruct->compressorAttackTime.currentUpdateSample ==
 1a000b66:	4293      	cmp	r3, r2
 1a000b68:	d104      	bne.n	1a000b74 <compressorProccesor+0x64>
+						compressorStruct->compressorAttackTime.updateSamplePeriod){
 					compressorStruct->compressorAttackTime.updateValue++;
 1a000b6a:	8a83      	ldrh	r3, [r0, #20]
 1a000b6c:	3301      	adds	r3, #1
@@ -2253,11 +2284,20 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 1a000b9c:	80e3      	strh	r3, [r4, #6]
 				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
 1a000b9e:	8263      	strh	r3, [r4, #18]
-				compressorStruct->compressorHoldTime.updateValue = compressorStruct->compressorAttackTime.updateValue;
+				compressorStruct->compressorHoldTime.updateValue =
+						compressorStruct->compressorAttackTime.updateValue;
 1a000ba0:	8aa2      	ldrh	r2, [r4, #20]
+				else{
+					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
+				}
+				compressorStruct->currentSample = 0;
+				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
+				compressorStruct->compressorHoldTime.updateValue =
 1a000ba2:	85a2      	strh	r2, [r4, #44]	; 0x2c
-				compressorStruct->compressorReleaseTime.updateValue = compressorStruct->compressorAttackTime.updateValue;
+						compressorStruct->compressorAttackTime.updateValue;
+				compressorStruct->compressorReleaseTime.updateValue =
 1a000ba4:	8422      	strh	r2, [r4, #32]
+						compressorStruct->compressorAttackTime.updateValue;
 				compressorStruct->compressorAttackTime.updateValue = 0;
 1a000ba6:	82a3      	strh	r3, [r4, #20]
 				compressorStruct->triggerState = HOLD_STATE;
@@ -2335,10 +2375,18 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 1a000bfc:	3301      	adds	r3, #1
 1a000bfe:	b29b      	uxth	r3, r3
 1a000c00:	83c3      	strh	r3, [r0, #30]
-				if(compressorStruct->compressorReleaseTime.currentUpdateSample == compressorStruct->compressorReleaseTime.updateSamplePeriod){
+				if(compressorStruct->compressorReleaseTime.currentUpdateSample ==
+						compressorStruct->compressorReleaseTime.updateSamplePeriod){
 1a000c02:	8b82      	ldrh	r2, [r0, #28]
+			break;
+		case RELEASE_STATE:
+			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime.samplesTime){
+				compressorStruct->currentSample++;
+				compressorStruct->compressorReleaseTime.currentUpdateSample++;
+				if(compressorStruct->compressorReleaseTime.currentUpdateSample ==
 1a000c04:	4293      	cmp	r3, r2
 1a000c06:	d104      	bne.n	1a000c12 <compressorProccesor+0x102>
+						compressorStruct->compressorReleaseTime.updateSamplePeriod){
 					compressorStruct->compressorReleaseTime.updateValue--;
 1a000c08:	8c03      	ldrh	r3, [r0, #32]
 1a000c0a:	3b01      	subs	r3, #1
@@ -2434,11 +2482,11 @@ void setCompressorUmbral(compressorStruct_t *compressorStruct, uint16_t compress
 1a000c5a:	4770      	bx	lr
 
 1a000c5c <setTimeBetweenInputSamples>:
-*        compresor
 * @param timeBetweenInputSamplesInUs tiempo entre muestras de entrada en microsegundos
 * @return none
 */
-void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct, uint16_t timeBetweenInputSamplesInUs){
+void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
+		uint16_t timeBetweenInputSamplesInUs){
 	compressorStruct->timeBetweenInputSamples = timeBetweenInputSamplesInUs;
 1a000c5c:	8101      	strh	r1, [r0, #8]
 1a000c5e:	4770      	bx	lr
@@ -2457,7 +2505,7 @@ void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 1a000c66:	7283      	strb	r3, [r0, #10]
  	compressorStruct->compressorAttackTime.timeValue = compressorAttackTime;
 1a000c68:	8181      	strh	r1, [r0, #12]
-	compressorStruct->compressorAttackTime.samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorAttackTime.type, compressorStruct->timeBetweenInputSamples);
+	compressorStruct->compressorAttackTime.samplesTime = calculateSamples(compressorStruct,
 1a000c6a:	4619      	mov	r1, r3
 1a000c6c:	8902      	ldrh	r2, [r0, #8]
 1a000c6e:	f7ff feff 	bl	1a000a70 <calculateSamples>
@@ -2479,7 +2527,7 @@ void setCompressorHoldTime(compressorStruct_t *compressorStruct,
 1a000c7e:	f880 3022 	strb.w	r3, [r0, #34]	; 0x22
 	compressorStruct->compressorHoldTime.timeValue = compressorHoldTime;
 1a000c82:	8481      	strh	r1, [r0, #36]	; 0x24
-	compressorStruct->compressorHoldTime.samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorHoldTime.type, compressorStruct->timeBetweenInputSamples);
+	compressorStruct->compressorHoldTime.samplesTime = calculateSamples(compressorStruct,
 1a000c84:	4619      	mov	r1, r3
 1a000c86:	8902      	ldrh	r2, [r0, #8]
 1a000c88:	f7ff fef2 	bl	1a000a70 <calculateSamples>
@@ -2500,7 +2548,7 @@ void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 1a000c96:	7583      	strb	r3, [r0, #22]
 	compressorStruct->compressorReleaseTime.timeValue = compressorReleaseTime;
 1a000c98:	8301      	strh	r1, [r0, #24]
-	compressorStruct->compressorReleaseTime.samplesTime = calculateSamples(compressorStruct, compressorStruct->compressorReleaseTime.type, compressorStruct->timeBetweenInputSamples);
+	compressorStruct->compressorReleaseTime.samplesTime = calculateSamples(compressorStruct,
 1a000c9a:	4619      	mov	r1, r3
 1a000c9c:	8902      	ldrh	r2, [r0, #8]
 1a000c9e:	f7ff fee7 	bl	1a000a70 <calculateSamples>
@@ -2509,6 +2557,7 @@ void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 1a000ca6:	bf00      	nop
 
 1a000ca8 <compressorVectorProcessor>:
+			compressorStruct->compressorReleaseTime.type, compressorStruct->timeBetweenInputSamples);
 
 }
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector, int16_t *outputVector){
