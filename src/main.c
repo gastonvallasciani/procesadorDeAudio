@@ -124,7 +124,7 @@ int main( void ){
 
     compressorInit(&compressorStruct);
     setCompressorRatio(&compressorStruct, 2);
-    setCompressorUmbral(&compressorStruct, 400);
+    setCompressorUmbral(&compressorStruct, 250);
     setTimeBetweenInputSamples(&compressorStruct, 22);
     setCompressorAttackTime(&compressorStruct, 2000);
     setCompressorHoldTime(&compressorStruct, 1000);
@@ -148,7 +148,7 @@ int main( void ){
 	   if(k<100){
 		   invectorCompressorTestOffline[k] = 200;
 	   }
-	   else if((k>=100)&&(k<120)){
+	   else if((k>=100)&&(k<300)){
 		   invectorCompressorTestOffline[k] = 500;
 	   }
 	   else{
@@ -170,16 +170,17 @@ int main( void ){
 	   gpioToggle( LED );
 	   }
 
-	   compressorVectorProcessor(500, invectorCompressorTestOffline, outTestVector);
-	   ///Se elimina el valor de continua del vector adquirido
-	  // eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
 
+	   ///Se elimina el valor de continua del vector adquirido
+	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
+
+	   compressorVectorProcessor(VECTOR_SIZE, firstOutputBuffer, outTestVector);
 	   ///Se procesa el vector con el filtro definido
 	  // filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],VECTOR_SIZE,
-	//		   	   	   	     &firstOutputBuffer[0], &secondOutputBuffer[0]);
+	   //		   	   	   	     &firstOutputBuffer[0], &secondOutputBuffer[0]);
 
 	   ///Se suma el nivel de continua
-	  // sumContinous(VECTOR_SIZE, &secondOutputBuffer[0], &outVector[0]);
+	   sumContinous(VECTOR_SIZE, outTestVector, &outVector[0]);
 
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior
