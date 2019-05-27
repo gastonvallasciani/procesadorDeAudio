@@ -16,19 +16,33 @@ extern "C" {
 #define AUDIO_SAMPLE_RATE 400000
 /*==================[typedef]================================================*/
 typedef struct{
-	uint32_t adcSampleRate;
-	uint8_t adcLeftChannel;
-	uint8_t adcRightChannel;
-	uint8_t adcResolution;
+	uint8_t 			adcRightChannel;
+	uint8_t 			adcLeftChannel;
+}adcISProxyClient_t;
+
+typedef struct{
+	uint32_t 			adcSampleRate;
+	uint8_t 			adcResolution;
+	adcISProxyClient_t  adcInputStereo;
+	uint8_t 			adcInputMonoStereo;
 }adcProxyClient_t;
 
-typedef enum{circularBuffer, pingPongBuffer}aqcuisitionType_t;
+typedef enum{
+						circularBuffer,
+						pingPongBuffer
+}aqcuisitionType_t;
 
-typedef enum{adcUpdateValue,adcGetValue}accessAction_t;
-enum uint8_t{bufferActualizado,
-			 bufferLleno,
-			 bufferVacio,
-			 datoAdquirido};
+typedef enum{
+						adcUpdateValue,
+						adcGetValue
+}accessAction_t;
+
+enum uint8_t{
+						bufferActualizado,
+						bufferLleno,
+						bufferVacio,
+						datoAdquirido
+};
 /*==================[external data declaration]==============================*/
 /*==================[external functions declaration]=========================*/
 void initAqcuisition(void);

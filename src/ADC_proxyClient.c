@@ -28,18 +28,21 @@ uint16_t indexReadRx, indexWriteRx, bufferRx[RX_BUFFER_LENGTH_ADC];
 */
 void initAqcuisition(void){
 	adcInitialize(CHANNEL0);
-	adcStruct.adcSampleRate = AUDIO_SAMPLE_RATE;
-	adcStruct.adcResolution = ADC_10BITS;
-	adcStruct.adcRightChannel = ADC_CH1;
-	adcStruct.adcLeftChannel = ADC_CH2;
+	adcStruct.adcSampleRate 				 = AUDIO_SAMPLE_RATE;
+	adcStruct.adcResolution 				 = ADC_10BITS;
+	adcStruct.adcInputStereo.adcRightChannel = ADC_CH1;
+	adcStruct.adcInputStereo.adcLeftChannel  = ADC_CH2;
+	adcStruct.adcInputMonoStereo 			 = ADC_CH3;
 }
 /**
 * @brief Funcion publica de configuracion de la adquisicion de datos
 * @return none
 */
 void configAqcuisition(void){
-	adcConfiguration(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel,
-					 adcStruct.adcSampleRate, adcStruct.adcResolution);
+	//adcConfiguration(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel,
+	//				 adcStruct.adcSampleRate, adcStruct.adcResolution);
+	adcConfiguration(CHANNEL0, BURST_MODE, adcStruct.adcInputMonoStereo,
+						 adcStruct.adcSampleRate, adcStruct.adcResolution);
 }
 /**
 * @brief Funcion que deshabilita la adquisicion de datos.
@@ -64,7 +67,7 @@ uint8_t dataAqcuisition(accessAction_t  action,
 	uint16_t dataAqcuire = 0;
 	switch(action){
 	case adcUpdateValue:
-		adcReadData(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel, &dataAqcuire);
+		adcReadData(CHANNEL0, BURST_MODE, adcStruct.adcInputMonoStereo, &dataAqcuire);
 		if(aqcuisitionType == circularBuffer){
 			if( (indexWriteRx+1)%RX_BUFFER_LENGTH_ADC == indexReadRx ){
 				return bufferLleno; // condicion de buffer lleno
@@ -91,7 +94,7 @@ uint8_t dataAqcuisition(accessAction_t  action,
 			}
 		}
 		else if(aqcuisitionType == pingPongBuffer){
-			adcReadData(CHANNEL0, BURST_MODE, adcStruct.adcRightChannel, &dataAqcuire);
+			adcReadData(CHANNEL0, BURST_MODE, adcStruct.adcInputMonoStereo, &dataAqcuire);
 			*dataAcquired = dataAqcuire;
 			return 3;
 		}

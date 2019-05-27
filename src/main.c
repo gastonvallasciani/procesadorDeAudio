@@ -111,8 +111,9 @@ int main( void ){
    ///Inicializacion de la esctructura de manejo del ADC
    adcStruct.adcSampleRate = AUDIO_SAMPLE_RATE;
    adcStruct.adcResolution = ADC_10BITS;
-   adcStruct.adcRightChannel = ADC_CH1;
-   adcStruct.adcLeftChannel = ADC_CH2;
+   adcStruct.adcInputStereo.adcRightChannel = ADC_CH1;
+   adcStruct.adcInputStereo.adcLeftChannel = ADC_CH2;
+   adcStruct.adcInputMonoStereo = ADC_CH3;
    //Inicializo la adquisicion de datos por el ADC
    initAqcuisition();
    configAqcuisition();
@@ -161,6 +162,9 @@ int main( void ){
 
    while( TRUE ){
 
+	   //gpioWrite( AUDIO_BOARD_LED_WHITE, 1 );
+	   //gpioWrite( AUDIO_BOARD_LED_BLUE, 1 );
+	   gpioWrite( AUDIO_BOARD_LED_YELLOW, 1 );
 	   ///Led loco para debug
 	   if (!waitDelay.running){
 			delayConfig(&waitDelay,WAIT_DELAY);
@@ -168,6 +172,9 @@ int main( void ){
 		}
 	   if (delayRead(&waitDelay)){
 	   gpioToggle( LED );
+	   //gpioToggle( AUDIO_BOARD_LED_WHITE );
+	   //gpioToggle( AUDIO_BOARD_LED_BLUE );
+	   //gpioToggle( AUDIO_BOARD_LED_YELLOW );
 	   }
 
 
