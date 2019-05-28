@@ -54,27 +54,27 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS
  17 .noinit       00000000  10002a6c  10002a6c  000200e4  2**2
                   CONTENTS
- 18 .debug_info   0001b54a  00000000  00000000  000200e4  2**0
+ 18 .debug_info   0001b57c  00000000  00000000  000200e4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_abbrev 00004815  00000000  00000000  0003b62e  2**0
+ 19 .debug_abbrev 00004815  00000000  00000000  0003b660  2**0
                   CONTENTS, READONLY, DEBUGGING
- 20 .debug_loc    00009ee9  00000000  00000000  0003fe43  2**0
+ 20 .debug_loc    00009ee9  00000000  00000000  0003fe75  2**0
                   CONTENTS, READONLY, DEBUGGING
- 21 .debug_aranges 00000cf0  00000000  00000000  00049d30  2**3
+ 21 .debug_aranges 00000cf0  00000000  00000000  00049d60  2**3
                   CONTENTS, READONLY, DEBUGGING
- 22 .debug_ranges 00000c40  00000000  00000000  0004aa20  2**0
+ 22 .debug_ranges 00000c40  00000000  00000000  0004aa50  2**0
                   CONTENTS, READONLY, DEBUGGING
- 23 .debug_macro  0000e414  00000000  00000000  0004b660  2**0
+ 23 .debug_macro  0000e414  00000000  00000000  0004b690  2**0
                   CONTENTS, READONLY, DEBUGGING
- 24 .debug_line   000124d9  00000000  00000000  00059a74  2**0
+ 24 .debug_line   000124d9  00000000  00000000  00059aa4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 25 .debug_str    00025b30  00000000  00000000  0006bf4d  2**0
+ 25 .debug_str    00025b3f  00000000  00000000  0006bf7d  2**0
                   CONTENTS, READONLY, DEBUGGING
- 26 .comment      00000070  00000000  00000000  00091a7d  2**0
+ 26 .comment      00000070  00000000  00000000  00091abc  2**0
                   CONTENTS, READONLY
- 27 .ARM.attributes 00000039  00000000  00000000  00091aed  2**0
+ 27 .ARM.attributes 00000039  00000000  00000000  00091b2c  2**0
                   CONTENTS, READONLY
- 28 .debug_frame  00001d30  00000000  00000000  00091b28  2**2
+ 28 .debug_frame  00001d30  00000000  00000000  00091b68  2**2
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 1a000000 l    d  .text	00000000 .text
@@ -214,7 +214,7 @@ SYMBOL TABLE:
 1a000190  w    F .text	00000002 DebugMon_Handler
 1a00019c  w    F .text	00000002 RIT_IRQHandler
 1a080000 g       *ABS*	00000000 __top_MFlashA512
-1a000cac g     F .text	00000016 compressorInit
+1a000cb4 g     F .text	00000016 compressorInit
 1a00019c  w    F .text	00000002 ADCHS_IRQHandler
 1a002a74 g     F .text	0000029c .hidden __divdi3
 1a000114 g       .text	00000000 __section_table_start
@@ -229,7 +229,7 @@ SYMBOL TABLE:
 1a000000 g       *ABS*	00000000 __vectors_start__
 1a0013d8 g     F .text	0000000c Chip_ADC_SetResolution
 1a002588 g     F .text	000000a8 round
-1a000d44 g     F .text	00000022 eliminateContinous
+1a000d4c g     F .text	0000001e eliminateContinous
 1a001e70 g     F .text	0000002c SysTick_Handler
 1a001154 g     F .text	00000040 Chip_UART_SetBaud
 1a0024dc g     F .text	00000008 printString
@@ -271,7 +271,7 @@ SYMBOL TABLE:
 1a0012cc g     F .text	00000018 readAdcVal
 10001264 g     O .bss	000003e8 outVector
 1a000188  w    F .text	00000002 UsageFault_Handler
-1a000cc8 g     F .text	00000004 setCompressorUmbral
+1a000cd0 g     F .text	00000004 setCompressorUmbral
 1a001950 g     F .text	0000004c Chip_Clock_GetRate
 1a0029a0 g     F .text	00000040 .hidden __fixunsdfsi
 1a00019c  w    F .text	00000002 GPIO6_IRQHandler
@@ -281,11 +281,11 @@ SYMBOL TABLE:
 1a000f90 g     F .text	0000006c Board_SetupClocking
 20008000 g       *ABS*	00000000 __top_RamAHB32
 1a0028b4 g     F .text	0000001e .hidden __aeabi_ui2d
-1a000cd0 g     F .text	00000016 setCompressorAttackTime
+1a000cd8 g     F .text	00000016 setCompressorAttackTime
 1a002630 g     F .text	00000000 .hidden __aeabi_drsub
 1a003008 g     O .text	00000004 ExtRateIn
 1a00019c  w    F .text	00000002 IntDefaultHandler
-1a000d18 g     F .text	0000002c compressorVectorProcessor
+1a000d20 g     F .text	0000002c compressorVectorProcessor
 1a000300 g       .text	00000000 __CRP_WORD_END__
 10001650 g     O .bss	00000018 waitDelay
 10001668 g     O .bss	00000008 lpf
@@ -333,7 +333,7 @@ SYMBOL TABLE:
 1a0024e4 g     F .text	00000010 printEnter
 1a0017e0 g     F .text	00000068 Chip_Clock_GetMainPLLHz
 1a0031e0 g     O .text	00000136 gpioPinsInit
-1a000d68 g     F .text	00000022 sumContinous
+1a000d6c g     F .text	0000001e sumContinous
 1a001d9c g     F .text	0000001a uartWriteByte
 1a001bc4 g     F .text	00000012 Chip_SSP_SetClockRate
 1a00232c g     F .text	00000016 gpioToggle
@@ -354,7 +354,7 @@ SYMBOL TABLE:
 10000000 g     O .data	00000001 transmissionStatus
 10001a60 g     O .bss	00000021 buffer
 1a001a44 g     F .text	00000002 Chip_GPIO_Init
-1a000a8c g     F .text	00000012 calculateMaxOutputCompresion
+1a000a94 g     F .text	00000012 calculateMaxOutputCompresion
 1a003004 g     O .text	00000004 OscRateIn
 1a001d20 g     F .text	0000007c uartInit
 10002a6c g       .noinit	00000000 _end_noinit
@@ -366,17 +366,17 @@ SYMBOL TABLE:
 1a0028d4 g     F .text	00000022 .hidden __aeabi_i2d
 1a0020e0 g     F .text	0000019c gpioInit
 1a002a70  w    F .text	00000002 .hidden __aeabi_ldiv0
-1a000ce8 g     F .text	00000018 setCompressorHoldTime
+1a000cf0 g     F .text	00000018 setCompressorHoldTime
 1a002344 g     F .text	0000001c USB0_IRQHandler
 1a00019c  w    F .text	00000002 GPIO3_IRQHandler
 1a00019c  w    F .text	00000002 SCT_IRQHandler
 1a00032c g     F .text	00000024 configAqcuisition
 1a00168c g     F .text	0000001c Chip_Clock_GetDividerDivisor
 1a0002fc g       .text	00000000 __CRP_WORD_START__
-1a000d00 g     F .text	00000016 setCompressorReleaseTime
+1a000d08 g     F .text	00000016 setCompressorReleaseTime
 1a002fc8 g     F .text	00000010 memset
 1a000180  w    F .text	00000002 MemManage_Handler
-1a000854 g     F .text	00000238 main
+1a000854 g     F .text	00000240 main
 100008ca g     O .bss	00000002 currentTransmissionSample
 1a000440 g     F .text	0000001c DACHARDWAREPROXY_config
 1a00019c  w    F .text	00000002 WDT_IRQHandler
@@ -385,7 +385,7 @@ SYMBOL TABLE:
 1a000300 g     F .text	0000002c initAqcuisition
 1a00018c  w    F .text	00000002 SVC_Handler
 10000054 g     O .data	00000004 DWT_CTRL
-1a000ccc g     F .text	00000004 setTimeBetweenInputSamples
+1a000cd4 g     F .text	00000004 setTimeBetweenInputSamples
 1a002944 g     F .text	0000005a .hidden __aeabi_l2d
 1a001cf4 g     F .text	00000018 uartTxReady
 1a00019c  w    F .text	00000002 GPIO7_IRQHandler
@@ -421,7 +421,7 @@ SYMBOL TABLE:
 1a001a10 g     F .text	00000016 Chip_DAC_SetBias
 1a00019c  w    F .text	00000002 DAC_IRQHandler
 1a000ef0 g     F .text	00000024 Board_Debug_Init
-1a000aa0 g     F .text	00000026 calculateSamples
+1a000aa8 g     F .text	00000026 calculateSamples
 10000001 g     O .data	00000001 LED
 10000a8a g     O .bss	00000002 indexReadRx
 1a001364 g     F .text	0000001e Chip_ADC_Int_SetChannelCmd
@@ -444,7 +444,7 @@ SYMBOL TABLE:
 1a000184  w    F .text	00000002 BusFault_Handler
 10002258 g     O .bss	000003e8 invectorCompressorTestOffline
 1a00191c g     F .text	00000034 Chip_Clock_Enable
-1a000cc4 g     F .text	00000004 setCompressorRatio
+1a000ccc g     F .text	00000004 setCompressorRatio
 1a00019c  w    F .text	00000002 UART3_IRQHandler
 1a00019c  w    F .text	00000002 MCPWM_IRQHandler
 1a002a10 g     F .text	0000002e .hidden __gnu_ldivmod_helper
@@ -454,10 +454,10 @@ SYMBOL TABLE:
 1a002360 g     F .text	0000010c boardInit
 1a002638 g     F .text	0000027a .hidden __subdf3
 1a00019c  w    F .text	00000002 GINT1_IRQHandler
-1a000b40 g     F .text	0000016c compressorProccesor
+1a000b48 g     F .text	0000016c compressorProccesor
 1a001ddc g     F .text	00000018 tickPowerSet
 10002640 g     O .bss	000003e8 audioBuffer2
-1a000ac8 g     F .text	00000076 calculateUpdateOutputPeriod
+1a000ad0 g     F .text	00000076 calculateUpdateOutputPeriod
 1a00186c g     F .text	00000044 Chip_Clock_SetBaseClock
 1a001cd8 g     F .text	0000001c cyclesCounterInit
 1a00019c  w    F .text	00000002 GPIO4_IRQHandler
@@ -1709,14 +1709,14 @@ int main( void ){
 1a000856:	f001 fd83 	bl	1a002360 <boardInit>
    /// Inicializacion de UART_USB como salida de consola de debug
    debugPrintConfigUart( UART_USB, 115200 );
-1a00085a:	4c74      	ldr	r4, [pc, #464]	; (1a000a2c <main+0x1d8>)
+1a00085a:	4c76      	ldr	r4, [pc, #472]	; (1a000a34 <main+0x1e0>)
 1a00085c:	4620      	mov	r0, r4
 1a00085e:	2103      	movs	r1, #3
 1a000860:	f44f 32e1 	mov.w	r2, #115200	; 0x1c200
 1a000864:	f001 fe32 	bl	1a0024cc <printInitUart>
    debugPrintlnString( "UART_USB configurada.\n\r" );
 1a000868:	7820      	ldrb	r0, [r4, #0]
-1a00086a:	4971      	ldr	r1, [pc, #452]	; (1a000a30 <main+0x1dc>)
+1a00086a:	4973      	ldr	r1, [pc, #460]	; (1a000a38 <main+0x1e4>)
 1a00086c:	f001 fe36 	bl	1a0024dc <printString>
 1a000870:	7820      	ldrb	r0, [r4, #0]
 1a000872:	f001 fe37 	bl	1a0024e4 <printEnter>
@@ -1727,8 +1727,8 @@ int main( void ){
 1a00087a:	f7ff fde1 	bl	1a000440 <DACHARDWAREPROXY_config>
    ///Inicializacion de la esctructura de manejo del ADC
    adcStruct.adcSampleRate = AUDIO_SAMPLE_RATE;
-1a00087e:	4b6d      	ldr	r3, [pc, #436]	; (1a000a34 <main+0x1e0>)
-1a000880:	4a6d      	ldr	r2, [pc, #436]	; (1a000a38 <main+0x1e4>)
+1a00087e:	4b6f      	ldr	r3, [pc, #444]	; (1a000a3c <main+0x1e8>)
+1a000880:	4a6f      	ldr	r2, [pc, #444]	; (1a000a40 <main+0x1ec>)
 1a000882:	601a      	str	r2, [r3, #0]
    adcStruct.adcResolution = ADC_10BITS;
 1a000884:	2400      	movs	r4, #0
@@ -1758,73 +1758,73 @@ int main( void ){
 1a0008a6:	f001 fb83 	bl	1a001fb0 <Timer_microsecondsToTicks>
 1a0008aa:	4601      	mov	r1, r0
 1a0008ac:	4630      	mov	r0, r6
-1a0008ae:	4a63      	ldr	r2, [pc, #396]	; (1a000a3c <main+0x1e8>)
+1a0008ae:	4a65      	ldr	r2, [pc, #404]	; (1a000a44 <main+0x1f0>)
 1a0008b0:	f001 faf8 	bl	1a001ea4 <Timer_Init>
     Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerDacHandler );
 1a0008b4:	2016      	movs	r0, #22
 1a0008b6:	f001 fb7b 	bl	1a001fb0 <Timer_microsecondsToTicks>
 1a0008ba:	4601      	mov	r1, r0
 1a0008bc:	4638      	mov	r0, r7
-1a0008be:	4a60      	ldr	r2, [pc, #384]	; (1a000a40 <main+0x1ec>)
+1a0008be:	4a62      	ldr	r2, [pc, #392]	; (1a000a48 <main+0x1f4>)
 1a0008c0:	f001 faf0 	bl	1a001ea4 <Timer_Init>
 
     compressorInit(&compressorStruct);
-1a0008c4:	4d5f      	ldr	r5, [pc, #380]	; (1a000a44 <main+0x1f0>)
+1a0008c4:	4d61      	ldr	r5, [pc, #388]	; (1a000a4c <main+0x1f8>)
 1a0008c6:	4628      	mov	r0, r5
-1a0008c8:	f000 f9f0 	bl	1a000cac <compressorInit>
+1a0008c8:	f000 f9f4 	bl	1a000cb4 <compressorInit>
     setCompressorRatio(&compressorStruct, 2);
 1a0008cc:	4628      	mov	r0, r5
 1a0008ce:	4639      	mov	r1, r7
-1a0008d0:	f000 f9f8 	bl	1a000cc4 <setCompressorRatio>
+1a0008d0:	f000 f9fc 	bl	1a000ccc <setCompressorRatio>
     setCompressorUmbral(&compressorStruct, 250);
 1a0008d4:	4628      	mov	r0, r5
 1a0008d6:	21fa      	movs	r1, #250	; 0xfa
-1a0008d8:	f000 f9f6 	bl	1a000cc8 <setCompressorUmbral>
+1a0008d8:	f000 f9fa 	bl	1a000cd0 <setCompressorUmbral>
     setTimeBetweenInputSamples(&compressorStruct, 22);
 1a0008dc:	4628      	mov	r0, r5
 1a0008de:	2116      	movs	r1, #22
-1a0008e0:	f000 f9f4 	bl	1a000ccc <setTimeBetweenInputSamples>
+1a0008e0:	f000 f9f8 	bl	1a000cd4 <setTimeBetweenInputSamples>
     setCompressorAttackTime(&compressorStruct, 2000);
 1a0008e4:	4628      	mov	r0, r5
 1a0008e6:	f44f 61fa 	mov.w	r1, #2000	; 0x7d0
-1a0008ea:	f000 f9f1 	bl	1a000cd0 <setCompressorAttackTime>
+1a0008ea:	f000 f9f5 	bl	1a000cd8 <setCompressorAttackTime>
     setCompressorHoldTime(&compressorStruct, 1000);
 1a0008ee:	4628      	mov	r0, r5
 1a0008f0:	f44f 717a 	mov.w	r1, #1000	; 0x3e8
-1a0008f4:	f000 f9f8 	bl	1a000ce8 <setCompressorHoldTime>
+1a0008f4:	f000 f9fc 	bl	1a000cf0 <setCompressorHoldTime>
     setCompressorReleaseTime(&compressorStruct, 20000);
 1a0008f8:	4628      	mov	r0, r5
 1a0008fa:	f644 6120 	movw	r1, #20000	; 0x4e20
-1a0008fe:	f000 f9ff 	bl	1a000d00 <setCompressorReleaseTime>
+1a0008fe:	f000 fa03 	bl	1a000d08 <setCompressorReleaseTime>
 /**
  * Inicializacion del PING-PONG-BUFFER
  */
    bufferPtr = 0;
-1a000902:	4b51      	ldr	r3, [pc, #324]	; (1a000a48 <main+0x1f4>)
+1a000902:	4b53      	ldr	r3, [pc, #332]	; (1a000a50 <main+0x1fc>)
 1a000904:	701c      	strb	r4, [r3, #0]
    activeBuffer = audioBuffer1;
-1a000906:	4a51      	ldr	r2, [pc, #324]	; (1a000a4c <main+0x1f8>)
-1a000908:	4b51      	ldr	r3, [pc, #324]	; (1a000a50 <main+0x1fc>)
+1a000906:	4a53      	ldr	r2, [pc, #332]	; (1a000a54 <main+0x200>)
+1a000908:	4b53      	ldr	r3, [pc, #332]	; (1a000a58 <main+0x204>)
 1a00090a:	601a      	str	r2, [r3, #0]
    backBuffer = audioBuffer2;
-1a00090c:	4a51      	ldr	r2, [pc, #324]	; (1a000a54 <main+0x200>)
-1a00090e:	4b52      	ldr	r3, [pc, #328]	; (1a000a58 <main+0x204>)
+1a00090c:	4a53      	ldr	r2, [pc, #332]	; (1a000a5c <main+0x208>)
+1a00090e:	4b54      	ldr	r3, [pc, #336]	; (1a000a60 <main+0x20c>)
 1a000910:	601a      	str	r2, [r3, #0]
    currentSample = 0;
-1a000912:	4b52      	ldr	r3, [pc, #328]	; (1a000a5c <main+0x208>)
+1a000912:	4b54      	ldr	r3, [pc, #336]	; (1a000a64 <main+0x210>)
 1a000914:	801c      	strh	r4, [r3, #0]
    captureActive = 1; ///Habilito la captura del ADC
-1a000916:	4b52      	ldr	r3, [pc, #328]	; (1a000a60 <main+0x20c>)
+1a000916:	4b54      	ldr	r3, [pc, #336]	; (1a000a68 <main+0x214>)
 1a000918:	701e      	strb	r6, [r3, #0]
 /**
  * Calculo de la cantidad de elementos del filtro y de la ganancai de continua
  */
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
-1a00091a:	4d52      	ldr	r5, [pc, #328]	; (1a000a64 <main+0x210>)
+1a00091a:	4d54      	ldr	r5, [pc, #336]	; (1a000a6c <main+0x218>)
 1a00091c:	200c      	movs	r0, #12
 1a00091e:	7028      	strb	r0, [r5, #0]
    lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
-1a000920:	4951      	ldr	r1, [pc, #324]	; (1a000a68 <main+0x214>)
+1a000920:	4953      	ldr	r1, [pc, #332]	; (1a000a70 <main+0x21c>)
 1a000922:	f000 fa33 	bl	1a000d8c <continousFilterGain>
 1a000926:	6068      	str	r0, [r5, #4]
 
@@ -1837,7 +1837,7 @@ int main( void ){
 1a00092e:	d804      	bhi.n	1a00093a <main+0xe6>
 		   invectorCompressorTestOffline[k] = 200;
 1a000930:	21c8      	movs	r1, #200	; 0xc8
-1a000932:	4a4e      	ldr	r2, [pc, #312]	; (1a000a6c <main+0x218>)
+1a000932:	4a50      	ldr	r2, [pc, #320]	; (1a000a74 <main+0x220>)
 1a000934:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
 1a000938:	e00e      	b.n	1a000958 <main+0x104>
 	   }
@@ -1848,14 +1848,14 @@ int main( void ){
 1a000942:	d805      	bhi.n	1a000950 <main+0xfc>
 		   invectorCompressorTestOffline[k] = 500;
 1a000944:	f44f 71fa 	mov.w	r1, #500	; 0x1f4
-1a000948:	4a48      	ldr	r2, [pc, #288]	; (1a000a6c <main+0x218>)
+1a000948:	4a4a      	ldr	r2, [pc, #296]	; (1a000a74 <main+0x220>)
 1a00094a:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
 1a00094e:	e003      	b.n	1a000958 <main+0x104>
 	   }
 	   else{
 		   invectorCompressorTestOffline[k] = 200;
 1a000950:	21c8      	movs	r1, #200	; 0xc8
-1a000952:	4a46      	ldr	r2, [pc, #280]	; (1a000a6c <main+0x218>)
+1a000952:	4a48      	ldr	r2, [pc, #288]	; (1a000a74 <main+0x220>)
 1a000954:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
  */
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
@@ -1876,7 +1876,7 @@ int main( void ){
    for(k=0;k<500;k++){
 	   outTestVector[k] = 0;
 1a000966:	2100      	movs	r1, #0
-1a000968:	4a41      	ldr	r2, [pc, #260]	; (1a000a70 <main+0x21c>)
+1a000968:	4a43      	ldr	r2, [pc, #268]	; (1a000a78 <main+0x224>)
 1a00096a:	f822 1013 	strh.w	r1, [r2, r3, lsl #1]
 	   }
 	   else{
@@ -1899,11 +1899,11 @@ int main( void ){
 1a00097c:	f001 fc7e 	bl	1a00227c <gpioWrite>
 	   ///Led loco para debug
 	   if (!waitDelay.running){
-1a000980:	4b3c      	ldr	r3, [pc, #240]	; (1a000a74 <main+0x220>)
+1a000980:	4b3e      	ldr	r3, [pc, #248]	; (1a000a7c <main+0x228>)
 1a000982:	7c1b      	ldrb	r3, [r3, #16]
 1a000984:	b943      	cbnz	r3, 1a000998 <main+0x144>
 			delayConfig(&waitDelay,WAIT_DELAY);
-1a000986:	4c3b      	ldr	r4, [pc, #236]	; (1a000a74 <main+0x220>)
+1a000986:	4c3d      	ldr	r4, [pc, #244]	; (1a000a7c <main+0x228>)
 1a000988:	4620      	mov	r0, r4
 1a00098a:	2232      	movs	r2, #50	; 0x32
 1a00098c:	2300      	movs	r3, #0
@@ -1913,11 +1913,11 @@ int main( void ){
 1a000994:	f001 fd7a 	bl	1a00248c <delayRead>
 		}
 	   if (delayRead(&waitDelay)){
-1a000998:	4836      	ldr	r0, [pc, #216]	; (1a000a74 <main+0x220>)
+1a000998:	4838      	ldr	r0, [pc, #224]	; (1a000a7c <main+0x228>)
 1a00099a:	f001 fd77 	bl	1a00248c <delayRead>
 1a00099e:	b118      	cbz	r0, 1a0009a8 <main+0x154>
 	   gpioToggle( LED );
-1a0009a0:	4b35      	ldr	r3, [pc, #212]	; (1a000a78 <main+0x224>)
+1a0009a0:	4b37      	ldr	r3, [pc, #220]	; (1a000a80 <main+0x22c>)
 1a0009a2:	7818      	ldrb	r0, [r3, #0]
 1a0009a4:	f001 fcc2 	bl	1a00232c <gpioToggle>
 	   //gpioToggle( AUDIO_BOARD_LED_YELLOW );
@@ -1925,829 +1925,831 @@ int main( void ){
 
 
 	   ///Se elimina el valor de continua del vector adquirido
-	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
-1a0009a8:	4d34      	ldr	r5, [pc, #208]	; (1a000a7c <main+0x228>)
+	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0], 385);
+1a0009a8:	4d36      	ldr	r5, [pc, #216]	; (1a000a84 <main+0x230>)
 1a0009aa:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
-1a0009ae:	4b28      	ldr	r3, [pc, #160]	; (1a000a50 <main+0x1fc>)
+1a0009ae:	4b2a      	ldr	r3, [pc, #168]	; (1a000a58 <main+0x204>)
 1a0009b0:	6819      	ldr	r1, [r3, #0]
 1a0009b2:	462a      	mov	r2, r5
-1a0009b4:	f000 f9c6 	bl	1a000d44 <eliminateContinous>
+1a0009b4:	f240 1381 	movw	r3, #385	; 0x181
+1a0009b8:	f000 f9c8 	bl	1a000d4c <eliminateContinous>
 
 	   compressorVectorProcessor(VECTOR_SIZE, firstOutputBuffer, outTestVector);
-1a0009b8:	4c2d      	ldr	r4, [pc, #180]	; (1a000a70 <main+0x21c>)
-1a0009ba:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
-1a0009be:	4629      	mov	r1, r5
-1a0009c0:	4622      	mov	r2, r4
-1a0009c2:	f000 f9a9 	bl	1a000d18 <compressorVectorProcessor>
+1a0009bc:	4c2e      	ldr	r4, [pc, #184]	; (1a000a78 <main+0x224>)
+1a0009be:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
+1a0009c2:	4629      	mov	r1, r5
+1a0009c4:	4622      	mov	r2, r4
+1a0009c6:	f000 f9ab 	bl	1a000d20 <compressorVectorProcessor>
 	   ///Se procesa el vector con el filtro definido
 	  // filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],VECTOR_SIZE,
 	   //		   	   	   	     &firstOutputBuffer[0], &secondOutputBuffer[0]);
 
 	   ///Se suma el nivel de continua
-	   sumContinous(VECTOR_SIZE, outTestVector, &outVector[0]);
-1a0009c6:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
-1a0009ca:	4621      	mov	r1, r4
-1a0009cc:	4a2c      	ldr	r2, [pc, #176]	; (1a000a80 <main+0x22c>)
-1a0009ce:	f000 f9cb 	bl	1a000d68 <sumContinous>
+	   sumContinous(VECTOR_SIZE, outTestVector, &outVector[0], 385);
+1a0009ca:	f44f 70fa 	mov.w	r0, #500	; 0x1f4
+1a0009ce:	4621      	mov	r1, r4
+1a0009d0:	4a2d      	ldr	r2, [pc, #180]	; (1a000a88 <main+0x234>)
+1a0009d2:	f240 1381 	movw	r3, #385	; 0x181
+1a0009d6:	f000 f9c9 	bl	1a000d6c <sumContinous>
 
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior
 	   if (transmissionStatus == COMPLETE){
-1a0009d2:	4b2c      	ldr	r3, [pc, #176]	; (1a000a84 <main+0x230>)
-1a0009d4:	781b      	ldrb	r3, [r3, #0]
-1a0009d6:	b2db      	uxtb	r3, r3
-1a0009d8:	2b01      	cmp	r3, #1
-1a0009da:	d105      	bne.n	1a0009e8 <main+0x194>
+1a0009da:	4b2c      	ldr	r3, [pc, #176]	; (1a000a8c <main+0x238>)
+1a0009dc:	781b      	ldrb	r3, [r3, #0]
+1a0009de:	b2db      	uxtb	r3, r3
+1a0009e0:	2b01      	cmp	r3, #1
+1a0009e2:	d105      	bne.n	1a0009f0 <main+0x19c>
 		   transmissionStatus = INIT;
-1a0009dc:	2200      	movs	r2, #0
-1a0009de:	4b29      	ldr	r3, [pc, #164]	; (1a000a84 <main+0x230>)
-1a0009e0:	701a      	strb	r2, [r3, #0]
+1a0009e4:	2200      	movs	r2, #0
+1a0009e6:	4b29      	ldr	r3, [pc, #164]	; (1a000a8c <main+0x238>)
+1a0009e8:	701a      	strb	r2, [r3, #0]
 		   transmitBuffer = outVector;
-1a0009e2:	4a27      	ldr	r2, [pc, #156]	; (1a000a80 <main+0x22c>)
-1a0009e4:	4b28      	ldr	r3, [pc, #160]	; (1a000a88 <main+0x234>)
-1a0009e6:	601a      	str	r2, [r3, #0]
+1a0009ea:	4a27      	ldr	r2, [pc, #156]	; (1a000a88 <main+0x234>)
+1a0009ec:	4b28      	ldr	r3, [pc, #160]	; (1a000a90 <main+0x23c>)
+1a0009ee:	601a      	str	r2, [r3, #0]
 	   }
 
 	   /// Mientras se estan adquiriendo datos no se hace el PING-PONG
 
 	   while(captureActive==1){
-1a0009e8:	4b1d      	ldr	r3, [pc, #116]	; (1a000a60 <main+0x20c>)
-1a0009ea:	781b      	ldrb	r3, [r3, #0]
-1a0009ec:	b2db      	uxtb	r3, r3
-1a0009ee:	2b01      	cmp	r3, #1
-1a0009f0:	d0fa      	beq.n	1a0009e8 <main+0x194>
+1a0009f0:	4b1d      	ldr	r3, [pc, #116]	; (1a000a68 <main+0x214>)
+1a0009f2:	781b      	ldrb	r3, [r3, #0]
+1a0009f4:	b2db      	uxtb	r3, r3
+1a0009f6:	2b01      	cmp	r3, #1
+1a0009f8:	d0fa      	beq.n	1a0009f0 <main+0x19c>
 	   }
 
 	   /// Se ejecuta la conmutacion de los buffer. PING-PONG!!
 	   if(bufferPtr==0){
-1a0009f2:	4b15      	ldr	r3, [pc, #84]	; (1a000a48 <main+0x1f4>)
-1a0009f4:	781b      	ldrb	r3, [r3, #0]
-1a0009f6:	f013 0fff 	tst.w	r3, #255	; 0xff
-1a0009fa:	d109      	bne.n	1a000a10 <main+0x1bc>
+1a0009fa:	4b15      	ldr	r3, [pc, #84]	; (1a000a50 <main+0x1fc>)
+1a0009fc:	781b      	ldrb	r3, [r3, #0]
+1a0009fe:	f013 0fff 	tst.w	r3, #255	; 0xff
+1a000a02:	d109      	bne.n	1a000a18 <main+0x1c4>
 		   bufferPtr=1;
-1a0009fc:	2201      	movs	r2, #1
-1a0009fe:	4b12      	ldr	r3, [pc, #72]	; (1a000a48 <main+0x1f4>)
-1a000a00:	701a      	strb	r2, [r3, #0]
+1a000a04:	2201      	movs	r2, #1
+1a000a06:	4b12      	ldr	r3, [pc, #72]	; (1a000a50 <main+0x1fc>)
+1a000a08:	701a      	strb	r2, [r3, #0]
 		   activeBuffer=audioBuffer2;
-1a000a02:	4a14      	ldr	r2, [pc, #80]	; (1a000a54 <main+0x200>)
-1a000a04:	4b12      	ldr	r3, [pc, #72]	; (1a000a50 <main+0x1fc>)
-1a000a06:	601a      	str	r2, [r3, #0]
+1a000a0a:	4a14      	ldr	r2, [pc, #80]	; (1a000a5c <main+0x208>)
+1a000a0c:	4b12      	ldr	r3, [pc, #72]	; (1a000a58 <main+0x204>)
+1a000a0e:	601a      	str	r2, [r3, #0]
 		   backBuffer=audioBuffer1;
-1a000a08:	4a10      	ldr	r2, [pc, #64]	; (1a000a4c <main+0x1f8>)
-1a000a0a:	4b13      	ldr	r3, [pc, #76]	; (1a000a58 <main+0x204>)
-1a000a0c:	601a      	str	r2, [r3, #0]
-1a000a0e:	e008      	b.n	1a000a22 <main+0x1ce>
+1a000a10:	4a10      	ldr	r2, [pc, #64]	; (1a000a54 <main+0x200>)
+1a000a12:	4b13      	ldr	r3, [pc, #76]	; (1a000a60 <main+0x20c>)
+1a000a14:	601a      	str	r2, [r3, #0]
+1a000a16:	e008      	b.n	1a000a2a <main+0x1d6>
 	   }
 	   else{
 		   bufferPtr=0;
-1a000a10:	2200      	movs	r2, #0
-1a000a12:	4b0d      	ldr	r3, [pc, #52]	; (1a000a48 <main+0x1f4>)
-1a000a14:	701a      	strb	r2, [r3, #0]
+1a000a18:	2200      	movs	r2, #0
+1a000a1a:	4b0d      	ldr	r3, [pc, #52]	; (1a000a50 <main+0x1fc>)
+1a000a1c:	701a      	strb	r2, [r3, #0]
 		   activeBuffer=audioBuffer1;
-1a000a16:	4a0d      	ldr	r2, [pc, #52]	; (1a000a4c <main+0x1f8>)
-1a000a18:	4b0d      	ldr	r3, [pc, #52]	; (1a000a50 <main+0x1fc>)
-1a000a1a:	601a      	str	r2, [r3, #0]
+1a000a1e:	4a0d      	ldr	r2, [pc, #52]	; (1a000a54 <main+0x200>)
+1a000a20:	4b0d      	ldr	r3, [pc, #52]	; (1a000a58 <main+0x204>)
+1a000a22:	601a      	str	r2, [r3, #0]
 		   backBuffer=audioBuffer2;
-1a000a1c:	4a0d      	ldr	r2, [pc, #52]	; (1a000a54 <main+0x200>)
-1a000a1e:	4b0e      	ldr	r3, [pc, #56]	; (1a000a58 <main+0x204>)
-1a000a20:	601a      	str	r2, [r3, #0]
+1a000a24:	4a0d      	ldr	r2, [pc, #52]	; (1a000a5c <main+0x208>)
+1a000a26:	4b0e      	ldr	r3, [pc, #56]	; (1a000a60 <main+0x20c>)
+1a000a28:	601a      	str	r2, [r3, #0]
 	   }
 
 	   /// Se inicia una nueva adquisicion de datos
 	   captureActive = 1;
-1a000a22:	2201      	movs	r2, #1
-1a000a24:	4b0e      	ldr	r3, [pc, #56]	; (1a000a60 <main+0x20c>)
-1a000a26:	701a      	strb	r2, [r3, #0]
+1a000a2a:	2201      	movs	r2, #1
+1a000a2c:	4b0e      	ldr	r3, [pc, #56]	; (1a000a68 <main+0x214>)
+1a000a2e:	701a      	strb	r2, [r3, #0]
    }
-1a000a28:	e7a6      	b.n	1a000978 <main+0x124>
-1a000a2a:	bf00      	nop
-1a000a2c:	100008cc 	.word	0x100008cc
-1a000a30:	1a002fd8 	.word	0x1a002fd8
-1a000a34:	10000a80 	.word	0x10000a80
-1a000a38:	00061a80 	.word	0x00061a80
-1a000a3c:	1a000799 	.word	0x1a000799
-1a000a40:	1a0007fd 	.word	0x1a0007fd
-1a000a44:	10002a28 	.word	0x10002a28
-1a000a48:	100008cd 	.word	0x100008cd
-1a000a4c:	10001678 	.word	0x10001678
-1a000a50:	10001670 	.word	0x10001670
-1a000a54:	10002640 	.word	0x10002640
-1a000a58:	10001674 	.word	0x10001674
-1a000a5c:	100008ce 	.word	0x100008ce
-1a000a60:	100008c8 	.word	0x100008c8
-1a000a64:	10001668 	.word	0x10001668
-1a000a68:	10000004 	.word	0x10000004
-1a000a6c:	10002258 	.word	0x10002258
-1a000a70:	10000e78 	.word	0x10000e78
-1a000a74:	10001650 	.word	0x10001650
-1a000a78:	10000001 	.word	0x10000001
-1a000a7c:	10001e70 	.word	0x10001e70
-1a000a80:	10001264 	.word	0x10001264
-1a000a84:	10000000 	.word	0x10000000
-1a000a88:	10001a84 	.word	0x10001a84
+1a000a30:	e7a2      	b.n	1a000978 <main+0x124>
+1a000a32:	bf00      	nop
+1a000a34:	100008cc 	.word	0x100008cc
+1a000a38:	1a002fd8 	.word	0x1a002fd8
+1a000a3c:	10000a80 	.word	0x10000a80
+1a000a40:	00061a80 	.word	0x00061a80
+1a000a44:	1a000799 	.word	0x1a000799
+1a000a48:	1a0007fd 	.word	0x1a0007fd
+1a000a4c:	10002a28 	.word	0x10002a28
+1a000a50:	100008cd 	.word	0x100008cd
+1a000a54:	10001678 	.word	0x10001678
+1a000a58:	10001670 	.word	0x10001670
+1a000a5c:	10002640 	.word	0x10002640
+1a000a60:	10001674 	.word	0x10001674
+1a000a64:	100008ce 	.word	0x100008ce
+1a000a68:	100008c8 	.word	0x100008c8
+1a000a6c:	10001668 	.word	0x10001668
+1a000a70:	10000004 	.word	0x10000004
+1a000a74:	10002258 	.word	0x10002258
+1a000a78:	10000e78 	.word	0x10000e78
+1a000a7c:	10001650 	.word	0x10001650
+1a000a80:	10000001 	.word	0x10000001
+1a000a84:	10001e70 	.word	0x10001e70
+1a000a88:	10001264 	.word	0x10001264
+1a000a8c:	10000000 	.word	0x10000000
+1a000a90:	10001a84 	.word	0x10001a84
 
-1a000a8c <calculateMaxOutputCompresion>:
+1a000a94 <calculateMaxOutputCompresion>:
 *        compresor
 * @param input muestra de la senal de entrada
 * @return none
 */
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
 	compressorStruct->outputMaxLevel = ((((uint16_t)input) -
-1a000a8c:	b289      	uxth	r1, r1
+1a000a94:	b289      	uxth	r1, r1
 			            compressorStruct->umbral)/compressorStruct->compressorRatio) +
-1a000a8e:	8882      	ldrh	r2, [r0, #4]
+1a000a96:	8882      	ldrh	r2, [r0, #4]
 *        compresor
 * @param input muestra de la senal de entrada
 * @return none
 */
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
 	compressorStruct->outputMaxLevel = ((((uint16_t)input) -
-1a000a90:	1a8b      	subs	r3, r1, r2
+1a000a98:	1a8b      	subs	r3, r1, r2
 			            compressorStruct->umbral)/compressorStruct->compressorRatio) +
-1a000a92:	7881      	ldrb	r1, [r0, #2]
-1a000a94:	fb93 f1f1 	sdiv	r1, r3, r1
+1a000a9a:	7881      	ldrb	r1, [r0, #2]
+1a000a9c:	fb93 f1f1 	sdiv	r1, r3, r1
 *        compresor
 * @param input muestra de la senal de entrada
 * @return none
 */
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input){
 	compressorStruct->outputMaxLevel = ((((uint16_t)input) -
-1a000a98:	4411      	add	r1, r2
-1a000a9a:	85c1      	strh	r1, [r0, #46]	; 0x2e
-1a000a9c:	4770      	bx	lr
-1a000a9e:	bf00      	nop
+1a000aa0:	4411      	add	r1, r2
+1a000aa2:	85c1      	strh	r1, [r0, #46]	; 0x2e
+1a000aa4:	4770      	bx	lr
+1a000aa6:	bf00      	nop
 
-1a000aa0 <calculateSamples>:
+1a000aa8 <calculateSamples>:
 */
 uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType,
 						  uint16_t timeBetweenSamplesInUs){
 	uint16_t samples;
 
 	switch(timeType){
-1a000aa0:	2901      	cmp	r1, #1
-1a000aa2:	d007      	beq.n	1a000ab4 <calculateSamples+0x14>
-1a000aa4:	b111      	cbz	r1, 1a000aac <calculateSamples+0xc>
-1a000aa6:	2902      	cmp	r1, #2
-1a000aa8:	d008      	beq.n	1a000abc <calculateSamples+0x1c>
-1a000aaa:	e00a      	b.n	1a000ac2 <calculateSamples+0x22>
+1a000aa8:	2901      	cmp	r1, #1
+1a000aaa:	d007      	beq.n	1a000abc <calculateSamples+0x14>
+1a000aac:	b111      	cbz	r1, 1a000ab4 <calculateSamples+0xc>
+1a000aae:	2902      	cmp	r1, #2
+1a000ab0:	d008      	beq.n	1a000ac4 <calculateSamples+0x1c>
+1a000ab2:	e00a      	b.n	1a000aca <calculateSamples+0x22>
 	case ATTACK_TIME:
 		samples = compressorStruct->compressorAttackTime.timeValue/timeBetweenSamplesInUs;
-1a000aac:	8983      	ldrh	r3, [r0, #12]
-1a000aae:	fbb3 f3f2 	udiv	r3, r3, r2
-		break;
-1a000ab2:	e006      	b.n	1a000ac2 <calculateSamples+0x22>
-	case RELEASE_TIME:
-		samples = compressorStruct->compressorReleaseTime.timeValue/timeBetweenSamplesInUs;
-1a000ab4:	8b03      	ldrh	r3, [r0, #24]
+1a000ab4:	8983      	ldrh	r3, [r0, #12]
 1a000ab6:	fbb3 f3f2 	udiv	r3, r3, r2
 		break;
-1a000aba:	e002      	b.n	1a000ac2 <calculateSamples+0x22>
+1a000aba:	e006      	b.n	1a000aca <calculateSamples+0x22>
+	case RELEASE_TIME:
+		samples = compressorStruct->compressorReleaseTime.timeValue/timeBetweenSamplesInUs;
+1a000abc:	8b03      	ldrh	r3, [r0, #24]
+1a000abe:	fbb3 f3f2 	udiv	r3, r3, r2
+		break;
+1a000ac2:	e002      	b.n	1a000aca <calculateSamples+0x22>
 	case HOLD_TIME:
 		samples = compressorStruct->compressorHoldTime.timeValue/timeBetweenSamplesInUs;
-1a000abc:	8c83      	ldrh	r3, [r0, #36]	; 0x24
-1a000abe:	fbb3 f3f2 	udiv	r3, r3, r2
+1a000ac4:	8c83      	ldrh	r3, [r0, #36]	; 0x24
+1a000ac6:	fbb3 f3f2 	udiv	r3, r3, r2
 		break;
 	default:
 		break;
 	}
 	return samples;
 }
-1a000ac2:	4618      	mov	r0, r3
-1a000ac4:	4770      	bx	lr
-1a000ac6:	bf00      	nop
+1a000aca:	4618      	mov	r0, r3
+1a000acc:	4770      	bx	lr
+1a000ace:	bf00      	nop
 
-1a000ac8 <calculateUpdateOutputPeriod>:
+1a000ad0 <calculateUpdateOutputPeriod>:
 	uint16_t differenceInputOutMax;
 /*
  * Hay que validar que la entrada sea distinta de outputMaxLevel porque sino se divide
  * por cero.
  */
 	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
-1a000ac8:	2900      	cmp	r1, #0
-1a000aca:	dd37      	ble.n	1a000b3c <calculateUpdateOutputPeriod+0x74>
-1a000acc:	8dc3      	ldrh	r3, [r0, #46]	; 0x2e
-1a000ace:	4299      	cmp	r1, r3
-1a000ad0:	d034      	beq.n	1a000b3c <calculateUpdateOutputPeriod+0x74>
+1a000ad0:	2900      	cmp	r1, #0
+1a000ad2:	dd37      	ble.n	1a000b44 <calculateUpdateOutputPeriod+0x74>
+1a000ad4:	8dc3      	ldrh	r3, [r0, #46]	; 0x2e
+1a000ad6:	4299      	cmp	r1, r3
+1a000ad8:	d034      	beq.n	1a000b44 <calculateUpdateOutputPeriod+0x74>
 *
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
 *        compresor
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input){
-1a000ad2:	b510      	push	{r4, lr}
-1a000ad4:	ed2d 8b02 	vpush	{d8}
-1a000ad8:	4604      	mov	r4, r0
+1a000ada:	b510      	push	{r4, lr}
+1a000adc:	ed2d 8b02 	vpush	{d8}
+1a000ae0:	4604      	mov	r4, r0
 /*
  * Hay que validar que la entrada sea distinta de outputMaxLevel porque sino se divide
  * por cero.
  */
 	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
 		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
-1a000ada:	1ac9      	subs	r1, r1, r3
-1a000adc:	b289      	uxth	r1, r1
+1a000ae2:	1ac9      	subs	r1, r1, r3
+1a000ae4:	b289      	uxth	r1, r1
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
 				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
-1a000ade:	89c3      	ldrh	r3, [r0, #14]
-1a000ae0:	ee07 3a90 	vmov	s15, r3
-1a000ae4:	eef8 7a67 	vcvt.f32.u32	s15, s15
+1a000ae6:	89c3      	ldrh	r3, [r0, #14]
+1a000ae8:	ee07 3a90 	vmov	s15, r3
+1a000aec:	eef8 7a67 	vcvt.f32.u32	s15, s15
 						/(float)(differenceInputOutMax)));
-1a000ae8:	ee07 1a10 	vmov	s14, r1
-1a000aec:	eeb8 8a47 	vcvt.f32.u32	s16, s14
+1a000af0:	ee07 1a10 	vmov	s14, r1
+1a000af4:	eeb8 8a47 	vcvt.f32.u32	s16, s14
  * por cero.
  */
 	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
 		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
 				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
-1a000af0:	eec7 7a88 	vdiv.f32	s15, s15, s16
-1a000af4:	ee17 0a90 	vmov	r0, s15
-1a000af8:	f001 fefe 	bl	1a0028f8 <__aeabi_f2d>
-1a000afc:	ec41 0b10 	vmov	d0, r0, r1
-1a000b00:	f001 fd42 	bl	1a002588 <round>
-1a000b04:	ec51 0b10 	vmov	r0, r1, d0
-1a000b08:	f001 ff4a 	bl	1a0029a0 <__aeabi_d2uiz>
+1a000af8:	eec7 7a88 	vdiv.f32	s15, s15, s16
+1a000afc:	ee17 0a90 	vmov	r0, s15
+1a000b00:	f001 fefa 	bl	1a0028f8 <__aeabi_f2d>
+1a000b04:	ec41 0b10 	vmov	d0, r0, r1
+1a000b08:	f001 fd3e 	bl	1a002588 <round>
+1a000b0c:	ec51 0b10 	vmov	r0, r1, d0
+1a000b10:	f001 ff46 	bl	1a0029a0 <__aeabi_d2uiz>
  * Hay que validar que la entrada sea distinta de outputMaxLevel porque sino se divide
  * por cero.
  */
 	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
 		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
-1a000b0c:	8220      	strh	r0, [r4, #16]
+1a000b14:	8220      	strh	r0, [r4, #16]
 				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
 						/(float)(differenceInputOutMax)));
 		compressorStruct->compressorReleaseTime.updateSamplePeriod =
 				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
-1a000b0e:	8b63      	ldrh	r3, [r4, #26]
-1a000b10:	ee07 3a90 	vmov	s15, r3
-1a000b14:	eef8 7a67 	vcvt.f32.u32	s15, s15
-1a000b18:	eec7 7a88 	vdiv.f32	s15, s15, s16
-1a000b1c:	ee17 0a90 	vmov	r0, s15
-1a000b20:	f001 feea 	bl	1a0028f8 <__aeabi_f2d>
-1a000b24:	ec41 0b10 	vmov	d0, r0, r1
-1a000b28:	f001 fd2e 	bl	1a002588 <round>
-1a000b2c:	ec51 0b10 	vmov	r0, r1, d0
-1a000b30:	f001 ff36 	bl	1a0029a0 <__aeabi_d2uiz>
+1a000b16:	8b63      	ldrh	r3, [r4, #26]
+1a000b18:	ee07 3a90 	vmov	s15, r3
+1a000b1c:	eef8 7a67 	vcvt.f32.u32	s15, s15
+1a000b20:	eec7 7a88 	vdiv.f32	s15, s15, s16
+1a000b24:	ee17 0a90 	vmov	r0, s15
+1a000b28:	f001 fee6 	bl	1a0028f8 <__aeabi_f2d>
+1a000b2c:	ec41 0b10 	vmov	d0, r0, r1
+1a000b30:	f001 fd2a 	bl	1a002588 <round>
+1a000b34:	ec51 0b10 	vmov	r0, r1, d0
+1a000b38:	f001 ff32 	bl	1a0029a0 <__aeabi_d2uiz>
 	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
 		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
 		compressorStruct->compressorAttackTime.updateSamplePeriod =
 				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
 						/(float)(differenceInputOutMax)));
 		compressorStruct->compressorReleaseTime.updateSamplePeriod =
-1a000b34:	83a0      	strh	r0, [r4, #28]
+1a000b3c:	83a0      	strh	r0, [r4, #28]
 				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
 						/(float)(differenceInputOutMax)));
 	}
 }
-1a000b36:	ecbd 8b02 	vpop	{d8}
-1a000b3a:	bd10      	pop	{r4, pc}
-1a000b3c:	4770      	bx	lr
-1a000b3e:	bf00      	nop
+1a000b3e:	ecbd 8b02 	vpop	{d8}
+1a000b42:	bd10      	pop	{r4, pc}
+1a000b44:	4770      	bx	lr
+1a000b46:	bf00      	nop
 
-1a000b40 <compressorProccesor>:
+1a000b48 <compressorProccesor>:
 *
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
 *        compresor
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
-1a000b40:	b538      	push	{r3, r4, r5, lr}
-1a000b42:	4604      	mov	r4, r0
-1a000b44:	460d      	mov	r5, r1
+1a000b48:	b538      	push	{r3, r4, r5, lr}
+1a000b4a:	4604      	mov	r4, r0
+1a000b4c:	460d      	mov	r5, r1
 	if(compressorStruct->compressorStatus == ENABLE){
-1a000b46:	7803      	ldrb	r3, [r0, #0]
-1a000b48:	2b01      	cmp	r3, #1
-1a000b4a:	f040 80ad 	bne.w	1a000ca8 <compressorProccesor+0x168>
+1a000b4e:	7803      	ldrb	r3, [r0, #0]
+1a000b50:	2b01      	cmp	r3, #1
+1a000b52:	f040 80ad 	bne.w	1a000cb0 <compressorProccesor+0x168>
 		switch(compressorStruct->triggerState){
-1a000b4e:	7843      	ldrb	r3, [r0, #1]
-1a000b50:	2b03      	cmp	r3, #3
-1a000b52:	f200 80a6 	bhi.w	1a000ca2 <compressorProccesor+0x162>
-1a000b56:	e8df f003 	tbb	[pc, r3]
-1a000b5a:	1402      	.short	0x1402
-1a000b5c:	7943      	.short	0x7943
+1a000b56:	7843      	ldrb	r3, [r0, #1]
+1a000b58:	2b03      	cmp	r3, #3
+1a000b5a:	f200 80a6 	bhi.w	1a000caa <compressorProccesor+0x162>
+1a000b5e:	e8df f003 	tbb	[pc, r3]
+1a000b62:	1402      	.short	0x1402
+1a000b64:	7943      	.short	0x7943
 		case DISABLE_STATE:
 			if(input > (int16_t)(compressorStruct->umbral)){
-1a000b5e:	f9b0 3004 	ldrsh.w	r3, [r0, #4]
-1a000b62:	428b      	cmp	r3, r1
-1a000b64:	f280 80a0 	bge.w	1a000ca8 <compressorProccesor+0x168>
+1a000b66:	f9b0 3004 	ldrsh.w	r3, [r0, #4]
+1a000b6a:	428b      	cmp	r3, r1
+1a000b6c:	f280 80a0 	bge.w	1a000cb0 <compressorProccesor+0x168>
 				calculateMaxOutputCompresion(compressorStruct, input);
-1a000b68:	f7ff ff90 	bl	1a000a8c <calculateMaxOutputCompresion>
+1a000b70:	f7ff ff90 	bl	1a000a94 <calculateMaxOutputCompresion>
 				calculateUpdateOutputPeriod(compressorStruct, input);
-1a000b6c:	4620      	mov	r0, r4
-1a000b6e:	4629      	mov	r1, r5
-1a000b70:	f7ff ffaa 	bl	1a000ac8 <calculateUpdateOutputPeriod>
+1a000b74:	4620      	mov	r0, r4
+1a000b76:	4629      	mov	r1, r5
+1a000b78:	f7ff ffaa 	bl	1a000ad0 <calculateUpdateOutputPeriod>
 				compressorStruct->triggerState = ATTACK_STATE;
-1a000b74:	2301      	movs	r3, #1
-1a000b76:	7063      	strb	r3, [r4, #1]
+1a000b7c:	2301      	movs	r3, #1
+1a000b7e:	7063      	strb	r3, [r4, #1]
 				compressorStruct->currentSample = 0;
-1a000b78:	2300      	movs	r3, #0
-1a000b7a:	80e3      	strh	r3, [r4, #6]
+1a000b80:	2300      	movs	r3, #0
+1a000b82:	80e3      	strh	r3, [r4, #6]
 				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-1a000b7c:	8263      	strh	r3, [r4, #18]
+1a000b84:	8263      	strh	r3, [r4, #18]
 				compressorStruct->compressorAttackTime.updateValue = 0;
-1a000b7e:	82a3      	strh	r3, [r4, #20]
-1a000b80:	e092      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000b86:	82a3      	strh	r3, [r4, #20]
+1a000b88:	e092      	b.n	1a000cb0 <compressorProccesor+0x168>
 			}
 			break;
 		case ATTACK_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime.samplesTime){
-1a000b82:	88c3      	ldrh	r3, [r0, #6]
-1a000b84:	89c2      	ldrh	r2, [r0, #14]
-1a000b86:	4293      	cmp	r3, r2
-1a000b88:	d217      	bcs.n	1a000bba <compressorProccesor+0x7a>
+1a000b8a:	88c3      	ldrh	r3, [r0, #6]
+1a000b8c:	89c2      	ldrh	r2, [r0, #14]
+1a000b8e:	4293      	cmp	r3, r2
+1a000b90:	d217      	bcs.n	1a000bc2 <compressorProccesor+0x7a>
 				compressorStruct->currentSample++;
-1a000b8a:	3301      	adds	r3, #1
-1a000b8c:	80c3      	strh	r3, [r0, #6]
+1a000b92:	3301      	adds	r3, #1
+1a000b94:	80c3      	strh	r3, [r0, #6]
 				compressorStruct->compressorAttackTime.currentUpdateSample++;
-1a000b8e:	8a43      	ldrh	r3, [r0, #18]
-1a000b90:	3301      	adds	r3, #1
-1a000b92:	b29b      	uxth	r3, r3
-1a000b94:	8243      	strh	r3, [r0, #18]
+1a000b96:	8a43      	ldrh	r3, [r0, #18]
+1a000b98:	3301      	adds	r3, #1
+1a000b9a:	b29b      	uxth	r3, r3
+1a000b9c:	8243      	strh	r3, [r0, #18]
 				if(compressorStruct->compressorAttackTime.currentUpdateSample ==
 						compressorStruct->compressorAttackTime.updateSamplePeriod){
-1a000b96:	8a02      	ldrh	r2, [r0, #16]
+1a000b9e:	8a02      	ldrh	r2, [r0, #16]
 			break;
 		case ATTACK_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime.samplesTime){
 				compressorStruct->currentSample++;
 				compressorStruct->compressorAttackTime.currentUpdateSample++;
 				if(compressorStruct->compressorAttackTime.currentUpdateSample ==
-1a000b98:	4293      	cmp	r3, r2
-1a000b9a:	d104      	bne.n	1a000ba6 <compressorProccesor+0x66>
+1a000ba0:	4293      	cmp	r3, r2
+1a000ba2:	d104      	bne.n	1a000bae <compressorProccesor+0x66>
 						compressorStruct->compressorAttackTime.updateSamplePeriod){
 					compressorStruct->compressorAttackTime.updateValue++;
-1a000b9c:	8a83      	ldrh	r3, [r0, #20]
-1a000b9e:	3301      	adds	r3, #1
-1a000ba0:	8283      	strh	r3, [r0, #20]
+1a000ba4:	8a83      	ldrh	r3, [r0, #20]
+1a000ba6:	3301      	adds	r3, #1
+1a000ba8:	8283      	strh	r3, [r0, #20]
 					compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-1a000ba2:	2300      	movs	r3, #0
-1a000ba4:	8243      	strh	r3, [r0, #18]
+1a000baa:	2300      	movs	r3, #0
+1a000bac:	8243      	strh	r3, [r0, #18]
 				}
 				if(input > 0){
-1a000ba6:	2d00      	cmp	r5, #0
-1a000ba8:	dd03      	ble.n	1a000bb2 <compressorProccesor+0x72>
+1a000bae:	2d00      	cmp	r5, #0
+1a000bb0:	dd03      	ble.n	1a000bba <compressorProccesor+0x72>
 					input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-1a000baa:	8aa3      	ldrh	r3, [r4, #20]
-1a000bac:	1aed      	subs	r5, r5, r3
-1a000bae:	b22d      	sxth	r5, r5
-1a000bb0:	e07a      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000bb2:	8aa3      	ldrh	r3, [r4, #20]
+1a000bb4:	1aed      	subs	r5, r5, r3
+1a000bb6:	b22d      	sxth	r5, r5
+1a000bb8:	e07a      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 				else{
 					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-1a000bb2:	8aa3      	ldrh	r3, [r4, #20]
-1a000bb4:	441d      	add	r5, r3
-1a000bb6:	b22d      	sxth	r5, r5
-1a000bb8:	e076      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000bba:	8aa3      	ldrh	r3, [r4, #20]
+1a000bbc:	441d      	add	r5, r3
+1a000bbe:	b22d      	sxth	r5, r5
+1a000bc0:	e076      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 			}
 			else{
 				if(input > 0){
-1a000bba:	2900      	cmp	r1, #0
-1a000bbc:	dd03      	ble.n	1a000bc6 <compressorProccesor+0x86>
+1a000bc2:	2900      	cmp	r1, #0
+1a000bc4:	dd03      	ble.n	1a000bce <compressorProccesor+0x86>
 					input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-1a000bbe:	8a83      	ldrh	r3, [r0, #20]
-1a000bc0:	1acd      	subs	r5, r1, r3
-1a000bc2:	b22d      	sxth	r5, r5
-1a000bc4:	e002      	b.n	1a000bcc <compressorProccesor+0x8c>
+1a000bc6:	8a83      	ldrh	r3, [r0, #20]
+1a000bc8:	1acd      	subs	r5, r1, r3
+1a000bca:	b22d      	sxth	r5, r5
+1a000bcc:	e002      	b.n	1a000bd4 <compressorProccesor+0x8c>
 				}
 				else{
 					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-1a000bc6:	8a83      	ldrh	r3, [r0, #20]
-1a000bc8:	441d      	add	r5, r3
-1a000bca:	b22d      	sxth	r5, r5
+1a000bce:	8a83      	ldrh	r3, [r0, #20]
+1a000bd0:	441d      	add	r5, r3
+1a000bd2:	b22d      	sxth	r5, r5
 				}
 				compressorStruct->currentSample = 0;
-1a000bcc:	2300      	movs	r3, #0
-1a000bce:	80e3      	strh	r3, [r4, #6]
+1a000bd4:	2300      	movs	r3, #0
+1a000bd6:	80e3      	strh	r3, [r4, #6]
 				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-1a000bd0:	8263      	strh	r3, [r4, #18]
+1a000bd8:	8263      	strh	r3, [r4, #18]
 				compressorStruct->compressorHoldTime.updateValue =
 						compressorStruct->compressorAttackTime.updateValue;
-1a000bd2:	8aa2      	ldrh	r2, [r4, #20]
+1a000bda:	8aa2      	ldrh	r2, [r4, #20]
 				else{
 					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
 				}
 				compressorStruct->currentSample = 0;
 				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
 				compressorStruct->compressorHoldTime.updateValue =
-1a000bd4:	85a2      	strh	r2, [r4, #44]	; 0x2c
+1a000bdc:	85a2      	strh	r2, [r4, #44]	; 0x2c
 						compressorStruct->compressorAttackTime.updateValue;
 				compressorStruct->compressorReleaseTime.updateValue =
-1a000bd6:	8422      	strh	r2, [r4, #32]
+1a000bde:	8422      	strh	r2, [r4, #32]
 						compressorStruct->compressorAttackTime.updateValue;
 				compressorStruct->compressorAttackTime.updateValue = 0;
-1a000bd8:	82a3      	strh	r3, [r4, #20]
+1a000be0:	82a3      	strh	r3, [r4, #20]
 				compressorStruct->triggerState = HOLD_STATE;
-1a000bda:	2302      	movs	r3, #2
-1a000bdc:	7063      	strb	r3, [r4, #1]
-1a000bde:	e063      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000be2:	2302      	movs	r3, #2
+1a000be4:	7063      	strb	r3, [r4, #1]
+1a000be6:	e063      	b.n	1a000cb0 <compressorProccesor+0x168>
 			}
 			break;
 		case HOLD_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorHoldTime.samplesTime){
-1a000be0:	88c3      	ldrh	r3, [r0, #6]
-1a000be2:	8cc2      	ldrh	r2, [r0, #38]	; 0x26
-1a000be4:	4293      	cmp	r3, r2
-1a000be6:	d20b      	bcs.n	1a000c00 <compressorProccesor+0xc0>
+1a000be8:	88c3      	ldrh	r3, [r0, #6]
+1a000bea:	8cc2      	ldrh	r2, [r0, #38]	; 0x26
+1a000bec:	4293      	cmp	r3, r2
+1a000bee:	d20b      	bcs.n	1a000c08 <compressorProccesor+0xc0>
 				compressorStruct->currentSample++;
-1a000be8:	3301      	adds	r3, #1
-1a000bea:	80c3      	strh	r3, [r0, #6]
+1a000bf0:	3301      	adds	r3, #1
+1a000bf2:	80c3      	strh	r3, [r0, #6]
 				if(input > 0){
-1a000bec:	2900      	cmp	r1, #0
-1a000bee:	dd03      	ble.n	1a000bf8 <compressorProccesor+0xb8>
+1a000bf4:	2900      	cmp	r1, #0
+1a000bf6:	dd03      	ble.n	1a000c00 <compressorProccesor+0xb8>
 					input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-1a000bf0:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
-1a000bf2:	1acd      	subs	r5, r1, r3
-1a000bf4:	b22d      	sxth	r5, r5
-1a000bf6:	e057      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000bf8:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
+1a000bfa:	1acd      	subs	r5, r1, r3
+1a000bfc:	b22d      	sxth	r5, r5
+1a000bfe:	e057      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 				else{
 					input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-1a000bf8:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
-1a000bfa:	441d      	add	r5, r3
-1a000bfc:	b22d      	sxth	r5, r5
-1a000bfe:	e053      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000c00:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
+1a000c02:	441d      	add	r5, r3
+1a000c04:	b22d      	sxth	r5, r5
+1a000c06:	e053      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 			}
 			else{
 				if(input > ((int16_t)compressorStruct->umbral)||(input<((-1)*((int16_t)compressorStruct->umbral)))){
-1a000c00:	8883      	ldrh	r3, [r0, #4]
-1a000c02:	b21a      	sxth	r2, r3
-1a000c04:	428a      	cmp	r2, r1
-1a000c06:	db02      	blt.n	1a000c0e <compressorProccesor+0xce>
-1a000c08:	4253      	negs	r3, r2
-1a000c0a:	4299      	cmp	r1, r3
-1a000c0c:	da0e      	bge.n	1a000c2c <compressorProccesor+0xec>
+1a000c08:	8883      	ldrh	r3, [r0, #4]
+1a000c0a:	b21a      	sxth	r2, r3
+1a000c0c:	428a      	cmp	r2, r1
+1a000c0e:	db02      	blt.n	1a000c16 <compressorProccesor+0xce>
+1a000c10:	4253      	negs	r3, r2
+1a000c12:	4299      	cmp	r1, r3
+1a000c14:	da0e      	bge.n	1a000c34 <compressorProccesor+0xec>
 					if(input > 0){
-1a000c0e:	2d00      	cmp	r5, #0
-1a000c10:	dd03      	ble.n	1a000c1a <compressorProccesor+0xda>
+1a000c16:	2d00      	cmp	r5, #0
+1a000c18:	dd03      	ble.n	1a000c22 <compressorProccesor+0xda>
 						input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-1a000c12:	8da3      	ldrh	r3, [r4, #44]	; 0x2c
-1a000c14:	1aed      	subs	r5, r5, r3
-1a000c16:	b22d      	sxth	r5, r5
-1a000c18:	e002      	b.n	1a000c20 <compressorProccesor+0xe0>
+1a000c1a:	8da3      	ldrh	r3, [r4, #44]	; 0x2c
+1a000c1c:	1aed      	subs	r5, r5, r3
+1a000c1e:	b22d      	sxth	r5, r5
+1a000c20:	e002      	b.n	1a000c28 <compressorProccesor+0xe0>
 					}
 					else{
 						input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-1a000c1a:	8da3      	ldrh	r3, [r4, #44]	; 0x2c
-1a000c1c:	441d      	add	r5, r3
-1a000c1e:	b22d      	sxth	r5, r5
+1a000c22:	8da3      	ldrh	r3, [r4, #44]	; 0x2c
+1a000c24:	441d      	add	r5, r3
+1a000c26:	b22d      	sxth	r5, r5
 					}
 					compressorStruct->currentSample = 0;
-1a000c20:	2300      	movs	r3, #0
-1a000c22:	80e3      	strh	r3, [r4, #6]
+1a000c28:	2300      	movs	r3, #0
+1a000c2a:	80e3      	strh	r3, [r4, #6]
 					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-1a000c24:	83e3      	strh	r3, [r4, #30]
+1a000c2c:	83e3      	strh	r3, [r4, #30]
 					compressorStruct->triggerState = HOLD_STATE;
-1a000c26:	2302      	movs	r3, #2
-1a000c28:	7063      	strb	r3, [r4, #1]
-1a000c2a:	e03d      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000c2e:	2302      	movs	r3, #2
+1a000c30:	7063      	strb	r3, [r4, #1]
+1a000c32:	e03d      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 				else{
 					if(input > 0){
-1a000c2c:	2900      	cmp	r1, #0
-1a000c2e:	dd03      	ble.n	1a000c38 <compressorProccesor+0xf8>
+1a000c34:	2900      	cmp	r1, #0
+1a000c36:	dd03      	ble.n	1a000c40 <compressorProccesor+0xf8>
 						input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-1a000c30:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
-1a000c32:	1acd      	subs	r5, r1, r3
-1a000c34:	b22d      	sxth	r5, r5
-1a000c36:	e002      	b.n	1a000c3e <compressorProccesor+0xfe>
+1a000c38:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
+1a000c3a:	1acd      	subs	r5, r1, r3
+1a000c3c:	b22d      	sxth	r5, r5
+1a000c3e:	e002      	b.n	1a000c46 <compressorProccesor+0xfe>
 					}
 					else{
 						input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-1a000c38:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
-1a000c3a:	441d      	add	r5, r3
-1a000c3c:	b22d      	sxth	r5, r5
+1a000c40:	8d83      	ldrh	r3, [r0, #44]	; 0x2c
+1a000c42:	441d      	add	r5, r3
+1a000c44:	b22d      	sxth	r5, r5
 					}
 					compressorStruct->currentSample = 0;
-1a000c3e:	2300      	movs	r3, #0
-1a000c40:	80e3      	strh	r3, [r4, #6]
+1a000c46:	2300      	movs	r3, #0
+1a000c48:	80e3      	strh	r3, [r4, #6]
 					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-1a000c42:	83e3      	strh	r3, [r4, #30]
+1a000c4a:	83e3      	strh	r3, [r4, #30]
 					compressorStruct->compressorHoldTime.updateValue = 0;
-1a000c44:	85a3      	strh	r3, [r4, #44]	; 0x2c
+1a000c4c:	85a3      	strh	r3, [r4, #44]	; 0x2c
 					compressorStruct->triggerState = RELEASE_STATE;
-1a000c46:	2303      	movs	r3, #3
-1a000c48:	7063      	strb	r3, [r4, #1]
-1a000c4a:	e02d      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000c4e:	2303      	movs	r3, #3
+1a000c50:	7063      	strb	r3, [r4, #1]
+1a000c52:	e02d      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 			}
 			break;
 		case RELEASE_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime.samplesTime){
-1a000c4c:	88c3      	ldrh	r3, [r0, #6]
-1a000c4e:	8b42      	ldrh	r2, [r0, #26]
-1a000c50:	4293      	cmp	r3, r2
-1a000c52:	d217      	bcs.n	1a000c84 <compressorProccesor+0x144>
+1a000c54:	88c3      	ldrh	r3, [r0, #6]
+1a000c56:	8b42      	ldrh	r2, [r0, #26]
+1a000c58:	4293      	cmp	r3, r2
+1a000c5a:	d217      	bcs.n	1a000c8c <compressorProccesor+0x144>
 				compressorStruct->currentSample++;
-1a000c54:	3301      	adds	r3, #1
-1a000c56:	80c3      	strh	r3, [r0, #6]
+1a000c5c:	3301      	adds	r3, #1
+1a000c5e:	80c3      	strh	r3, [r0, #6]
 				compressorStruct->compressorReleaseTime.currentUpdateSample++;
-1a000c58:	8bc3      	ldrh	r3, [r0, #30]
-1a000c5a:	3301      	adds	r3, #1
-1a000c5c:	b29b      	uxth	r3, r3
-1a000c5e:	83c3      	strh	r3, [r0, #30]
+1a000c60:	8bc3      	ldrh	r3, [r0, #30]
+1a000c62:	3301      	adds	r3, #1
+1a000c64:	b29b      	uxth	r3, r3
+1a000c66:	83c3      	strh	r3, [r0, #30]
 				if(compressorStruct->compressorReleaseTime.currentUpdateSample ==
 						compressorStruct->compressorReleaseTime.updateSamplePeriod){
-1a000c60:	8b82      	ldrh	r2, [r0, #28]
+1a000c68:	8b82      	ldrh	r2, [r0, #28]
 			break;
 		case RELEASE_STATE:
 			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime.samplesTime){
 				compressorStruct->currentSample++;
 				compressorStruct->compressorReleaseTime.currentUpdateSample++;
 				if(compressorStruct->compressorReleaseTime.currentUpdateSample ==
-1a000c62:	4293      	cmp	r3, r2
-1a000c64:	d104      	bne.n	1a000c70 <compressorProccesor+0x130>
+1a000c6a:	4293      	cmp	r3, r2
+1a000c6c:	d104      	bne.n	1a000c78 <compressorProccesor+0x130>
 						compressorStruct->compressorReleaseTime.updateSamplePeriod){
 					compressorStruct->compressorReleaseTime.updateValue--;
-1a000c66:	8c03      	ldrh	r3, [r0, #32]
-1a000c68:	3b01      	subs	r3, #1
-1a000c6a:	8403      	strh	r3, [r0, #32]
+1a000c6e:	8c03      	ldrh	r3, [r0, #32]
+1a000c70:	3b01      	subs	r3, #1
+1a000c72:	8403      	strh	r3, [r0, #32]
 					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-1a000c6c:	2300      	movs	r3, #0
-1a000c6e:	83c3      	strh	r3, [r0, #30]
+1a000c74:	2300      	movs	r3, #0
+1a000c76:	83c3      	strh	r3, [r0, #30]
 				}
 				if(input > 0){
-1a000c70:	2d00      	cmp	r5, #0
-1a000c72:	dd03      	ble.n	1a000c7c <compressorProccesor+0x13c>
+1a000c78:	2d00      	cmp	r5, #0
+1a000c7a:	dd03      	ble.n	1a000c84 <compressorProccesor+0x13c>
 					input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-1a000c74:	8c23      	ldrh	r3, [r4, #32]
-1a000c76:	1aed      	subs	r5, r5, r3
-1a000c78:	b22d      	sxth	r5, r5
-1a000c7a:	e015      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000c7c:	8c23      	ldrh	r3, [r4, #32]
+1a000c7e:	1aed      	subs	r5, r5, r3
+1a000c80:	b22d      	sxth	r5, r5
+1a000c82:	e015      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 				else{
 					input = input + (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-1a000c7c:	8c23      	ldrh	r3, [r4, #32]
-1a000c7e:	441d      	add	r5, r3
-1a000c80:	b22d      	sxth	r5, r5
-1a000c82:	e011      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000c84:	8c23      	ldrh	r3, [r4, #32]
+1a000c86:	441d      	add	r5, r3
+1a000c88:	b22d      	sxth	r5, r5
+1a000c8a:	e011      	b.n	1a000cb0 <compressorProccesor+0x168>
 				}
 			}
 			else{
 				if(input > 0){
-1a000c84:	2900      	cmp	r1, #0
-1a000c86:	dd03      	ble.n	1a000c90 <compressorProccesor+0x150>
+1a000c8c:	2900      	cmp	r1, #0
+1a000c8e:	dd03      	ble.n	1a000c98 <compressorProccesor+0x150>
 					input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-1a000c88:	8c03      	ldrh	r3, [r0, #32]
-1a000c8a:	1acd      	subs	r5, r1, r3
-1a000c8c:	b22d      	sxth	r5, r5
-1a000c8e:	e002      	b.n	1a000c96 <compressorProccesor+0x156>
+1a000c90:	8c03      	ldrh	r3, [r0, #32]
+1a000c92:	1acd      	subs	r5, r1, r3
+1a000c94:	b22d      	sxth	r5, r5
+1a000c96:	e002      	b.n	1a000c9e <compressorProccesor+0x156>
 				}
 				else{
 					input = input + (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-1a000c90:	8c03      	ldrh	r3, [r0, #32]
-1a000c92:	441d      	add	r5, r3
-1a000c94:	b22d      	sxth	r5, r5
+1a000c98:	8c03      	ldrh	r3, [r0, #32]
+1a000c9a:	441d      	add	r5, r3
+1a000c9c:	b22d      	sxth	r5, r5
 				}
 				compressorStruct->currentSample = 0;
-1a000c96:	2300      	movs	r3, #0
-1a000c98:	80e3      	strh	r3, [r4, #6]
+1a000c9e:	2300      	movs	r3, #0
+1a000ca0:	80e3      	strh	r3, [r4, #6]
 				compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-1a000c9a:	83e3      	strh	r3, [r4, #30]
+1a000ca2:	83e3      	strh	r3, [r4, #30]
 				compressorStruct->compressorReleaseTime.updateValue = 0;
-1a000c9c:	8423      	strh	r3, [r4, #32]
+1a000ca4:	8423      	strh	r3, [r4, #32]
 				compressorStruct->triggerState = DISABLE_STATE;
-1a000c9e:	7063      	strb	r3, [r4, #1]
-1a000ca0:	e002      	b.n	1a000ca8 <compressorProccesor+0x168>
+1a000ca6:	7063      	strb	r3, [r4, #1]
+1a000ca8:	e002      	b.n	1a000cb0 <compressorProccesor+0x168>
 			}
 			break;
 		default:
 			compressorStruct->currentSample = 0;
-1a000ca2:	2300      	movs	r3, #0
-1a000ca4:	80c3      	strh	r3, [r0, #6]
+1a000caa:	2300      	movs	r3, #0
+1a000cac:	80c3      	strh	r3, [r0, #6]
 			compressorStruct->triggerState = DISABLE_STATE;
-1a000ca6:	7043      	strb	r3, [r0, #1]
+1a000cae:	7043      	strb	r3, [r0, #1]
 			break;
 		}
 	}
 	return input;
 }
-1a000ca8:	4628      	mov	r0, r5
-1a000caa:	bd38      	pop	{r3, r4, r5, pc}
+1a000cb0:	4628      	mov	r0, r5
+1a000cb2:	bd38      	pop	{r3, r4, r5, pc}
 
-1a000cac <compressorInit>:
+1a000cb4 <compressorInit>:
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
 *        compresor
 * @return none
 */
 void compressorInit(compressorStruct_t *compressorStruct){
 	compressorStruct->compressorStatus = ENABLE;
-1a000cac:	2301      	movs	r3, #1
-1a000cae:	7003      	strb	r3, [r0, #0]
+1a000cb4:	2301      	movs	r3, #1
+1a000cb6:	7003      	strb	r3, [r0, #0]
 	compressorStruct->triggerState = DISABLE_STATE;
-1a000cb0:	2200      	movs	r2, #0
-1a000cb2:	7042      	strb	r2, [r0, #1]
+1a000cb8:	2200      	movs	r2, #0
+1a000cba:	7042      	strb	r2, [r0, #1]
 	compressorStruct->compressorRatio = 1;
-1a000cb4:	7083      	strb	r3, [r0, #2]
+1a000cbc:	7083      	strb	r3, [r0, #2]
 	compressorStruct->umbral = 512;
-1a000cb6:	f44f 7300 	mov.w	r3, #512	; 0x200
-1a000cba:	8083      	strh	r3, [r0, #4]
+1a000cbe:	f44f 7300 	mov.w	r3, #512	; 0x200
+1a000cc2:	8083      	strh	r3, [r0, #4]
 	compressorStruct->timeBetweenInputSamples = TIME_BETWEEN_SAMPLES_IN_US;
-1a000cbc:	2316      	movs	r3, #22
-1a000cbe:	8103      	strh	r3, [r0, #8]
-1a000cc0:	4770      	bx	lr
-1a000cc2:	bf00      	nop
+1a000cc4:	2316      	movs	r3, #22
+1a000cc6:	8103      	strh	r3, [r0, #8]
+1a000cc8:	4770      	bx	lr
+1a000cca:	bf00      	nop
 
-1a000cc4 <setCompressorRatio>:
+1a000ccc <setCompressorRatio>:
 * @param compressorRatio relacion de compresion a ser seteada en la estructura de manejo
 * 		 del compresor
 * @return none
 */
 void setCompressorRatio(compressorStruct_t *compressorStruct, uint8_t compressorRatio){
 	compressorStruct->compressorRatio = compressorRatio;
-1a000cc4:	7081      	strb	r1, [r0, #2]
-1a000cc6:	4770      	bx	lr
+1a000ccc:	7081      	strb	r1, [r0, #2]
+1a000cce:	4770      	bx	lr
 
-1a000cc8 <setCompressorUmbral>:
+1a000cd0 <setCompressorUmbral>:
 *        compresor
 * @param compressorUmbral umbral a ser seteado en la estructura de manejo del compresor
 * @return none
 */
 void setCompressorUmbral(compressorStruct_t *compressorStruct, uint16_t compressorUmbral){
 	compressorStruct->umbral = compressorUmbral;
-1a000cc8:	8081      	strh	r1, [r0, #4]
-1a000cca:	4770      	bx	lr
+1a000cd0:	8081      	strh	r1, [r0, #4]
+1a000cd2:	4770      	bx	lr
 
-1a000ccc <setTimeBetweenInputSamples>:
+1a000cd4 <setTimeBetweenInputSamples>:
 * @param timeBetweenInputSamplesInUs tiempo entre muestras de entrada en microsegundos
 * @return none
 */
 void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
 		uint16_t timeBetweenInputSamplesInUs){
 	compressorStruct->timeBetweenInputSamples = timeBetweenInputSamplesInUs;
-1a000ccc:	8101      	strh	r1, [r0, #8]
-1a000cce:	4770      	bx	lr
+1a000cd4:	8101      	strh	r1, [r0, #8]
+1a000cd6:	4770      	bx	lr
 
-1a000cd0 <setCompressorAttackTime>:
+1a000cd8 <setCompressorAttackTime>:
 *        compresor
 * @param compressorAttackTime setea el tiempo de ataque de compresion del compresor
 * @return none
 */
 void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorAttackTime){
-1a000cd0:	b510      	push	{r4, lr}
-1a000cd2:	4604      	mov	r4, r0
+1a000cd8:	b510      	push	{r4, lr}
+1a000cda:	4604      	mov	r4, r0
 	compressorStruct->compressorAttackTime.type = ATTACK_TIME;
-1a000cd4:	2300      	movs	r3, #0
-1a000cd6:	7283      	strb	r3, [r0, #10]
+1a000cdc:	2300      	movs	r3, #0
+1a000cde:	7283      	strb	r3, [r0, #10]
  	compressorStruct->compressorAttackTime.timeValue = compressorAttackTime;
-1a000cd8:	8181      	strh	r1, [r0, #12]
+1a000ce0:	8181      	strh	r1, [r0, #12]
 	compressorStruct->compressorAttackTime.samplesTime = calculateSamples(compressorStruct,
-1a000cda:	4619      	mov	r1, r3
-1a000cdc:	8902      	ldrh	r2, [r0, #8]
-1a000cde:	f7ff fedf 	bl	1a000aa0 <calculateSamples>
-1a000ce2:	81e0      	strh	r0, [r4, #14]
-1a000ce4:	bd10      	pop	{r4, pc}
-1a000ce6:	bf00      	nop
+1a000ce2:	4619      	mov	r1, r3
+1a000ce4:	8902      	ldrh	r2, [r0, #8]
+1a000ce6:	f7ff fedf 	bl	1a000aa8 <calculateSamples>
+1a000cea:	81e0      	strh	r0, [r4, #14]
+1a000cec:	bd10      	pop	{r4, pc}
+1a000cee:	bf00      	nop
 
-1a000ce8 <setCompressorHoldTime>:
+1a000cf0 <setCompressorHoldTime>:
 *        compresor
 * @param compressorHoldTime setea el tiempo de mantenimiento del compresor
 * @return none
 */
 void setCompressorHoldTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorHoldTime){
-1a000ce8:	b510      	push	{r4, lr}
-1a000cea:	4604      	mov	r4, r0
+1a000cf0:	b510      	push	{r4, lr}
+1a000cf2:	4604      	mov	r4, r0
 	compressorStruct->compressorHoldTime.type = HOLD_TIME;
-1a000cec:	2302      	movs	r3, #2
-1a000cee:	f880 3022 	strb.w	r3, [r0, #34]	; 0x22
+1a000cf4:	2302      	movs	r3, #2
+1a000cf6:	f880 3022 	strb.w	r3, [r0, #34]	; 0x22
 	compressorStruct->compressorHoldTime.timeValue = compressorHoldTime;
-1a000cf2:	8481      	strh	r1, [r0, #36]	; 0x24
+1a000cfa:	8481      	strh	r1, [r0, #36]	; 0x24
 	compressorStruct->compressorHoldTime.samplesTime = calculateSamples(compressorStruct,
-1a000cf4:	4619      	mov	r1, r3
-1a000cf6:	8902      	ldrh	r2, [r0, #8]
-1a000cf8:	f7ff fed2 	bl	1a000aa0 <calculateSamples>
-1a000cfc:	84e0      	strh	r0, [r4, #38]	; 0x26
-1a000cfe:	bd10      	pop	{r4, pc}
+1a000cfc:	4619      	mov	r1, r3
+1a000cfe:	8902      	ldrh	r2, [r0, #8]
+1a000d00:	f7ff fed2 	bl	1a000aa8 <calculateSamples>
+1a000d04:	84e0      	strh	r0, [r4, #38]	; 0x26
+1a000d06:	bd10      	pop	{r4, pc}
 
-1a000d00 <setCompressorReleaseTime>:
+1a000d08 <setCompressorReleaseTime>:
 *        compresor
 * @param compressorReleaseTime setea el tiempo de release de compresion del compresor
 * @return none
 */
 void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorReleaseTime){
-1a000d00:	b510      	push	{r4, lr}
-1a000d02:	4604      	mov	r4, r0
+1a000d08:	b510      	push	{r4, lr}
+1a000d0a:	4604      	mov	r4, r0
 	compressorStruct->compressorReleaseTime.type = RELEASE_TIME;
-1a000d04:	2301      	movs	r3, #1
-1a000d06:	7583      	strb	r3, [r0, #22]
+1a000d0c:	2301      	movs	r3, #1
+1a000d0e:	7583      	strb	r3, [r0, #22]
 	compressorStruct->compressorReleaseTime.timeValue = compressorReleaseTime;
-1a000d08:	8301      	strh	r1, [r0, #24]
+1a000d10:	8301      	strh	r1, [r0, #24]
 	compressorStruct->compressorReleaseTime.samplesTime = calculateSamples(compressorStruct,
-1a000d0a:	4619      	mov	r1, r3
-1a000d0c:	8902      	ldrh	r2, [r0, #8]
-1a000d0e:	f7ff fec7 	bl	1a000aa0 <calculateSamples>
-1a000d12:	8360      	strh	r0, [r4, #26]
-1a000d14:	bd10      	pop	{r4, pc}
-1a000d16:	bf00      	nop
+1a000d12:	4619      	mov	r1, r3
+1a000d14:	8902      	ldrh	r2, [r0, #8]
+1a000d16:	f7ff fec7 	bl	1a000aa8 <calculateSamples>
+1a000d1a:	8360      	strh	r0, [r4, #26]
+1a000d1c:	bd10      	pop	{r4, pc}
+1a000d1e:	bf00      	nop
 
-1a000d18 <compressorVectorProcessor>:
+1a000d20 <compressorVectorProcessor>:
 			compressorStruct->compressorReleaseTime.type, compressorStruct->timeBetweenInputSamples);
 
 }
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector, int16_t *outputVector){
-1a000d18:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
-1a000d1a:	4605      	mov	r5, r0
-1a000d1c:	460f      	mov	r7, r1
-1a000d1e:	4616      	mov	r6, r2
+1a000d20:	b5f8      	push	{r3, r4, r5, r6, r7, lr}
+1a000d22:	4605      	mov	r5, r0
+1a000d24:	460f      	mov	r7, r1
+1a000d26:	4616      	mov	r6, r2
 	uint16_t i;
 
 	for (i=0; i<inputLength ;i++){
-1a000d20:	2400      	movs	r4, #0
-1a000d22:	e008      	b.n	1a000d36 <compressorVectorProcessor+0x1e>
+1a000d28:	2400      	movs	r4, #0
+1a000d2a:	e008      	b.n	1a000d3e <compressorVectorProcessor+0x1e>
 		outputVector[i] = compressorProccesor(&compressorStruct, inputVector[i]);
-1a000d24:	4806      	ldr	r0, [pc, #24]	; (1a000d40 <compressorVectorProcessor+0x28>)
-1a000d26:	f937 1014 	ldrsh.w	r1, [r7, r4, lsl #1]
-1a000d2a:	f7ff ff09 	bl	1a000b40 <compressorProccesor>
-1a000d2e:	f826 0014 	strh.w	r0, [r6, r4, lsl #1]
+1a000d2c:	4806      	ldr	r0, [pc, #24]	; (1a000d48 <compressorVectorProcessor+0x28>)
+1a000d2e:	f937 1014 	ldrsh.w	r1, [r7, r4, lsl #1]
+1a000d32:	f7ff ff09 	bl	1a000b48 <compressorProccesor>
+1a000d36:	f826 0014 	strh.w	r0, [r6, r4, lsl #1]
 
 }
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector, int16_t *outputVector){
 	uint16_t i;
 
 	for (i=0; i<inputLength ;i++){
-1a000d32:	3401      	adds	r4, #1
-1a000d34:	b2a4      	uxth	r4, r4
-1a000d36:	42ac      	cmp	r4, r5
-1a000d38:	d3f4      	bcc.n	1a000d24 <compressorVectorProcessor+0xc>
+1a000d3a:	3401      	adds	r4, #1
+1a000d3c:	b2a4      	uxth	r4, r4
+1a000d3e:	42ac      	cmp	r4, r5
+1a000d40:	d3f4      	bcc.n	1a000d2c <compressorVectorProcessor+0xc>
 		outputVector[i] = compressorProccesor(&compressorStruct, inputVector[i]);
 	}
 	return 1;
 }
-1a000d3a:	2001      	movs	r0, #1
-1a000d3c:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
-1a000d3e:	bf00      	nop
-1a000d40:	10002a28 	.word	0x10002a28
+1a000d42:	2001      	movs	r0, #1
+1a000d44:	bdf8      	pop	{r3, r4, r5, r6, r7, pc}
+1a000d46:	bf00      	nop
+1a000d48:	10002a28 	.word	0x10002a28
 
-1a000d44 <eliminateContinous>:
+1a000d4c <eliminateContinous>:
 * @param inputVector puntero al primer byte de los elementos del vector de entrada
 * @param outputVector puntero al primer byte de los elementos del vector de salida
 * @return 1 cuando se completa el procesamiento del vector
 */
 uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector){
-1a000d44:	b410      	push	{r4}
+						   int16_t *outputVector, uint16_t continousValue){
+1a000d4c:	b430      	push	{r4, r5}
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-1a000d46:	2300      	movs	r3, #0
-1a000d48:	e007      	b.n	1a000d5a <eliminateContinous+0x16>
-		outputVector[counter] = ((int16_t)(inputVector[counter]))-512;
-1a000d4a:	f831 4013 	ldrh.w	r4, [r1, r3, lsl #1]
-1a000d4e:	f5a4 7400 	sub.w	r4, r4, #512	; 0x200
-1a000d52:	f822 4013 	strh.w	r4, [r2, r3, lsl #1]
+1a000d4e:	2400      	movs	r4, #0
+1a000d50:	e006      	b.n	1a000d60 <eliminateContinous+0x14>
+		outputVector[counter] = ((int16_t)(inputVector[counter]))-continousValue;
+1a000d52:	f831 5014 	ldrh.w	r5, [r1, r4, lsl #1]
+1a000d56:	1aed      	subs	r5, r5, r3
+1a000d58:	f822 5014 	strh.w	r5, [r2, r4, lsl #1]
 * @return 1 cuando se completa el procesamiento del vector
 */
 uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector){
+						   int16_t *outputVector, uint16_t continousValue){
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-1a000d56:	3301      	adds	r3, #1
-1a000d58:	b29b      	uxth	r3, r3
-1a000d5a:	4283      	cmp	r3, r0
-1a000d5c:	d3f5      	bcc.n	1a000d4a <eliminateContinous+0x6>
-		outputVector[counter] = ((int16_t)(inputVector[counter]))-512;
+1a000d5c:	3401      	adds	r4, #1
+1a000d5e:	b2a4      	uxth	r4, r4
+1a000d60:	4284      	cmp	r4, r0
+1a000d62:	d3f6      	bcc.n	1a000d52 <eliminateContinous+0x6>
+		outputVector[counter] = ((int16_t)(inputVector[counter]))-continousValue;
 			}
 	return 1;
 }
-1a000d5e:	2001      	movs	r0, #1
-1a000d60:	f85d 4b04 	ldr.w	r4, [sp], #4
-1a000d64:	4770      	bx	lr
-1a000d66:	bf00      	nop
+1a000d64:	2001      	movs	r0, #1
+1a000d66:	bc30      	pop	{r4, r5}
+1a000d68:	4770      	bx	lr
+1a000d6a:	bf00      	nop
 
-1a000d68 <sumContinous>:
+1a000d6c <sumContinous>:
 * @param inputVector puntero al primer byte de los elementos del vector de entrada
 * @param outputVector puntero al primer byte de los elementos del vector de salida
 * @return 1 cuando se completa el procesamiento del vector
 */
 uint8_t sumContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector){
-1a000d68:	b410      	push	{r4}
+						   int16_t *outputVector, uint16_t continousValue){
+1a000d6c:	b430      	push	{r4, r5}
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-1a000d6a:	2300      	movs	r3, #0
-1a000d6c:	e007      	b.n	1a000d7e <sumContinous+0x16>
-		outputVector[counter] = ((int16_t)(inputVector[counter]))+512;
-1a000d6e:	f831 4013 	ldrh.w	r4, [r1, r3, lsl #1]
-1a000d72:	f504 7400 	add.w	r4, r4, #512	; 0x200
-1a000d76:	f822 4013 	strh.w	r4, [r2, r3, lsl #1]
+1a000d6e:	2400      	movs	r4, #0
+1a000d70:	e006      	b.n	1a000d80 <sumContinous+0x14>
+		outputVector[counter] = ((int16_t)(inputVector[counter]))+continousValue;
+1a000d72:	f831 5014 	ldrh.w	r5, [r1, r4, lsl #1]
+1a000d76:	441d      	add	r5, r3
+1a000d78:	f822 5014 	strh.w	r5, [r2, r4, lsl #1]
 * @return 1 cuando se completa el procesamiento del vector
 */
 uint8_t sumContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector){
+						   int16_t *outputVector, uint16_t continousValue){
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-1a000d7a:	3301      	adds	r3, #1
-1a000d7c:	b29b      	uxth	r3, r3
-1a000d7e:	4283      	cmp	r3, r0
-1a000d80:	d3f5      	bcc.n	1a000d6e <sumContinous+0x6>
-		outputVector[counter] = ((int16_t)(inputVector[counter]))+512;
+1a000d7c:	3401      	adds	r4, #1
+1a000d7e:	b2a4      	uxth	r4, r4
+1a000d80:	4284      	cmp	r4, r0
+1a000d82:	d3f6      	bcc.n	1a000d72 <sumContinous+0x6>
+		outputVector[counter] = ((int16_t)(inputVector[counter]))+continousValue;
 			}
 	return 1;
 }
-1a000d82:	2001      	movs	r0, #1
-1a000d84:	f85d 4b04 	ldr.w	r4, [sp], #4
+1a000d84:	2001      	movs	r0, #1
+1a000d86:	bc30      	pop	{r4, r5}
 1a000d88:	4770      	bx	lr
 1a000d8a:	bf00      	nop
 

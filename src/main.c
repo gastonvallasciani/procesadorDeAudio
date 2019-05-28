@@ -179,7 +179,7 @@ int main( void ){
 
 
 	   ///Se elimina el valor de continua del vector adquirido
-	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0]);
+	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0], 385);
 
 	   compressorVectorProcessor(VECTOR_SIZE, firstOutputBuffer, outTestVector);
 	   ///Se procesa el vector con el filtro definido
@@ -187,7 +187,7 @@ int main( void ){
 	   //		   	   	   	     &firstOutputBuffer[0], &secondOutputBuffer[0]);
 
 	   ///Se suma el nivel de continua
-	   sumContinous(VECTOR_SIZE, outTestVector, &outVector[0]);
+	   sumContinous(VECTOR_SIZE, outTestVector, &outVector[0], 385);
 
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior

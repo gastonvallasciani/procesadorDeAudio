@@ -73,10 +73,10 @@ int16_t filterProcessor(uint8_t htaps, int32_t continousGain,
 * @return 1 cuando se completa el procesamiento del vector
 */
 uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector){
+						   int16_t *outputVector, uint16_t continousValue){
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-		outputVector[counter] = ((int16_t)(inputVector[counter]))-512;
+		outputVector[counter] = ((int16_t)(inputVector[counter]))-continousValue;
 			}
 	return 1;
 }
@@ -89,10 +89,10 @@ uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
 * @return 1 cuando se completa el procesamiento del vector
 */
 uint8_t sumContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector){
+						   int16_t *outputVector, uint16_t continousValue){
 	uint16_t counter;
 	for(counter = 0; counter < inputLength; counter++){
-		outputVector[counter] = ((int16_t)(inputVector[counter]))+512;
+		outputVector[counter] = ((int16_t)(inputVector[counter]))+continousValue;
 			}
 	return 1;
 }
