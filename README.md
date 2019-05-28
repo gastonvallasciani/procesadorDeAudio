@@ -84,3 +84,17 @@ Fue necesario agrandar los buffers de procesamiento de 200 elementos a 500 eleme
 
  En los testeos online se verifica que luego del procesamiento hay un retardo de 140uSeg entre la señal de entrada y la señal de salida.
 Por último, se pusheo el branch developFilterOnline al branch developFilter, y luego, el branch developFilter al branch master.
+
+FECHA: 27/05/2019
+
+Se fabricó el poncho procesador de audio. Se testearon los leds del poncho que se encuentran conectados a los pines GPIO4, GPIO5 y GPIO6 del LPC4337 de la EDU-CIAA NXP. Se testeo la entrada input mono stereo y la generación output mono stereo mediante el DAC de la EDU-CIAA NXP y funciona correctamente, se puede modificar el nivel de continua y el volumen de la señal ingresada al mezclador. Como se uso la entrada input stereo se modificó el canal del ADC que se usa en el programa. Se cambió del ADC 1 al ADC 3.
+
+La entrada y salida de audio se testeo inyectando una canción y en su reproducción se escucha un sonido limpio.
+
+Falta testear la adquisición y la generación stereo.
+
+FECHA: 28/05/2019
+
+Se continuo con los testeos de hardware. Se escucha un ruido de fondo a la música. Se midió en la entrada "Input Mono Stereo" y se observan 20mV de piso de ruido. A su vez, se midió en la salida de audio "Output Mono Stereo" y se midieron 40mV de piso de ruido. Este ruido hay que filtrarlo a la entrada por hardware.
+
+Se testeo el filtro de 15KHz sobre audio y no sumo distorsión a la música. Habría que analizar el espectro de radiofrecuencia para ver que tan atenuadas estan las componentes superiores a 15KHz.
