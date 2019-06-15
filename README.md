@@ -100,4 +100,5 @@ Se continuo con los testeos de hardware. Se escucha un ruido de fondo a la músi
 Se testeo el filtro de 15KHz sobre audio y no sumo distorsión a la música. Habría que analizar el espectro de radiofrecuencia para ver que tan atenuadas estan las componentes superiores a 15KHz.
 
 FECHA: 15/06/2019
+
 Se agregan los modulo AudioProcessor.c y .h para guardar en el mismo las funciones generales del procesador. Se agrega la funcion calculateAudioMeanValue para actualizar el valor medio de la adquisicion de audio de forma automatizada. Este valor medio se utiliza con las funciones eliminateContinous y sumContinous. Estas funciones se pasaron del modulo filterManager al modulo audioProcessor ya que son funciones generales del procesador. Falta trabajar un poco mas el gatillado.
