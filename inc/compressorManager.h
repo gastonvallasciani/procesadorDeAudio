@@ -42,17 +42,18 @@ typedef struct{
  * microsegundos.
  */
 typedef struct{
-	uint8_t compressorStatus;
-	triggerState_t triggerState;
-	uint8_t compressorRatio;
-	uint16_t umbral;
-	uint16_t currentSample;
-	uint16_t timeBetweenInputSamples;      //Tiempo de adquisicion del entrada, tiempo en microsegundos
-	timeStruct_t compressorAttackTime;
-	timeStruct_t compressorReleaseTime;
-	timeStruct_t compressorHoldTime;
-	uint16_t outputMaxLevel;			   //Maximo nivel de salida de la senial comprimida
-	uint16_t inputMaxLevel;
+	uint8_t 		compressorStatus;		//Estado del compresor
+	triggerState_t 	triggerState;
+	uint8_t 		compressorRatio;
+	uint16_t 		umbral;					//Umbral del compresor
+	uint16_t 		currentSample;
+	uint16_t 		timeBetweenInputSamples;//Tiempo de adquisicion del entrada, tiempo en microsegundos
+	timeStruct_t 	compressorAttackTime;	//Tiempo de ataque del compresor
+	timeStruct_t 	compressorReleaseTime;	//Tiempo de liberacion del compresor
+	timeStruct_t 	compressorHoldTime;		//Tiempo de mantenimiento del compresor
+	uint16_t 		outputMaxLevel;			//Maximo nivel de salida de la senial comprimida
+	uint16_t 		inputMaxLevel;
+	float			compensationGain;		//Ganancia de compensacion del compresor
 }compressorStruct_t;
 /*=========================[definiciones de datos internos]=========================*/
 /*=========================[definiciones de datos externos]=========================*/
@@ -71,8 +72,12 @@ void setCompressorHoldTime(compressorStruct_t *compressorStruct,
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input);
 void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
 								uint16_t timeBetweenInputSamplesInUs);
+void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
+		 float compressorCompensationGain);
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector,
 								  int16_t *outputVector);
-
+#ifdef __cplusplus
+}
+#endif
 /*==========================[fin del archivo]========================================*/
 #endif /* _COMPRESSORMANAGER_H_ */

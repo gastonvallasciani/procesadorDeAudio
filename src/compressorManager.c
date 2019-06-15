@@ -90,6 +90,7 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
+	float compensationGain;
 	if(compressorStruct->compressorStatus == ENABLE){
 		switch(compressorStruct->triggerState){
 		case DISABLE_STATE:
@@ -206,7 +207,8 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 			break;
 		}
 	}
-	return input;
+	compensationGain = round(((float)input)*compressorStruct->compensationGain);
+	return ((int16_t)compensationGain);
 }
 /*=========================[definiciones de funciones publicas]=====================*/
 /**
@@ -308,6 +310,19 @@ void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 			compressorStruct->compressorReleaseTime.type, compressorStruct->timeBetweenInputSamples);
 
 }
+
+/**
+* @brief Funcion que setea la ganancia de compensacion del compresor
+* @param compressorStruct puntero a la estructura de manejo de los parametros del
+*        compresor
+* @param compressorCompensationGain setea la ganancia de compensacion del compresor
+* @return none
+*/
+void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
+		 float compressorCompensationGain){
+	compressorStruct->compensationGain = compressorCompensationGain;
+}
+
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector, int16_t *outputVector){
 	uint16_t i;
 

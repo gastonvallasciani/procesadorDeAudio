@@ -66,37 +66,6 @@ int16_t filterProcessor(uint8_t htaps, int32_t continousGain,
 }
 /*=========================[definiciones de funciones publicas]=====================*/
 /**
-* @brief Funcion que elimina la continua del vector de datos de entrada
-* @param inputLength cantidad de elementos del vector de entrada
-* @param inputVector puntero al primer byte de los elementos del vector de entrada
-* @param outputVector puntero al primer byte de los elementos del vector de salida
-* @return 1 cuando se completa el procesamiento del vector
-*/
-uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector, uint16_t continousValue){
-	uint16_t counter;
-	for(counter = 0; counter < inputLength; counter++){
-		outputVector[counter] = ((int16_t)(inputVector[counter]))-continousValue;
-			}
-	return 1;
-}
-/**
-* @brief Funcion que suma el valor de continua restado a la entrada al vector de
-* 		 datos de salida
-* @param inputLength cantidad de elementos del vector de entrada a ser incrementados
-* @param inputVector puntero al primer byte de los elementos del vector de entrada
-* @param outputVector puntero al primer byte de los elementos del vector de salida
-* @return 1 cuando se completa el procesamiento del vector
-*/
-uint8_t sumContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector, uint16_t continousValue){
-	uint16_t counter;
-	for(counter = 0; counter < inputLength; counter++){
-		outputVector[counter] = ((int16_t)(inputVector[counter]))+continousValue;
-			}
-	return 1;
-}
-/**
 * @brief Funcion que calcula la ganancia de continua del filtro FIR
 * @param filterLength cantidad de elementos del filtro FIR
 * @param coeffVector puntero al vector de coeficientes del filtro FIR
