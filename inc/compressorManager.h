@@ -15,6 +15,7 @@ extern "C" {
 #endif
 /*==================[macros]========================================================*/
 #define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
+#define MEAN_INPUT_SAMPLES_QUANTITY	99
 /*==================[typedef]=======================================================*/
 typedef enum{
 	ATTACK_TIME = 0,
@@ -28,11 +29,24 @@ typedef enum{
 	RELEASE_STATE
 }triggerState_t;
 
+typedef enum{
+	meanValueCompressor = 0,
+	VcaCompressorLow	= 1,
+	VcaCompressorMedium	= 2,
+	VcaCompressorHigh	= 3
+}compressorDescriptor_t;
+
+typedef struct{
+	uint16_t currentSample;
+	int32_t accumulator;
+	uint16_t meanInput;
+}meanInputStruct_t;
+
 typedef struct{
 	timeType_t type;				//Tipo de tiempo(attack, hold o release)
 	uint16_t timeValue;				//Tiempo en microsegundos
 	uint16_t samplesTime; 			//Tiempo en microsegundos convertido a muestras
-	uint16_t updateSamplePeriod;		//Tiempo de actualizacion de la salida del compresor
+	uint16_t updateSamplePeriod;	//Tiempo de actualizacion de la salida del compresor
 									//para cumplir con el tiempo de attack,hold o release
 	uint16_t currentUpdateSample;
 	uint16_t updateValue;
@@ -69,13 +83,14 @@ void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorReleaseTime);
 void setCompressorHoldTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorHoldTime);
-int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input);
+int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
+		compressorDescriptor_t compressorDescriptor);
 void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
 								uint16_t timeBetweenInputSamplesInUs);
 void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
 		 float compressorCompensationGain);
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector,
-								  int16_t *outputVector);
+		int16_t *outputVector, compressorDescriptor_t compressorDescriptor);
 #ifdef __cplusplus
 }
 #endif

@@ -12,13 +12,66 @@
 #include "math.h"
 /*=========================[definiciones de datos internos]=========================*/
 /*=========================[definiciones de datos externos]=========================*/
-compressorStruct_t compressorStruct;
+compressorStruct_t 	   compressorStruct;
+meanInputStruct_t 	   inputStruct, inputStructNeg;
 /*=========================[declaracion de funciones internas]======================*/
 void calculateMaxOutputCompresion(compressorStruct_t *compressorStruct, int16_t input);
 uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeType,
 		uint16_t timeBetweenSamplesInUs);
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input);
+uint8_t calculateMeanInput(meanInputStruct_t *inputStruct,
+						   meanInputStruct_t *inputStructNeg, int16_t input);
+void initCalculateMeanInput(meanInputStruct_t *inputStruct);
 /*=========================[definiciones de funciones internas]=====================*/
+void initCalculateMeanInput(meanInputStruct_t *inputStruct)
+{
+	inputStruct->currentSample = 0;
+	inputStruct->accumulator = 0;
+}
+uint8_t calculateMeanInput(meanInputStruct_t *inputStruct,
+						   meanInputStruct_t *inputStructNeg, int16_t input)
+{
+	//volatile uint32_t * DWT_CTRL = (uint32_t *)0xE0001000;
+	//volatile uint32_t * DWT_CYCCNT = (uint32_t *)0xE0001004;
+
+	//volatile uint32_t cyclesC=0;
+
+	//*DWT_CTRL |= 1;
+	if(input>0)
+	{
+		if(inputStruct->currentSample	<	MEAN_INPUT_SAMPLES_QUANTITY)
+		{
+			inputStruct->accumulator += (int32_t)input;
+			inputStruct->currentSample++;
+		}
+		else if(inputStruct->currentSample == MEAN_INPUT_SAMPLES_QUANTITY)
+		{
+
+			//inputStruct->accumulator += (int32_t)input;
+			inputStruct->meanInput =
+								(uint16_t)(inputStruct->accumulator/(MEAN_INPUT_SAMPLES_QUANTITY+1));
+			inputStruct->currentSample = 0;
+		}
+		return(1);
+	}
+	else
+	{
+		if(inputStructNeg->currentSample	<	MEAN_INPUT_SAMPLES_QUANTITY)
+		{
+			inputStructNeg->accumulator += (int32_t)input;
+			inputStructNeg->currentSample++;
+		}
+		else if(inputStructNeg->currentSample == MEAN_INPUT_SAMPLES_QUANTITY)
+		{
+
+			inputStructNeg->accumulator += (int32_t)input;
+			inputStructNeg->meanInput =
+								(uint16_t)(((-1)*inputStructNeg->accumulator)/(MEAN_INPUT_SAMPLES_QUANTITY+1));
+			inputStructNeg->currentSample = 0;
+		}
+		return(0);
+	}
+}
 /**
 * @brief Funcion que calcula la salida maxima en funcion de la relacion de compresion
 * 		 del compresor
@@ -67,19 +120,33 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 * @param input puntero tension de entrada digitalizada por el ADC
 */
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input){
-	uint16_t differenceInputOutMax;
+	int16_t differenceInputOutMax;
 /*
  * Hay que validar que la entrada sea distinta de outputMaxLevel porque sino se divide
  * por cero.
  */
-	if ((input>0)&&(input!=compressorStruct->outputMaxLevel)){
-		differenceInputOutMax = (uint16_t)(input)- compressorStruct->outputMaxLevel;
-		compressorStruct->compressorAttackTime.updateSamplePeriod =
-				(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
-						/(float)(differenceInputOutMax)));
-		compressorStruct->compressorReleaseTime.updateSamplePeriod =
-				(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
-						/(float)(differenceInputOutMax)));
+	if (input!=(int16_t)compressorStruct->outputMaxLevel){
+
+		differenceInputOutMax = input - (int16_t)(compressorStruct->outputMaxLevel);
+
+		if(differenceInputOutMax > 0)
+		{
+			compressorStruct->compressorAttackTime.updateSamplePeriod =
+					(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
+							 /(float)(differenceInputOutMax)));
+			compressorStruct->compressorReleaseTime.updateSamplePeriod =
+					(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
+							/((float)(differenceInputOutMax))));
+		}
+		else
+		{
+			compressorStruct->compressorAttackTime.updateSamplePeriod =
+					(uint16_t)(round((float)(compressorStruct->compressorAttackTime.samplesTime)
+							 /(((float)(differenceInputOutMax))*(-1))));
+			compressorStruct->compressorReleaseTime.updateSamplePeriod =
+					(uint16_t)(round((float)(compressorStruct->compressorReleaseTime.samplesTime)
+							/(((float)(differenceInputOutMax))*(-1))));
+		}
 	}
 }
 /**
@@ -89,18 +156,36 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 *        compresor
 * @param input puntero tension de entrada digitalizada por el ADC
 */
-int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input){
+int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
+		compressorDescriptor_t compressorDescriptor){
 	float compensationGain;
 	if(compressorStruct->compressorStatus == ENABLE){
+		//if(compressorDescriptor == meanValueCompressor){
+		//	calculateMeanInput(&inputStruct, &inputStruct, input);
+		//}
+		//else{
+			inputStruct.meanInput = input;
+		//}
 		switch(compressorStruct->triggerState){
 		case DISABLE_STATE:
-			if(input > (int16_t)(compressorStruct->umbral)){
-				calculateMaxOutputCompresion(compressorStruct, input);
-				calculateUpdateOutputPeriod(compressorStruct, input);
-				compressorStruct->triggerState = ATTACK_STATE;
-				compressorStruct->currentSample = 0;
-				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-				compressorStruct->compressorAttackTime.updateValue = 0;
+			if(input>0)
+			{
+				if((inputStruct.meanInput) > compressorStruct->umbral)
+				{
+					calculateMaxOutputCompresion(compressorStruct, input);
+					calculateUpdateOutputPeriod(compressorStruct, input);
+					compressorStruct->triggerState = ATTACK_STATE;
+					compressorStruct->currentSample = 0;
+					compressorStruct->compressorAttackTime.currentUpdateSample = 0;
+					compressorStruct->compressorAttackTime.updateValue = 0;
+				}
+				else
+				{
+				}
+			}
+			else
+			{
+				input = input + 1 - 1;
 			}
 			break;
 		case ATTACK_STATE:
@@ -117,6 +202,7 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 				}
 				else{
 					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
+
 				}
 			}
 			else{
@@ -147,7 +233,8 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 				}
 			}
 			else{
-				if(input > ((int16_t)compressorStruct->umbral)||(input<((-1)*((int16_t)compressorStruct->umbral)))){
+				if((inputStruct.meanInput) > compressorStruct->umbral)
+				{
 					if(input > 0){
 						input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
 					}
@@ -169,6 +256,7 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
 					compressorStruct->compressorHoldTime.updateValue = 0;
 					compressorStruct->triggerState = RELEASE_STATE;
+
 				}
 			}
 			break;
@@ -202,17 +290,20 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input)
 			}
 			break;
 		default:
-			compressorStruct->currentSample = 0;
-			compressorStruct->triggerState = DISABLE_STATE;
+			//compressorStruct->currentSample = 0;
+			//compressorStruct->triggerState = DISABLE_STATE;
 			break;
 		}
 	}
-	compensationGain = round(((float)input)*compressorStruct->compensationGain);
-	return ((int16_t)compensationGain);
+	//compensationGain = round(((float)input)*compressorStruct->compensationGain);
+
+	//return((int16_t)compensationGain);
+
+	return(input);
 }
 /*=========================[definiciones de funciones publicas]=====================*/
 /**
-* @brief Funcion que inicializa el compressor VCA con valores default
+* @brief Funcion que inicializa el compressor con valores default
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
 *        compresor
 * @return none
@@ -223,9 +314,10 @@ void compressorInit(compressorStruct_t *compressorStruct){
 	compressorStruct->compressorRatio = 1;
 	compressorStruct->umbral = 512;
 	compressorStruct->timeBetweenInputSamples = TIME_BETWEEN_SAMPLES_IN_US;
+	initCalculateMeanInput(&inputStruct);
 }
 /**
-* @brief Funcion que deshabilita el compressor VCA con valores default
+* @brief Funcion que deshabilita el compressor
 * @param compressorStruct puntero a la estructura de manejo de los parametros del
 *        compresor
 * @return none
@@ -319,15 +411,28 @@ void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 * @return none
 */
 void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
-		 float compressorCompensationGain){
+		 float compressorCompensationGain)
+{
 	compressorStruct->compensationGain = compressorCompensationGain;
 }
 
-uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector, int16_t *outputVector){
+/**
+* @brief Funcion que procesa un vector de muestras de entrada con el compresor de audio.
+* @param inputLength Longitud del vector de entrada.
+* @param inputVector Puntero al primer elemento del vector de entrada.
+* @param outputVector Puntero al primer elemento del vector de salida.
+* @return none
+*/
+uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector,
+		int16_t *outputVector, compressorDescriptor_t compressorDescriptor)
+{
 	uint16_t i;
 
 	for (i=0; i<inputLength ;i++){
-		outputVector[i] = compressorProccesor(&compressorStruct, inputVector[i]);
+		outputVector[i] =
+				compressorProccesor(&compressorStruct,
+									inputVector[i],
+									compressorDescriptor);
 	}
 	return 1;
 }

@@ -23,9 +23,6 @@ DEBUG_PRINT_ENABLE
 #define TEST_OFFLINE_ENABLE
 /*==================[definiciones de datos internos]=========================*/
 #define WAIT_DELAY 50
-/**
- * Se utiliza un VECTOR_SIZE de 500 elementos, con 200 se cortaba la salida
- */
 #define VECTOR_SIZE 1500
 #define COMPLETE 	   1
 #define INIT   0
@@ -34,20 +31,13 @@ typedef struct{
 	uint16_t audioLeftChannel;
 	uint16_t audioRightChannel;
 }audioChannel_t;
-
-typedef struct{
-	uint8_t filterSize;
-	int32_t filterGain;
-}filterData_t;
 /*==================[definiciones de datos internos]=========================*/
 gpioMap_t LED = LEDR;
 delay_t waitDelay;
 char buffer [33];
 audioChannel_t audioChannel;
-static int16_t outVector[VECTOR_SIZE];
-static int16_t firstOutputBuffer[VECTOR_SIZE];
-filterData_t lpf;
-static audioMeanValue = 0;
+int16_t outVector[VECTOR_SIZE];
+static uint16_t audioMeanValue = 0;
 /**
  * Declaracion de datos utilizados en la adquisicion del ADC con el uso del
  * PING-PONG-BUFFER
@@ -76,20 +66,7 @@ volatile uint8_t transmissionStatus = COMPLETE;
 volatile uint16_t *transmitBuffer;
 /*==================[definiciones de datos externos]=========================*/
 extern adcProxyClient_t adcStruct;
-extern compressorStruct_t compressorStruct;
-/**
- * Vectores de coeficientes de filtros FIR definidos en el archivo
- * filterManager.c
- */
-extern int16_t lpf15Khz[12];
-//extern int16_t lpf4Khz[16];
-//extern int16_t hpf4Khz[17];
-/**
- * Vectores de entrada definidos en el archivo test.c para testeo offline
- */
-#ifdef TEST_OFFLINE_ENABLE
-	int16_t outTestVector[VECTOR_SIZE];
-#endif
+extern audioProcessorFsmStruct_t audioProcessorFsmStruct;
 /*==================[declaraciones de funciones internas]====================*/
 void tickTimerHandler( void *ptr );
 void tickTimerDacHandler( void *ptr );
@@ -110,6 +87,7 @@ int main( void ){
    adcStruct.adcInputStereo.adcRightChannel = ADC_CH1;
    adcStruct.adcInputStereo.adcLeftChannel = ADC_CH2;
    adcStruct.adcInputMonoStereo = ADC_CH3;
+
    //Inicializo la adquisicion de datos por el ADC
    initAqcuisition();
    configAqcuisition();
@@ -122,14 +100,6 @@ int main( void ){
    //Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
    //Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerDacHandler );
 
-	compressorInit(&compressorStruct);
-	setCompressorRatio(&compressorStruct, 2);
-	setCompressorUmbral(&compressorStruct, 400);
-	setTimeBetweenInputSamples(&compressorStruct, 23);
-	setCompressorAttackTime(&compressorStruct, 500);
-	setCompressorHoldTime(&compressorStruct, 1000);
-	setCompressorReleaseTime(&compressorStruct, 3000);
-	setCompressorCompensationGain(&compressorStruct,1);
 /**
  * Inicializacion del PING-PONG-BUFFER
  */
@@ -145,11 +115,13 @@ int main( void ){
    ///Calculo el valor medio de la senial de audio, uso el back Buffer
    ///porque es el que se llena primero
    audioMeanValue = calculateAudioMeanValue(VECTOR_SIZE, &backBuffer[0]);
-/**
- * Calculo de la cantidad de elementos del filtro y de la ganancia de continua
- */
-   lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
-   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
+
+   audioProcessorFsmStruct.continousValue = audioMeanValue;
+   audioProcessorFsmStruct.inputVector = activeBuffer;
+   audioProcessorFsmStruct.outputVector = outVector;
+
+   /// Inicializo la maquina general de estados del procesador de audio
+   initAudioProcessorFsm(&audioProcessorFsmStruct);
 
    volatile uint32_t * DWT_CTRL = (uint32_t *)0xE0001000;
    volatile uint32_t * DWT_CYCCNT = (uint32_t *)0xE0001004;
@@ -174,26 +146,9 @@ int main( void ){
 	   //gpioToggle( AUDIO_BOARD_LED_BLUE );
 	   //gpioToggle( AUDIO_BOARD_LED_YELLOW );
 	   }
-
-	   uint32_t k;
 	   *DWT_CYCCNT = 0;
-	   for(k=0;k<439000;k++)
-	   {
 
-	   }
-
-	   ///Se elimina el valor de continua del vector adquirido
-	   eliminateContinous(VECTOR_SIZE, &activeBuffer[0], &firstOutputBuffer[0], audioMeanValue);
-
-	   ///Se procesa el vector con el filtro definido
-	   filterVectorProcessor(lpf.filterSize, lpf.filterGain, &lpf15Khz[0],VECTOR_SIZE,
-	   		   	   	   	     &firstOutputBuffer[0], &firstOutputBuffer[0]);
-
-	   compressorVectorProcessor(VECTOR_SIZE, firstOutputBuffer, outTestVector);
-	   //compressorVectorProcessor(VECTOR_SIZE, invectorCompressorTestOffline, outTestVector);
-
-	   ///Se suma el nivel de continua
-	   sumContinous(VECTOR_SIZE, outTestVector, &outVector[0], audioMeanValue);
+	   updateAudioProcessorFsm(&audioProcessorFsmStruct);
 
 	   /// Mientras se estan adquiriendo datos no se hace el PING-PONG
 	   cyclesC = *DWT_CYCCNT;
@@ -205,7 +160,6 @@ int main( void ){
 		   transmitBuffer = outVector;
 	   }
 
-
 	   while(captureActive==1){
 		   gpioToggle( AUDIO_BOARD_LED_WHITE );
 	   }
@@ -216,11 +170,13 @@ int main( void ){
 	   if(bufferPtr==0){
 		   bufferPtr=1;
 		   activeBuffer=audioBuffer2;
+		   audioProcessorFsmStruct.inputVector = activeBuffer;
 		   backBuffer=audioBuffer1;
 	   }
 	   else{
 		   bufferPtr=0;
 		   activeBuffer=audioBuffer1;
+		   audioProcessorFsmStruct.inputVector = activeBuffer;
 		   backBuffer=audioBuffer2;
 	   }
 
