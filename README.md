@@ -109,3 +109,6 @@ Se creo una máquina de estados de manejo general del procesador de audio. Esta 
 El compresor VCA funciona de manera correcta, este fue testeado con audio real. Es crítica la temporización entre el retardo y el tiemp ode procesamiento de audio, si hay diferencia se escucha ruido en el audio una vez reproducido sobre el parlante.
 En lo que respecta al compresor falta únicamente modificar la función del compresor para que admita que el gatillado se ejecute por medio de una promediación y no úna única muestra. Este tipo de compresor es utilizado para implementar el simetrizador de picos uqe debe controlar el valor medio de la mezcla.
 Se creo el módulo que ejecuta la funcionalidad del clipper. Esto se utiliza en conjunto con el compresor VCA en la última etapa de procesamiento de audio.
+
+FECHA: 04/08/2019
+Edicion final de este archivo se pushea todo a la rama developCompressor
