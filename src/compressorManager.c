@@ -21,22 +21,23 @@ uint16_t calculateSamples(compressorStruct_t *compressorStruct, timeType_t timeT
 void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t input);
 uint8_t calculateMeanInput(meanInputStruct_t *inputStruct,
 						   meanInputStruct_t *inputStructNeg, int16_t input);
-void initCalculateMeanInput(meanInputStruct_t *inputStruct);
+void initCalculateMeanInput(meanInputStruct_t *inputStruct,
+							meanInputStruct_t *inputStructNeg);
 /*=========================[definiciones de funciones internas]=====================*/
-void initCalculateMeanInput(meanInputStruct_t *inputStruct)
+void initCalculateMeanInput(meanInputStruct_t *inputStruct,
+							meanInputStruct_t *inputStructNeg)
 {
 	inputStruct->currentSample = 0;
 	inputStruct->accumulator = 0;
+	inputStruct->meanInput = 0;
+
+	inputStructNeg->currentSample = 0;
+	inputStructNeg->accumulator = 0;
+	inputStructNeg->meanInput = 0;
 }
 uint8_t calculateMeanInput(meanInputStruct_t *inputStruct,
 						   meanInputStruct_t *inputStructNeg, int16_t input)
 {
-	//volatile uint32_t * DWT_CTRL = (uint32_t *)0xE0001000;
-	//volatile uint32_t * DWT_CYCCNT = (uint32_t *)0xE0001004;
-
-	//volatile uint32_t cyclesC=0;
-
-	//*DWT_CTRL |= 1;
 	if(input>0)
 	{
 		if(inputStruct->currentSample	<	MEAN_INPUT_SAMPLES_QUANTITY)
@@ -47,10 +48,11 @@ uint8_t calculateMeanInput(meanInputStruct_t *inputStruct,
 		else if(inputStruct->currentSample == MEAN_INPUT_SAMPLES_QUANTITY)
 		{
 
-			//inputStruct->accumulator += (int32_t)input;
+			inputStruct->accumulator += (int32_t)input;
 			inputStruct->meanInput =
-								(uint16_t)(inputStruct->accumulator/(MEAN_INPUT_SAMPLES_QUANTITY+1));
+								(uint16_t)((inputStruct->accumulator)/((MEAN_INPUT_SAMPLES_QUANTITY+1)));
 			inputStruct->currentSample = 0;
+			inputStruct->accumulator = 0;
 		}
 		return(1);
 	}
@@ -68,6 +70,7 @@ uint8_t calculateMeanInput(meanInputStruct_t *inputStruct,
 			inputStructNeg->meanInput =
 								(uint16_t)(((-1)*inputStructNeg->accumulator)/(MEAN_INPUT_SAMPLES_QUANTITY+1));
 			inputStructNeg->currentSample = 0;
+			inputStructNeg->accumulator = 0;
 		}
 		return(0);
 	}
@@ -161,7 +164,7 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
 	float compensationGain;
 	if(compressorStruct->compressorStatus == ENABLE){
 		//if(compressorDescriptor == meanValueCompressor){
-		//	calculateMeanInput(&inputStruct, &inputStruct, input);
+			//calculateMeanInput(&inputStruct, &inputStructNeg, input);
 		//}
 		//else{
 			inputStruct.meanInput = input;
@@ -185,7 +188,6 @@ int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
 			}
 			else
 			{
-				input = input + 1 - 1;
 			}
 			break;
 		case ATTACK_STATE:
@@ -314,7 +316,7 @@ void compressorInit(compressorStruct_t *compressorStruct){
 	compressorStruct->compressorRatio = 1;
 	compressorStruct->umbral = 512;
 	compressorStruct->timeBetweenInputSamples = TIME_BETWEEN_SAMPLES_IN_US;
-	initCalculateMeanInput(&inputStruct);
+	initCalculateMeanInput(&inputStruct, &inputStructNeg);
 }
 /**
 * @brief Funcion que deshabilita el compressor

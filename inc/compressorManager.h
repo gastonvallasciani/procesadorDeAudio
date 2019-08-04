@@ -15,7 +15,7 @@ extern "C" {
 #endif
 /*==================[macros]========================================================*/
 #define ACQUISITION_FRECUENCY_100KHZ() Timer_microsecondsToTicks( 10 )
-#define MEAN_INPUT_SAMPLES_QUANTITY	99
+#define MEAN_INPUT_SAMPLES_QUANTITY	10
 /*==================[typedef]=======================================================*/
 typedef enum{
 	ATTACK_TIME = 0,

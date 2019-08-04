@@ -87,7 +87,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  */
 	compressorInit(&compressorStruct);
 	setCompressorRatio(&compressorStruct, 2);
-	setCompressorUmbral(&compressorStruct, 255);
+	setCompressorUmbral(&compressorStruct, 80);
 	setTimeBetweenInputSamples(&compressorStruct, 23);
 	setCompressorAttackTime(&compressorStruct, 10000);
 	setCompressorHoldTime(&compressorStruct, 10000);
@@ -117,7 +117,7 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<400000;k++)//432500 395000
+				for(k=0;k<399500;k++)//432500 395000
 				{
 
 				}
