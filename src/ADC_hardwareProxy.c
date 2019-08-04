@@ -129,7 +129,7 @@ uint8_t adcReadData(LPC_ADC_T *channel, adcHardwareProxyConfigMode_t mode, ADC_C
 
 void ADC0_IRQHandler(void){
 	adcDataReadyFlag = TRUE;
-	Chip_ADC_ReadValue(LPC_ADC0, ADC_CH1, &dataAcquired);
+	Chip_ADC_ReadValue(LPC_ADC0, ADC_CH3, &dataAcquired);
 }
 
 void adcChannelEnable(ADC_CHANNEL_T adcMultiplexedChannel,LPC_ADC_T *channel){

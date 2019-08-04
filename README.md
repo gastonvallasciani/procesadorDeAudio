@@ -84,3 +84,42 @@ Fue necesario agrandar los buffers de procesamiento de 200 elementos a 500 eleme
 
  En los testeos online se verifica que luego del procesamiento hay un retardo de 140uSeg entre la señal de entrada y la señal de salida.
 Por último, se pusheo el branch developFilterOnline al branch developFilter, y luego, el branch developFilter al branch master.
+<<<<<<< HEAD
+=======
+
+FECHA: 27/05/2019
+
+<<<<<<< HEAD
+Se fabricó el poncho procesador de audio. Se testearon los leds del poncho que se encuentran conectados a los pines GPIO4, GPIO5 y GPIO6 del LPC4337 de la EDU-CIAA NXP. Se testeo la entrada input mono stereo y la generación output mono stereo mediante el DAC de la EDU-CIAA NXP y funciona correctamente, se puede modificar el nivel de continua y el volumen de la señal ingresada al mezclador. Como se uso la entrada input stereo se modificó el canal del ADC que se usa en el programa. Se cambió del ADC 1 al ADC 3. 
+
+La entrada y salida de audio se testeo inyectando una canción y en su reproducción se escucha un sonido limpio. 
+
+Falta testear la adquisición y la generación stereo.
+=======
+Se fabricó el poncho procesador de audio. Se testearon los leds del poncho que se encuentran conectados a los pines GPIO4, GPIO5 y GPIO6 del LPC4337 de la EDU-CIAA NXP. Se testeo la entrada input mono stereo y la generación output mono stereo mediante el DAC de la EDU-CIAA NXP y funciona correctamente, se puede modificar el nivel de continua y el volumen de la señal ingresada al mezclador. Como se uso la entrada input stereo se modificó el canal del ADC que se usa en el programa. Se cambió del ADC 1 al ADC 3.
+
+La entrada y salida de audio se testeo inyectando una canción y en su reproducción se escucha un sonido limpio.
+
+Falta testear la adquisición y la generación stereo.
+
+FECHA: 28/05/2019
+
+Se continuo con los testeos de hardware. Se escucha un ruido de fondo a la música. Se midió en la entrada "Input Mono Stereo" y se observan 20mV de piso de ruido. A su vez, se midió en la salida de audio "Output Mono Stereo" y se midieron 40mV de piso de ruido. Este ruido hay que filtrarlo a la entrada por hardware.
+
+Se testeo el filtro de 15KHz sobre audio y no sumo distorsión a la música. Habría que analizar el espectro de radiofrecuencia para ver que tan atenuadas estan las componentes superiores a 15KHz.
+
+FECHA: 15/06/2019
+
+Se agregan los modulo AudioProcessor.c y .h para guardar en el mismo las funciones generales del procesador. Se agrega la funcion calculateAudioMeanValue para actualizar el valor medio de la adquisicion de audio de forma automatizada. Este valor medio se utiliza con las funciones eliminateContinous y sumContinous. Estas funciones se pasaron del modulo filterManager al modulo audioProcessor ya que son funciones generales del procesador. Falta trabajar un poco mas el gatillado.
+
+FECHA: 28/07/2019
+
+Se creo una máquina de estados de manejo general del procesador de audio. Esta máquina se encuentra alojada en AudioProcessor.c, por lo tanto, se libero en gran medida el archivo main.c. 
+El compresor VCA funciona de manera correcta, este fue testeado con audio real. Es crítica la temporización entre el retardo y el tiemp ode procesamiento de audio, si hay diferencia se escucha ruido en el audio una vez reproducido sobre el parlante.
+En lo que respecta al compresor falta únicamente modificar la función del compresor para que admita que el gatillado se ejecute por medio de una promediación y no úna única muestra. Este tipo de compresor es utilizado para implementar el simetrizador de picos uqe debe controlar el valor medio de la mezcla.
+Se creo el módulo que ejecuta la funcionalidad del clipper. Esto se utiliza en conjunto con el compresor VCA en la última etapa de procesamiento de audio.
+
+FECHA: 04/08/2019
+Edicion final de este archivo se pushea todo a la rama developCompressor
+>>>>>>> fd7466fa79d585476c14cd33bef720092409a35d
+>>>>>>> 0e398db62757f93534efadc8b3b52b5f406d1ead
