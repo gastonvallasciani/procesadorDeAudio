@@ -102,3 +102,10 @@ Se testeo el filtro de 15KHz sobre audio y no sumo distorsión a la música. Hab
 FECHA: 15/06/2019
 
 Se agregan los modulo AudioProcessor.c y .h para guardar en el mismo las funciones generales del procesador. Se agrega la funcion calculateAudioMeanValue para actualizar el valor medio de la adquisicion de audio de forma automatizada. Este valor medio se utiliza con las funciones eliminateContinous y sumContinous. Estas funciones se pasaron del modulo filterManager al modulo audioProcessor ya que son funciones generales del procesador. Falta trabajar un poco mas el gatillado.
+
+FECHA: 28/07/2019
+
+Se creo una máquina de estados de manejo general del procesador de audio. Esta máquina se encuentra alojada en AudioProcessor.c, por lo tanto, se libero en gran medida el archivo main.c. 
+El compresor VCA funciona de manera correcta, este fue testeado con audio real. Es crítica la temporización entre el retardo y el tiemp ode procesamiento de audio, si hay diferencia se escucha ruido en el audio una vez reproducido sobre el parlante.
+En lo que respecta al compresor falta únicamente modificar la función del compresor para que admita que el gatillado se ejecute por medio de una promediación y no úna única muestra. Este tipo de compresor es utilizado para implementar el simetrizador de picos uqe debe controlar el valor medio de la mezcla.
+Se creo el módulo que ejecuta la funcionalidad del clipper. Esto se utiliza en conjunto con el compresor VCA en la última etapa de procesamiento de audio.
