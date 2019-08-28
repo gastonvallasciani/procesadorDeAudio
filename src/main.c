@@ -97,9 +97,6 @@ int main( void ){
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler );
    Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerDacHandler );
 
-   //Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerHandler );
-   //Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_100KHZ(), tickTimerDacHandler );
-
 /**
  * Inicializacion del PING-PONG-BUFFER
  */

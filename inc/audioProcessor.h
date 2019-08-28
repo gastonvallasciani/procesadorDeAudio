@@ -20,7 +20,6 @@ extern "C" {
  */
 typedef struct{
 	uint8_t filterSize;
-	int32_t filterGain;
 }filterData_t;
 
 /**
@@ -31,7 +30,9 @@ typedef enum{
 	ELIMINATE_CONTINOUS_LEVEL = 1,
 	LPF_15KHZ_FILTER		  = 2,
 	PEAK_SYMMETRIZER		  = 3,
-	SUM_CONTINOUS_LEVEL		  = 4
+	BAND_SPLIT				  = 4,
+	SUM_BANDS                 = 5,
+	SUM_CONTINOUS_LEVEL		  = 6
 }audioProcessorStates_t;
 /**
  * Brief estructura general de la maquina de estados general del procesador de audio

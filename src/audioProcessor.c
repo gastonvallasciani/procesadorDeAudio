@@ -16,9 +16,11 @@ audioProcessorStates_t 	  audioProcessorStates;
 audioProcessorFsmStruct_t audioProcessorFsmStruct;
 
 static int16_t firstOutputBuffer[AUDIO_VECTOR_SIZE];
-static int16_t firstOutputBuffer1[AUDIO_VECTOR_SIZE];
+static int16_t lowBandBuffer[AUDIO_VECTOR_SIZE];
+static int16_t trebleBandBuffer[AUDIO_VECTOR_SIZE];
 
-static filterData_t lpf;
+
+static filterData_t lpf, lowBand, trebleBand;
 
 /*=========================[definiciones de datos externos]=========================*/
 extern compressorStruct_t compressorStruct;
@@ -27,8 +29,10 @@ extern compressorStruct_t compressorStruct;
  * filterManager.c
  */
 extern int16_t lpf15Khz[12];
-//extern int16_t lpf4Khz[16];
-//extern int16_t hpf4Khz[17];
+extern int16_t lpf2Khz[10];
+extern int16_t hpf2Khz[11];
+extern int16_t lpf4Khz[16];
+extern int16_t hpf4Khz[17];
 /*=========================[declaracion de funciones internas]======================*/
 /*=========================[definiciones de funciones internas]=====================*/
 /**
@@ -87,7 +91,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  */
 	compressorInit(&compressorStruct);
 	setCompressorRatio(&compressorStruct, 2);
-	setCompressorUmbral(&compressorStruct, 80);
+	setCompressorUmbral(&compressorStruct, 250);
 	setTimeBetweenInputSamples(&compressorStruct, 23);
 	setCompressorAttackTime(&compressorStruct, 10000);
 	setCompressorHoldTime(&compressorStruct, 10000);
@@ -97,8 +101,8 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  * Calculo de la cantidad de elementos del filtro y de la ganancia de continua
  */
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
-   lpf.filterGain = continousFilterGain(lpf.filterSize, &lpf15Khz[0]);
-
+   lowBand.filterSize = sizeof(lpf2Khz)/sizeof(int16_t);
+   trebleBand.filterSize = sizeof(hpf2Khz)/sizeof(int16_t);
 }
 /**
 * @brief Funcion de actualizacion de la maquina de estados que maneja el procesador
@@ -112,12 +116,12 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 	uint32_t k, stateCounter = 0;
 	if(audioProcessorFsmStruct->audioProcessorStatus == ENABLE)
 	{
-		for(stateCounter = 0; stateCounter< 5;stateCounter++)
+		for(stateCounter = 0; stateCounter< 7;stateCounter++)
 		{
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<399500;k++)//432500 395000
+				for(k=0;k<358500;k++)//432500 395000
 				{
 
 				}
@@ -131,16 +135,32 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				audioProcessorFsmStruct->actualState = LPF_15KHZ_FILTER;
 				break;
 			case LPF_15KHZ_FILTER:
-			   status = filterVectorProcessor(lpf.filterSize, lpf.filterGain,
-									 &lpf15Khz[0],audioProcessorFsmStruct->vectorLength,
-									 &firstOutputBuffer[0], &firstOutputBuffer1[0]);
+			   status = filterVectorProcessor(lpf.filterSize, &lpf15Khz[0],
+					   	   	   	     audioProcessorFsmStruct->vectorLength,
+									 &firstOutputBuffer[0], &firstOutputBuffer[0]);
 				   audioProcessorFsmStruct->actualState = PEAK_SYMMETRIZER;
 				break;
 			case PEAK_SYMMETRIZER:
 				status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
-										  &firstOutputBuffer1[0],
+										  &firstOutputBuffer[0],
 										  &firstOutputBuffer[0],
 										  meanValueCompressor);
+				audioProcessorFsmStruct->actualState = BAND_SPLIT;
+				break;
+			case BAND_SPLIT:
+				status = filterVectorProcessor(lowBand.filterSize, &lpf2Khz[0],
+											   audioProcessorFsmStruct->vectorLength,
+											   &firstOutputBuffer[0], &lowBandBuffer[0]);
+				status = filterVectorProcessor(trebleBand.filterSize, &hpf2Khz[0],
+											   audioProcessorFsmStruct->vectorLength,
+											   &firstOutputBuffer[0], &trebleBandBuffer[0]);
+				audioProcessorFsmStruct->actualState = SUM_BANDS;
+				break;
+			case SUM_BANDS:
+				for(k = 0; k < audioProcessorFsmStruct->vectorLength; k++)
+				{
+					firstOutputBuffer[k] = lowBandBuffer[k] + trebleBandBuffer[k];
+				}
 				audioProcessorFsmStruct->actualState = SUM_CONTINOUS_LEVEL;
 				break;
 			case SUM_CONTINOUS_LEVEL:
