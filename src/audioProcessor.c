@@ -28,12 +28,12 @@ extern compressorStruct_t compressorStruct;
  * Vectores de coeficientes de filtros FIR definidos en el archivo
  * filterManager.c
  */
-extern int16_t lpf15Khz[12];
+extern int16_t lpf15Khz[22];
 extern int16_t lpf2Khz[10];
 extern int16_t hpf2Khz[11];
-extern int16_t lpf4Khz[16];
-extern int16_t hpf4Khz[17];
 /*=========================[declaracion de funciones internas]======================*/
+uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVector,
+				 int16_t *outputeVector);
 /*=========================[definiciones de funciones internas]=====================*/
 /**
 * @brief Funcion que elimina la continua del vector de datos de entrada
@@ -121,7 +121,7 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<358500;k++)//432500 395000
+				for(k=0;k<315500;k++)//432500 395000
 				{
 
 				}
@@ -157,10 +157,8 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				audioProcessorFsmStruct->actualState = SUM_BANDS;
 				break;
 			case SUM_BANDS:
-				for(k = 0; k < audioProcessorFsmStruct->vectorLength; k++)
-				{
-					firstOutputBuffer[k] = lowBandBuffer[k] + trebleBandBuffer[k];
-				}
+				sumBands(audioProcessorFsmStruct->vectorLength, &lowBandBuffer[0],
+						&trebleBandBuffer[0], &firstOutputBuffer[0]);
 				audioProcessorFsmStruct->actualState = SUM_CONTINOUS_LEVEL;
 				break;
 			case SUM_CONTINOUS_LEVEL:
@@ -194,6 +192,24 @@ uint16_t calculateAudioMeanValue(uint16_t inputLength, uint16_t *inputVector)
 	accumulator = accumulator/inputLength;
 
 	return((uint16_t)accumulator);
+}
+/**
+* @brief Realiza la suma de bandas del procesador de audio.
+* @param inputLength cantidad de elementos del vector de entrada
+* @param lowBandVector puntero al primer byte de los elementos del vector de la banda de los bajos
+* @param trebleVector puntero al primer byte de los elementos del vector de la banda de los medios y agudos
+* @param outputeVector puntero al primer byte de los elementos de salida que tiene ambas bandas sumadas
+* @return 1
+*/
+uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVector,
+				 int16_t *outputeVector)
+{
+	uint16_t i;
+	for(i = 0; i < inputLength; i++)
+	{
+		outputeVector[i] = lowBandVector[i] + trebleVector[i];
+	}
+	return(1);
 }
 /*==========================[fin del archivo]========================================*/
 
