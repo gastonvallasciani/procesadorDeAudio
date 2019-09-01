@@ -28,11 +28,13 @@ typedef struct{
 typedef enum{
 	AUDIO_PROCESSING_DELAY    = 0,
 	ELIMINATE_CONTINOUS_LEVEL = 1,
-	LPF_15KHZ_FILTER		  = 2,
-	PEAK_SYMMETRIZER		  = 3,
-	BAND_SPLIT				  = 4,
-	SUM_BANDS                 = 5,
-	SUM_CONTINOUS_LEVEL		  = 6
+	GAIN_CONTROL			  = 2,
+	LPF_15KHZ_FILTER		  = 3,
+	PEAK_SYMMETRIZER		  = 4,
+	BAND_SPLIT				  = 5,
+	SUM_BANDS                 = 6,
+	CLIPPER					  = 7,
+	SUM_CONTINOUS_LEVEL		  = 8
 }audioProcessorStates_t;
 /**
  * Brief estructura general de la maquina de estados general del procesador de audio

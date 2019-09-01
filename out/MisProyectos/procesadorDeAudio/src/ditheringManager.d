@@ -1,6 +1,6 @@
-MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/audioProcessor.o: \
- MisProyectos/procesadorDeAudio/src/audioProcessor.c \
- MisProyectos/procesadorDeAudio/inc/audioProcessor.h \
+MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/ditheringManager.o: \
+ MisProyectos/procesadorDeAudio/src/ditheringManager.c \
+ MisProyectos/procesadorDeAudio/inc/ditheringManager.h \
  libs/sapi/sapi_v0.5.2/base/inc/sapi.h \
  libs/sapi/sapi_v0.5.2/base/inc/sapi_datatypes.h \
  libs/lpc_open/lpc_chip_43xx/peripherals/inc/chip.h \
@@ -119,9 +119,4 @@ MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/audioProce
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_magnetometer_hmc5883l.h \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_magnetometer_qmc5883l.h \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_imu_mpu9250.h \
- libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_ultrasonic_hcsr04.h \
- libs/sapi/sapi_v0.5.2/soc/peripherals/inc/sapi_timer.h \
- MisProyectos/procesadorDeAudio/inc/program.h \
- MisProyectos/procesadorDeAudio/inc/filterManager.h \
- MisProyectos/procesadorDeAudio/inc/clipperManager.h \
- MisProyectos/procesadorDeAudio/inc/compressorManager.h
+ libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_ultrasonic_hcsr04.h

@@ -10,7 +10,9 @@
 #include "sapi_timer.h"
 #include "program.h"
 #include "filterManager.h"
+#include "clipperManager.h"
 #include "compressorManager.h"
+#include "stdlib.h"
 /*=========================[definiciones de datos internos]=========================*/
 audioProcessorStates_t 	  audioProcessorStates;
 audioProcessorFsmStruct_t audioProcessorFsmStruct;
@@ -24,6 +26,7 @@ static filterData_t lpf, lowBand, trebleBand;
 
 /*=========================[definiciones de datos externos]=========================*/
 extern compressorStruct_t compressorStruct;
+extern clipperStruct_t hardClipperStruct;;
 /**
  * Vectores de coeficientes de filtros FIR definidos en el archivo
  * filterManager.c
@@ -103,6 +106,12 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
    lpf.filterSize = sizeof(lpf15Khz)/sizeof(int16_t);
    lowBand.filterSize = sizeof(lpf2Khz)/sizeof(int16_t);
    trebleBand.filterSize = sizeof(hpf2Khz)/sizeof(int16_t);
+/**
+ *  Inicio el driver del clipper
+ */
+   clipperInit(&hardClipperStruct);
+   setClipperThreshold(&hardClipperStruct, 240);
+
 }
 /**
 * @brief Funcion de actualizacion de la maquina de estados que maneja el procesador
@@ -116,12 +125,12 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 	uint32_t k, stateCounter = 0;
 	if(audioProcessorFsmStruct->audioProcessorStatus == ENABLE)
 	{
-		for(stateCounter = 0; stateCounter< 7;stateCounter++)
+		for(stateCounter = 0; stateCounter< 9;stateCounter++)
 		{
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<315500;k++)//432500 395000
+				for(k=0;k<236500;k++)//432500 395000
 				{
 
 				}
@@ -132,19 +141,26 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 											&audioProcessorFsmStruct->inputVector[0],
 											&firstOutputBuffer[0],
 											audioProcessorFsmStruct->continousValue);
+				audioProcessorFsmStruct->actualState = GAIN_CONTROL;
+				break;
+			case GAIN_CONTROL:
+				for(k=0; k < audioProcessorFsmStruct->vectorLength; k++)
+				{
+					firstOutputBuffer[k]= 2*firstOutputBuffer[k];
+				}
 				audioProcessorFsmStruct->actualState = LPF_15KHZ_FILTER;
 				break;
 			case LPF_15KHZ_FILTER:
-			   status = filterVectorProcessor(lpf.filterSize, &lpf15Khz[0],
+			    status = filterVectorProcessor(lpf.filterSize, &lpf15Khz[0],
 					   	   	   	     audioProcessorFsmStruct->vectorLength,
 									 &firstOutputBuffer[0], &firstOutputBuffer[0]);
-				   audioProcessorFsmStruct->actualState = PEAK_SYMMETRIZER;
+				audioProcessorFsmStruct->actualState = PEAK_SYMMETRIZER;
 				break;
 			case PEAK_SYMMETRIZER:
-				status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
-										  &firstOutputBuffer[0],
-										  &firstOutputBuffer[0],
-										  meanValueCompressor);
+				//status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
+				//						  &firstOutputBuffer[0],
+				//						  &firstOutputBuffer[0],
+				//						  meanValueCompressor);
 				audioProcessorFsmStruct->actualState = BAND_SPLIT;
 				break;
 			case BAND_SPLIT:
@@ -158,7 +174,13 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				break;
 			case SUM_BANDS:
 				sumBands(audioProcessorFsmStruct->vectorLength, &lowBandBuffer[0],
-						&trebleBandBuffer[0], &firstOutputBuffer[0]);
+						 &trebleBandBuffer[0], &firstOutputBuffer[0]);
+				audioProcessorFsmStruct->actualState = CLIPPER;
+				break;
+			case CLIPPER:
+				hardClipperVectorProcessor(audioProcessorFsmStruct->vectorLength,
+										   &firstOutputBuffer[0],
+										   &firstOutputBuffer[0]);
 				audioProcessorFsmStruct->actualState = SUM_CONTINOUS_LEVEL;
 				break;
 			case SUM_CONTINOUS_LEVEL:
@@ -207,7 +229,14 @@ uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVe
 	uint16_t i;
 	for(i = 0; i < inputLength; i++)
 	{
-		outputeVector[i] = lowBandVector[i] + trebleVector[i];
+		if(lowBandVector[i] + trebleVector[i] > 0)
+			outputeVector[i] = lowBandVector[i] + trebleVector[i] + 3;
+		else if((lowBandVector[i] + trebleVector[i] < 0))
+			outputeVector[i] = lowBandVector[i] + trebleVector[i] - 3;
+		else
+			outputeVector[i] = lowBandVector[i] + trebleVector[i];
+
+		outputeVector[i] = (int16_t)(1.5*(float)(outputeVector[i]));
 	}
 	return(1);
 }

@@ -17,7 +17,7 @@
 #include "compressorManager.h"
 #include "audioProcessor.h"
 #include "program.h"
-
+#include "stdlib.h"
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
 #define TEST_OFFLINE_ENABLE
@@ -144,12 +144,11 @@ int main( void ){
 	   //gpioToggle( AUDIO_BOARD_LED_YELLOW );
 	   }
 	   *DWT_CYCCNT = 0;
-
 	   updateAudioProcessorFsm(&audioProcessorFsmStruct);
 
 	   /// Mientras se estan adquiriendo datos no se hace el PING-PONG
-	   cyclesC = *DWT_CYCCNT;
 
+	   cyclesC = *DWT_CYCCNT;
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior
 	   if (transmissionStatus == COMPLETE){
