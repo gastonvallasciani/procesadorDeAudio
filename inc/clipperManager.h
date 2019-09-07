@@ -26,7 +26,7 @@ void clipperInit(clipperStruct_t *clipperStruct);
 void clipperDeInit(clipperStruct_t *clipperStruct);
 void setClipperThreshold(clipperStruct_t *clipperStruct, int16_t threshold);
 uint8_t hardClipperVectorProcessor(uint16_t inputLength, int16_t *inputVector,
-		int16_t *outputVector);
+								   int16_t *outputVector, uint16_t audioMeanValue);
 /*==================[c++]===========================================================*/
 #ifdef __cplusplus
 }

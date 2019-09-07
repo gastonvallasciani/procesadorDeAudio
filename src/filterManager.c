@@ -15,17 +15,18 @@ static int16_t xBuffer[18];
 /**
  * @brief Definicion de filtros utilizados en el archivo audioProcessor.c
  */
-int16_t lpf15Khz[22] = {
-						-423, 279, 910, -660, 658, 489, -1707, 2557, -1636,
-						-2467, 19183, 19183, -2467, -1636, 2557, -1707, 489, 658,
-						-660, 910, 279, -423
+int16_t lpf15Khz[22] =
+{
+	-423, 279, 910, -660, 658, 489, -1707, 2557, -1636, -2467, 19183, 19183,
+	-2467, -1636, 2557, -1707, 489, 658, -660, 910, 279, -423
 };
-int16_t lpf2Khz[10] = {
-						507, 1926, 3513, 5342, 6418, 6418, 5342, 3513, 1926, 507
+int16_t lpf2Khz[10] =
+{
+	507, 1926, 3513, 5342, 6418, 6418, 5342, 3513, 1926, 507
 };
-int16_t hpf2Khz[11] = {
-	     	 	 	 	1474, 66, -1879, -4740, -7322, 24408, -7322, -4740, -1879, 66,
-						1474
+int16_t hpf2Khz[11] =
+{
+	1474, 66, -1879, -4740, -7322, 24408, -7322, -4740, -1879, 66, 1474
 };
 /*=========================[declaraciones de funciones internas]====================*/
 void shiftDelayLine(uint8_t htaps, int16_t *x);
@@ -64,7 +65,7 @@ int16_t filterProcessor(uint8_t htaps,int16_t *x, int16_t *h, int16_t inValue){
 	{
 		filterAcumulator += (int64_t)(x[i]*h[i]);
 	}
-	filterAcumulator = (filterAcumulator) >> 16;
+	filterAcumulator = (filterAcumulator) >> 15;
 	return (((int16_t)(filterAcumulator)));
 }
 /*=========================[definiciones de funciones publicas]=====================*/

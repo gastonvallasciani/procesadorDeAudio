@@ -38,39 +38,6 @@ extern int16_t hpf2Khz[11];
 uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVector,
 				 int16_t *outputeVector);
 /*=========================[definiciones de funciones internas]=====================*/
-/**
-* @brief Funcion que elimina la continua del vector de datos de entrada
-* @param inputLength cantidad de elementos del vector de entrada
-* @param inputVector puntero al primer byte de los elementos del vector de entrada
-* @param outputVector puntero al primer byte de los elementos del vector de salida
-* @return 1 cuando se completa el procesamiento del vector
-*/
-uint8_t eliminateContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector, uint16_t continousValue){
-	uint16_t counter;
-	for(counter = 0; counter < inputLength; counter++){
-		outputVector[counter] = ((int16_t)(inputVector[counter]))-continousValue;
-			}
-	return 1;
-}
-/**
-* @brief Funcion que suma el valor de continua restado a la entrada al vector de
-* 		 datos de salida
-* @param inputLength cantidad de elementos del vector de entrada a ser incrementados
-* @param inputVector puntero al primer byte de los elementos del vector de entrada
-* @param outputVector puntero al primer byte de los elementos del vector de salida
-* @return 1 cuando se completa el procesamiento del vector
-*/
-uint8_t sumContinous(uint16_t inputLength, uint16_t *inputVector,
-						   int16_t *outputVector, uint16_t continousValue)
-{
-	uint16_t counter;
-	for(counter = 0; counter < inputLength; counter++)
-	{
-		outputVector[counter] = ((int16_t)(inputVector[counter]))+continousValue;
-	}
-	return 1;
-}
 
 /*=========================[definiciones de funciones publicas]=====================*/
 void setAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStruct, uint8_t audioProcessorStatus)
@@ -110,7 +77,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  *  Inicio el driver del clipper
  */
    clipperInit(&hardClipperStruct);
-   setClipperThreshold(&hardClipperStruct, 240);
+   setClipperThreshold(&hardClipperStruct, 300);
 
 }
 /**
@@ -125,51 +92,47 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 	uint32_t k, stateCounter = 0;
 	if(audioProcessorFsmStruct->audioProcessorStatus == ENABLE)
 	{
-		for(stateCounter = 0; stateCounter< 9;stateCounter++)
+		for(stateCounter = 0; stateCounter< 7;stateCounter++)
 		{
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<236500;k++)//432500 395000
+				for(k=0;k<275500;k++)//432500 395000
 				{
 
 				}
-				audioProcessorFsmStruct->actualState = ELIMINATE_CONTINOUS_LEVEL;
-				break;
-			case ELIMINATE_CONTINOUS_LEVEL:
-				status = eliminateContinous(audioProcessorFsmStruct->vectorLength,
-											&audioProcessorFsmStruct->inputVector[0],
-											&firstOutputBuffer[0],
-											audioProcessorFsmStruct->continousValue);
 				audioProcessorFsmStruct->actualState = GAIN_CONTROL;
 				break;
 			case GAIN_CONTROL:
 				for(k=0; k < audioProcessorFsmStruct->vectorLength; k++)
 				{
-					firstOutputBuffer[k]= 2*firstOutputBuffer[k];
+					firstOutputBuffer[k]= 2*audioProcessorFsmStruct->inputVector[k];
 				}
 				audioProcessorFsmStruct->actualState = LPF_15KHZ_FILTER;
 				break;
 			case LPF_15KHZ_FILTER:
 			    status = filterVectorProcessor(lpf.filterSize, &lpf15Khz[0],
 					   	   	   	     audioProcessorFsmStruct->vectorLength,
-									 &firstOutputBuffer[0], &firstOutputBuffer[0]);
+									 &firstOutputBuffer[0],
+									 &firstOutputBuffer[0]);
 				audioProcessorFsmStruct->actualState = PEAK_SYMMETRIZER;
 				break;
 			case PEAK_SYMMETRIZER:
-				//status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
-				//						  &firstOutputBuffer[0],
-				//						  &firstOutputBuffer[0],
-				//						  meanValueCompressor);
+				status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
+										  &audioProcessorFsmStruct->inputVector[0],
+										  &firstOutputBuffer[0],
+										  meanValueCompressor);
 				audioProcessorFsmStruct->actualState = BAND_SPLIT;
 				break;
 			case BAND_SPLIT:
 				status = filterVectorProcessor(lowBand.filterSize, &lpf2Khz[0],
 											   audioProcessorFsmStruct->vectorLength,
-											   &firstOutputBuffer[0], &lowBandBuffer[0]);
+											   &firstOutputBuffer[0],
+											   &lowBandBuffer[0]);
 				status = filterVectorProcessor(trebleBand.filterSize, &hpf2Khz[0],
 											   audioProcessorFsmStruct->vectorLength,
-											   &firstOutputBuffer[0], &trebleBandBuffer[0]);
+											   &firstOutputBuffer[0],
+											   &trebleBandBuffer[0]);
 				audioProcessorFsmStruct->actualState = SUM_BANDS;
 				break;
 			case SUM_BANDS:
@@ -180,19 +143,34 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 			case CLIPPER:
 				hardClipperVectorProcessor(audioProcessorFsmStruct->vectorLength,
 										   &firstOutputBuffer[0],
-										   &firstOutputBuffer[0]);
-				audioProcessorFsmStruct->actualState = SUM_CONTINOUS_LEVEL;
-				break;
-			case SUM_CONTINOUS_LEVEL:
-				status = sumContinous(audioProcessorFsmStruct->vectorLength,
-									  &firstOutputBuffer[0],
-									  &audioProcessorFsmStruct->outputVector[0],
-									  audioProcessorFsmStruct->continousValue);
-					audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
+										   &audioProcessorFsmStruct->outputVector[0],
+										   audioProcessorFsmStruct->continousValue);
+				audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
 				break;
 			}
 		}
 	}
+}
+/**
+* @brief Realiza la suma de bandas del procesador de audio.
+* @param inputLength cantidad de elementos del vector de entrada
+* @param lowBandVector puntero al primer byte de los elementos del vector de la banda de los bajos
+* @param trebleVector puntero al primer byte de los elementos del vector de la banda de los medios y agudos
+* @param outputeVector puntero al primer byte de los elementos de salida que tiene ambas bandas sumadas
+* @return 1
+*/
+uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVector,
+				 int16_t *outputeVector)
+{
+	uint16_t i;
+	int16_t inValue = 0;
+	for(i = 0; i < inputLength; i++)
+	{
+
+		outputeVector[i] = lowBandVector[i] + trebleVector[i];
+
+	}
+	return(1);
 }
 /**
 * @brief Calcula el valor medio de la senial de audio en funcion del vector de entrada
@@ -214,31 +192,6 @@ uint16_t calculateAudioMeanValue(uint16_t inputLength, uint16_t *inputVector)
 	accumulator = accumulator/inputLength;
 
 	return((uint16_t)accumulator);
-}
-/**
-* @brief Realiza la suma de bandas del procesador de audio.
-* @param inputLength cantidad de elementos del vector de entrada
-* @param lowBandVector puntero al primer byte de los elementos del vector de la banda de los bajos
-* @param trebleVector puntero al primer byte de los elementos del vector de la banda de los medios y agudos
-* @param outputeVector puntero al primer byte de los elementos de salida que tiene ambas bandas sumadas
-* @return 1
-*/
-uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVector,
-				 int16_t *outputeVector)
-{
-	uint16_t i;
-	for(i = 0; i < inputLength; i++)
-	{
-		if(lowBandVector[i] + trebleVector[i] > 0)
-			outputeVector[i] = lowBandVector[i] + trebleVector[i] + 3;
-		else if((lowBandVector[i] + trebleVector[i] < 0))
-			outputeVector[i] = lowBandVector[i] + trebleVector[i] - 3;
-		else
-			outputeVector[i] = lowBandVector[i] + trebleVector[i];
-
-		outputeVector[i] = (int16_t)(1.5*(float)(outputeVector[i]));
-	}
-	return(1);
 }
 /*==========================[fin del archivo]========================================*/
 

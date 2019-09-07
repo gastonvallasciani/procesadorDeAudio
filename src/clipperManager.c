@@ -13,30 +13,37 @@
 clipperStruct_t hardClipperStruct;
 /*=========================[definiciones de datos externos]=========================*/
 /*=========================[declaracion de funciones internas]======================*/
-int16_t hardClipperProcessor(clipperStruct_t *clipperStruct, int16_t input);
+int16_t hardClipperProcessor(clipperStruct_t *clipperStruct, int16_t input, uint16_t audioMeanValue);
 /*=========================[definiciones de funciones internas]=====================*/
 /**
 * @brief Funcion que actualiza la maquina de estados de manejo del hard clipper.
+*
+* 		El threshold maximo sera el equivalente a +-1v (300). Se estima en que el
+* 		valor medio se ajusto en la mitad del fondo de escala.
 *
 * @param clipperStruct puntero a la estructura de manejo de los parametros del
 *        hard clipper.
 * @param input puntero valor a procesar.
 * @return input devuelve la entrada procesada.
 */
-int16_t hardClipperProcessor(clipperStruct_t *clipperStruct, int16_t input)
+int16_t hardClipperProcessor(clipperStruct_t *clipperStruct, int16_t input, uint16_t audioMeanValue)
 {
-	if(input > 0)
+	uint16_t gap;
+
+	gap = audioMeanValue - clipperStruct->threshold;
+
+	if(input > audioMeanValue)
 	{
-		if(input > clipperStruct->threshold)
+		if(input > audioMeanValue + gap)
 		{
-			input = clipperStruct->threshold;
+			input = clipperStruct->threshold + audioMeanValue;
 		}
 	}
 	else
 	{
-		if(input < (clipperStruct->threshold*(-1)))
+		if(input <  audioMeanValue - gap)
 		{
-			input = clipperStruct->threshold;
+			input = audioMeanValue - clipperStruct->threshold;
 		}
 
 	}
@@ -85,7 +92,7 @@ void setClipperThreshold(clipperStruct_t *clipperStruct, int16_t threshold)
 * @return 0 si el clipper no esta habilitado.
 */
 uint8_t hardClipperVectorProcessor(uint16_t inputLength, int16_t *inputVector,
-		int16_t *outputVector)
+		int16_t *outputVector, uint16_t audioMeanValue)
 {
 	uint16_t i;
 
@@ -93,7 +100,8 @@ uint8_t hardClipperVectorProcessor(uint16_t inputLength, int16_t *inputVector,
 	{
 		for (i=0; i<inputLength ;i++)
 		{
-			outputVector[i] = hardClipperProcessor(&hardClipperStruct, inputVector[i]);
+			outputVector[i] = hardClipperProcessor(&hardClipperStruct,
+							  inputVector[i], audioMeanValue);
 		}
 		return 1;
 	}
