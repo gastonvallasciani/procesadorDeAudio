@@ -24,6 +24,7 @@ static int16_t trebleBandBuffer[AUDIO_VECTOR_SIZE];
 
 static filterData_t lpf, lowBand, trebleBand;
 
+static IncreaseContinousValue = 0;
 /*=========================[definiciones de datos externos]=========================*/
 extern compressorStruct_t compressorStruct;
 extern clipperStruct_t hardClipperStruct;;
@@ -61,7 +62,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  */
 	compressorInit(&compressorStruct);
 	setCompressorRatio(&compressorStruct, 2);
-	setCompressorUmbral(&compressorStruct, 250);
+	setCompressorUmbral(&compressorStruct, 900);
 	setTimeBetweenInputSamples(&compressorStruct, 23);
 	setCompressorAttackTime(&compressorStruct, 10000);
 	setCompressorHoldTime(&compressorStruct, 10000);
@@ -77,7 +78,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  *  Inicio el driver del clipper
  */
    clipperInit(&hardClipperStruct);
-   setClipperThreshold(&hardClipperStruct, 300);
+   setClipperThreshold(&hardClipperStruct, 900);
 
 }
 /**
@@ -97,7 +98,7 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<275500;k++)//432500 395000
+				for(k=0;k<290000;k++)//432500 395000
 				{
 
 				}
@@ -107,6 +108,11 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				for(k=0; k < audioProcessorFsmStruct->vectorLength; k++)
 				{
 					firstOutputBuffer[k]= 2*audioProcessorFsmStruct->inputVector[k];
+				}
+				if(IncreaseContinousValue == 0)
+				{
+					IncreaseContinousValue = 1;
+					audioProcessorFsmStruct->continousValue = audioProcessorFsmStruct->continousValue*2;
 				}
 				audioProcessorFsmStruct->actualState = LPF_15KHZ_FILTER;
 				break;
@@ -119,9 +125,10 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				break;
 			case PEAK_SYMMETRIZER:
 				status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
-										  &audioProcessorFsmStruct->inputVector[0],
 										  &firstOutputBuffer[0],
-										  meanValueCompressor);
+										  &firstOutputBuffer[0],
+										  meanValueCompressor,
+										audioProcessorFsmStruct->continousValue);
 				audioProcessorFsmStruct->actualState = BAND_SPLIT;
 				break;
 			case BAND_SPLIT:

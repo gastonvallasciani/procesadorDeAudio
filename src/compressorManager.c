@@ -159,148 +159,50 @@ void calculateUpdateOutputPeriod(compressorStruct_t *compressorStruct, int16_t i
 *        compresor
 * @param input puntero tension de entrada digitalizada por el ADC
 */
+uint8_t comprimir = 0, relajacion = 0, cadaCuanto, factorDeCompresion = 0;
+int16_t max;
+int16_t muestraActual = 0, muestraTotal = 0;
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
-		compressorDescriptor_t compressorDescriptor){
-	float compensationGain;
+		compressorDescriptor_t compressorDescriptor, uint16_t audioMeanValue)
+{
+
 	if(compressorStruct->compressorStatus == ENABLE){
-		//if(compressorDescriptor == meanValueCompressor){
-			//calculateMeanInput(&inputStruct, &inputStructNeg, input);
-		//}
-		//else{
-			inputStruct.meanInput = input;
-		//}
-		switch(compressorStruct->triggerState){
-		case DISABLE_STATE:
-			if(input>0)
+		inputStruct.meanInput = input;
+
+		calculateMaxOutputCompresion(compressorStruct, input);
+		if(((inputStruct.meanInput) > compressorStruct->umbral)&&(comprimir == 0))
+		{
+			comprimir = 1;
+			max = compressorStruct->outputMaxLevel - input;
+			if(max<0)max=max*(-1);
+			cadaCuanto = round(132/ max); // para 25ms de ataque
+		}
+		if(comprimir == 1)
+		{
+			muestraActual++;
+			muestraTotal++;
+			if(muestraActual == cadaCuanto)
 			{
-				if((inputStruct.meanInput) > compressorStruct->umbral)
-				{
-					calculateMaxOutputCompresion(compressorStruct, input);
-					calculateUpdateOutputPeriod(compressorStruct, input);
-					compressorStruct->triggerState = ATTACK_STATE;
-					compressorStruct->currentSample = 0;
-					compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-					compressorStruct->compressorAttackTime.updateValue = 0;
-				}
-				else
-				{
-				}
+				factorDeCompresion++;
+				muestraActual = 0;
+			}
+			if(input >= audioMeanValue)
+			{
+				input = input - factorDeCompresion;
 			}
 			else
 			{
+				input = input + factorDeCompresion;
 			}
-			break;
-		case ATTACK_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorAttackTime.samplesTime){
-				compressorStruct->currentSample++;
-				compressorStruct->compressorAttackTime.currentUpdateSample++;
-				if(compressorStruct->compressorAttackTime.currentUpdateSample ==
-						compressorStruct->compressorAttackTime.updateSamplePeriod){
-					compressorStruct->compressorAttackTime.updateValue++;
-					compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-				}
-				if(input > 0){
-					input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-				}
-				else{
-					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
 
-				}
+			if (muestraTotal == 132){
+				muestraActual = 0;
+				muestraTotal = 0;
+				comprimir = 0;
+				factorDeCompresion = 0;
 			}
-			else{
-				if(input > 0){
-					input = input - (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-				}
-				else{
-					input = input + (int16_t)(compressorStruct->compressorAttackTime.updateValue);
-				}
-				compressorStruct->currentSample = 0;
-				compressorStruct->compressorAttackTime.currentUpdateSample = 0;
-				compressorStruct->compressorHoldTime.updateValue =
-						compressorStruct->compressorAttackTime.updateValue;
-				compressorStruct->compressorReleaseTime.updateValue =
-						compressorStruct->compressorAttackTime.updateValue;
-				compressorStruct->compressorAttackTime.updateValue = 0;
-				compressorStruct->triggerState = HOLD_STATE;
-			}
-			break;
-		case HOLD_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorHoldTime.samplesTime){
-				compressorStruct->currentSample++;
-				if(input > 0){
-					input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-				}
-				else{
-					input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-				}
-			}
-			else{
-				if((inputStruct.meanInput) > compressorStruct->umbral)
-				{
-					if(input > 0){
-						input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-					}
-					else{
-						input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-					}
-					compressorStruct->currentSample = 0;
-					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-					compressorStruct->triggerState = HOLD_STATE;
-				}
-				else{
-					if(input > 0){
-						input = input - (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-					}
-					else{
-						input = input + (int16_t)(compressorStruct->compressorHoldTime.updateValue);
-					}
-					compressorStruct->currentSample = 0;
-					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-					compressorStruct->compressorHoldTime.updateValue = 0;
-					compressorStruct->triggerState = RELEASE_STATE;
-
-				}
-			}
-			break;
-		case RELEASE_STATE:
-			if(compressorStruct->currentSample < compressorStruct->compressorReleaseTime.samplesTime){
-				compressorStruct->currentSample++;
-				compressorStruct->compressorReleaseTime.currentUpdateSample++;
-				if(compressorStruct->compressorReleaseTime.currentUpdateSample ==
-						compressorStruct->compressorReleaseTime.updateSamplePeriod){
-					compressorStruct->compressorReleaseTime.updateValue--;
-					compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-				}
-				if(input > 0){
-					input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-				}
-				else{
-					input = input + (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-				}
-			}
-			else{
-				if(input > 0){
-					input = input - (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-				}
-				else{
-					input = input + (int16_t)(compressorStruct->compressorReleaseTime.updateValue);
-				}
-				compressorStruct->currentSample = 0;
-				compressorStruct->compressorReleaseTime.currentUpdateSample = 0;
-				compressorStruct->compressorReleaseTime.updateValue = 0;
-				compressorStruct->triggerState = DISABLE_STATE;
-			}
-			break;
-		default:
-			//compressorStruct->currentSample = 0;
-			//compressorStruct->triggerState = DISABLE_STATE;
-			break;
 		}
 	}
-	//compensationGain = round(((float)input)*compressorStruct->compensationGain);
-
-	//return((int16_t)compensationGain);
-
 	return(input);
 }
 /*=========================[definiciones de funciones publicas]=====================*/
@@ -426,15 +328,14 @@ void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
 * @return none
 */
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector,
-		int16_t *outputVector, compressorDescriptor_t compressorDescriptor)
+		int16_t *outputVector, compressorDescriptor_t compressorDescriptor,
+		uint16_t audioMeanValue)
 {
 	uint16_t i;
 
 	for (i=0; i<inputLength ;i++){
-		outputVector[i] =
-				compressorProccesor(&compressorStruct,
-									inputVector[i],
-									compressorDescriptor);
+		outputVector[i] = compressorProccesor(&compressorStruct, inputVector[i],
+											  compressorDescriptor, audioMeanValue);
 	}
 	return 1;
 }

@@ -30,23 +30,24 @@ int16_t hardClipperProcessor(clipperStruct_t *clipperStruct, int16_t input, uint
 {
 	uint16_t gap;
 
-	gap = audioMeanValue - clipperStruct->threshold;
-
-	if(input > audioMeanValue)
-	{
-		if(input > audioMeanValue + gap)
+	//if(audioMeanValue > clipperStruct->threshold)
+	//{
+		if(input > audioMeanValue)
 		{
-			input = clipperStruct->threshold + audioMeanValue;
+			if(input > audioMeanValue + clipperStruct->threshold)
+			{
+				input = clipperStruct->threshold + audioMeanValue;
+			}
 		}
-	}
-	else
-	{
-		if(input <  audioMeanValue - gap)
+		else
 		{
-			input = audioMeanValue - clipperStruct->threshold;
-		}
+			if(input <  audioMeanValue - clipperStruct->threshold)
+			{
+				input = audioMeanValue - clipperStruct->threshold;
+			}
 
-	}
+		}
+	//}
 	return(input);
 }
 /*=========================[definiciones de funciones publicas]=====================*/

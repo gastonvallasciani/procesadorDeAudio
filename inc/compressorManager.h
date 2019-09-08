@@ -25,7 +25,6 @@ typedef enum{
 typedef enum{
 	DISABLE_STATE = 0,
 	ATTACK_STATE,
-	HOLD_STATE,
 	RELEASE_STATE
 }triggerState_t;
 
@@ -84,13 +83,14 @@ void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 void setCompressorHoldTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorHoldTime);
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
-		compressorDescriptor_t compressorDescriptor);
+		compressorDescriptor_t compressorDescriptor, uint16_t audioMeanValue);
 void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
 								uint16_t timeBetweenInputSamplesInUs);
 void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
 		 float compressorCompensationGain);
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector,
-		int16_t *outputVector, compressorDescriptor_t compressorDescriptor);
+		int16_t *outputVector, compressorDescriptor_t compressorDescriptor,
+		uint16_t audioMeanValue);
 #ifdef __cplusplus
 }
 #endif
