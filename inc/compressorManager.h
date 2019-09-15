@@ -36,19 +36,12 @@ typedef enum{
 }compressorDescriptor_t;
 
 typedef struct{
-	uint16_t currentSample;
-	int32_t accumulator;
-	uint16_t meanInput;
-}meanInputStruct_t;
-
-typedef struct{
-	timeType_t type;				//Tipo de tiempo(attack, hold o release)
+	timeType_t type;				//Tipo de tiempo(attack o release)
 	uint16_t timeValue;				//Tiempo en microsegundos
 	uint16_t samplesTime; 			//Tiempo en microsegundos convertido a muestras
 	uint16_t updateSamplePeriod;	//Tiempo de actualizacion de la salida del compresor
 									//para cumplir con el tiempo de attack,hold o release
 	uint16_t currentUpdateSample;
-	uint16_t updateValue;
 }timeStruct_t;
 /**
  * IMPORTANTE: El compressorAttackTime y el compressorReleaseTime deben ser seteados en
@@ -63,10 +56,8 @@ typedef struct{
 	uint16_t 		timeBetweenInputSamples;//Tiempo de adquisicion del entrada, tiempo en microsegundos
 	timeStruct_t 	compressorAttackTime;	//Tiempo de ataque del compresor
 	timeStruct_t 	compressorReleaseTime;	//Tiempo de liberacion del compresor
-	timeStruct_t 	compressorHoldTime;		//Tiempo de mantenimiento del compresor
 	uint16_t 		outputMaxLevel;			//Maximo nivel de salida de la senial comprimida
-	uint16_t 		inputMaxLevel;
-	float			compensationGain;		//Ganancia de compensacion del compresor
+	uint8_t 		compressorFactor;
 }compressorStruct_t;
 /*=========================[definiciones de datos internos]=========================*/
 /*=========================[definiciones de datos externos]=========================*/
@@ -80,14 +71,10 @@ void setCompressorAttackTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorAttackTime);
 void setCompressorReleaseTime(compressorStruct_t *compressorStruct,
 							 uint16_t compressorReleaseTime);
-void setCompressorHoldTime(compressorStruct_t *compressorStruct,
-							 uint16_t compressorHoldTime);
 int16_t compressorProccesor(compressorStruct_t *compressorStruct, int16_t input,
 		compressorDescriptor_t compressorDescriptor, uint16_t audioMeanValue);
 void setTimeBetweenInputSamples(compressorStruct_t *compressorStruct,
 								uint16_t timeBetweenInputSamplesInUs);
-void setCompressorCompensationGain(compressorStruct_t *compressorStruct,
-		 float compressorCompensationGain);
 uint8_t compressorVectorProcessor(uint16_t inputLength, int16_t *inputVector,
 		int16_t *outputVector, compressorDescriptor_t compressorDescriptor,
 		uint16_t audioMeanValue);

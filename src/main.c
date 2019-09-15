@@ -147,7 +147,6 @@ int main( void ){
 	   updateAudioProcessorFsm(&audioProcessorFsmStruct);
 
 	   /// Mientras se estan adquiriendo datos no se hace el PING-PONG
-
 	   cyclesC = *DWT_CYCCNT;
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior
