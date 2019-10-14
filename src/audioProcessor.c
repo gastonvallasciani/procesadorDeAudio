@@ -45,6 +45,10 @@ void setAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStru
 {
 	audioProcessorFsmStruct->audioProcessorStatus = audioProcessorStatus;
 }
+uint8_t getAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
+{
+	return(audioProcessorFsmStruct->audioProcessorStatus);
+}
 /**
 * @brief Funcion de inicializacion de la maquina de estados que maneja el procesador
 * 		 de audio. Inicialmente arranca habilitado para procesar. Tambien se inicializan
@@ -55,6 +59,7 @@ void setAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStru
 void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 {
 	audioProcessorFsmStruct->audioProcessorStatus = ENABLE;
+	gpioWrite( AUDIO_BOARD_LED_BLUE, ENABLE);
 	audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
 	audioProcessorFsmStruct->vectorLength = AUDIO_VECTOR_SIZE;
 /**

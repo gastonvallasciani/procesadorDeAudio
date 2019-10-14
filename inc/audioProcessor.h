@@ -52,6 +52,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct);
 void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct);
 void setAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStruct,
 								uint8_t audioProcessorStatus);
+uint8_t getAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStruct);
 uint16_t calculateAudioMeanValue(uint16_t inputLength, uint16_t *inputVector);
 /*==================[c++]====================================================*/
 #ifdef __cplusplus

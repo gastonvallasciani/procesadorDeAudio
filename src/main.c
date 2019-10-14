@@ -18,6 +18,7 @@
 #include "audioProcessor.h"
 #include "program.h"
 #include "stdlib.h"
+#include "user_interface.h"
 /*==================[definiciones y macros]==================================*/
 DEBUG_PRINT_ENABLE
 #define TEST_OFFLINE_ENABLE
@@ -93,6 +94,8 @@ int main( void ){
    configAqcuisition();
    /// Led de debug
    gpioWrite(LED2,ON); // Board Alive
+   // Inicializo la interfaz de usuario
+   ui_Config();
    /// Inicializacion TIMER 1  y TIMER 2 desborde con una frecuencia de 44.1KHz
    Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler );
    Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerDacHandler );

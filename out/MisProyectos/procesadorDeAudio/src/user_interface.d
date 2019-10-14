@@ -1,5 +1,6 @@
-MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o: \
- MisProyectos/procesadorDeAudio/src/main.c \
+MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/user_interface.o: \
+ MisProyectos/procesadorDeAudio/src/user_interface.c \
+ MisProyectos/procesadorDeAudio/inc/user_interface.h \
  libs/sapi/sapi_v0.5.2/base/inc/sapi.h \
  libs/sapi/sapi_v0.5.2/base/inc/sapi_datatypes.h \
  libs/lpc_open/lpc_chip_43xx/peripherals/inc/chip.h \
@@ -119,16 +120,5 @@ MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/main.o: \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_magnetometer_qmc5883l.h \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_imu_mpu9250.h \
  libs/sapi/sapi_v0.5.2/external_peripherals/inc/sapi_ultrasonic_hcsr04.h \
- MisProyectos/procesadorDeAudio/inc/ADC_hardwareProxy.h \
- MisProyectos/procesadorDeAudio/inc/ADC_proxyClient.h \
- MisProyectos/procesadorDeAudio/inc/DAC_hardwareProxy.h \
- MisProyectos/procesadorDeAudio/inc/uart.h \
- libs/lpc_open/lpc_chip_43xx/peripherals/inc/adc_18xx_43xx.h \
- libs/sapi/sapi_v0.5.2/soc/peripherals/inc/sapi_timer.h \
- MisProyectos/procesadorDeAudio/inc/filterManager.h \
- MisProyectos/procesadorDeAudio/inc/test.h \
- MisProyectos/procesadorDeAudio/inc/compressorManager.h \
- MisProyectos/procesadorDeAudio/inc/audioProcessor.h \
- MisProyectos/procesadorDeAudio/inc/program.h \
- MisProyectos/procesadorDeAudio/inc/user_interface.h \
- libs/lpc_open/lpc_chip_43xx/peripherals/inc/core_cm4.h
+ libs/lpc_open/lpc_chip_43xx/peripherals/inc/core_cm4.h \
+ MisProyectos/procesadorDeAudio/inc/audioProcessor.h
