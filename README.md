@@ -84,18 +84,14 @@ Fue necesario agrandar los buffers de procesamiento de 200 elementos a 500 eleme
 
  En los testeos online se verifica que luego del procesamiento hay un retardo de 140uSeg entre la señal de entrada y la señal de salida.
 Por último, se pusheo el branch developFilterOnline al branch developFilter, y luego, el branch developFilter al branch master.
-<<<<<<< HEAD
-=======
 
 FECHA: 27/05/2019
 
-<<<<<<< HEAD
 Se fabricó el poncho procesador de audio. Se testearon los leds del poncho que se encuentran conectados a los pines GPIO4, GPIO5 y GPIO6 del LPC4337 de la EDU-CIAA NXP. Se testeo la entrada input mono stereo y la generación output mono stereo mediante el DAC de la EDU-CIAA NXP y funciona correctamente, se puede modificar el nivel de continua y el volumen de la señal ingresada al mezclador. Como se uso la entrada input stereo se modificó el canal del ADC que se usa en el programa. Se cambió del ADC 1 al ADC 3. 
 
 La entrada y salida de audio se testeo inyectando una canción y en su reproducción se escucha un sonido limpio. 
 
 Falta testear la adquisición y la generación stereo.
-=======
 Se fabricó el poncho procesador de audio. Se testearon los leds del poncho que se encuentran conectados a los pines GPIO4, GPIO5 y GPIO6 del LPC4337 de la EDU-CIAA NXP. Se testeo la entrada input mono stereo y la generación output mono stereo mediante el DAC de la EDU-CIAA NXP y funciona correctamente, se puede modificar el nivel de continua y el volumen de la señal ingresada al mezclador. Como se uso la entrada input stereo se modificó el canal del ADC que se usa en el programa. Se cambió del ADC 1 al ADC 3.
 
 La entrada y salida de audio se testeo inyectando una canción y en su reproducción se escucha un sonido limpio.
@@ -120,6 +116,23 @@ En lo que respecta al compresor falta únicamente modificar la función del comp
 Se creo el módulo que ejecuta la funcionalidad del clipper. Esto se utiliza en conjunto con el compresor VCA en la última etapa de procesamiento de audio.
 
 FECHA: 04/08/2019
+
 Edicion final de este archivo se pushea todo a la rama developCompressor
->>>>>>> fd7466fa79d585476c14cd33bef720092409a35d
->>>>>>> 0e398db62757f93534efadc8b3b52b5f406d1ead
+
+fd7466fa79d585476c14cd33bef720092409a35d
+0e398db62757f93534efadc8b3b52b5f406d1ead
+
+FECHA: 20/08/2019
+
+Se generó la rama developBandsProcessing.
+Hubo tareas de alto nivel. Se probaron nuevos filtros en MATLAB.
+Se implementó la separación en bandas del procesador mediante un filtro Corssover implementado con dos filtros FIR un filtro FIR pasabajos con Fc de 2Khz, y un filtro FIR pasaaltos con Fc de 2KHz. La frecuencia de encuentro de los dos filtros es de 2KHz.
+
+FECHA: 2/09/2019
+
+Se implementó la función de suma de bandas. 
+Hubo mejoras en la función que ejecuta los filtros FIR.
+
+FECHA: 20/09/2019
+
+Se generó la rama developUserInterface, en esta rama se implementa todo lo que tiene que ver con la interfaz de usuario para iniciar o finalizar el funcionamiento del procesador de audio. Además de todas las indicaciones de que este se encuentra funcionando correctamente.
