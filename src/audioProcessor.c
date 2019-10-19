@@ -44,6 +44,7 @@ uint8_t sumBands(uint16_t inputLength, int16_t *lowBandVector, int16_t *trebleVe
 void setAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStruct, uint8_t audioProcessorStatus)
 {
 	audioProcessorFsmStruct->audioProcessorStatus = audioProcessorStatus;
+	gpioWrite( AUDIO_BOARD_LED_BLUE, audioProcessorStatus);
 }
 uint8_t getAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 {
@@ -58,8 +59,7 @@ uint8_t getAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmS
 */
 void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 {
-	audioProcessorFsmStruct->audioProcessorStatus = ENABLE;
-	gpioWrite( AUDIO_BOARD_LED_BLUE, ENABLE);
+	setAudioProcessorFsmStatus(&audioProcessorFsmStruct, DISABLE);
 	audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
 	audioProcessorFsmStruct->vectorLength = AUDIO_VECTOR_SIZE;
 /**

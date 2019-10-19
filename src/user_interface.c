@@ -9,7 +9,6 @@
 #include "sapi.h"
 #include "stdint.h"
 #include "stdlib.h"
-//#include "cmsis_43xx.h"
 #include "audioProcessor.h"
 /*=========================[definiciones de datos internos]=========================*/
 #define FREE 0x00
@@ -26,28 +25,22 @@ extern audioProcessorFsmStruct_t audioProcessorFsmStruct;
 void ui_Config(void){
 
 	//CONFIGURACION
-
-	    /* CONFIGURO ISR (1 HANDLER PARA EL MISMO PIN) */
-
-	    /*Seteo la interrupción para el flanco descendente
-	     *                channel, GPIOx, [y]    <- no es la config del pin, sino el nombre interno de la señal
-	     *                      |  |      |
-	     *                      |  |      |    */
-	    Chip_SCU_GPIOIntPinSel( 0, 0,     4 ); //TEC1
+	/*Seteo la interrupción para el flanco descendente
+	 *                channel, GPIOx, [y]    <- no es la config del pin, sino el nombre interno de la señal
+	 *                      |  |      |    */
+	Chip_SCU_GPIOIntPinSel( 0, 0,     4 ); //TEC1
 
 
-	    //Borra el pending de la IRQ
-	    Chip_PININT_ClearIntStatus( LPC_GPIO_PIN_INT, PININTCH( 0 )); // INT0 (canal 0 -> handler GPIO0)
+	//Borra el pending de la IRQ
+	// INT0 (canal 0 -> handler GPIO0)
+	Chip_PININT_ClearIntStatus( LPC_GPIO_PIN_INT, PININTCH( 0 ));
+	Chip_PININT_SetPinModeEdge( LPC_GPIO_PIN_INT, PININTCH( 0 ));
+	Chip_PININT_EnableIntLow( LPC_GPIO_PIN_INT, PININTCH( 0 ));
+	Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT, PININTCH( 0 ));
 
-	    Chip_PININT_SetPinModeEdge( LPC_GPIO_PIN_INT, PININTCH( 0 )); // INT0
-
-	    Chip_PININT_EnableIntLow( LPC_GPIO_PIN_INT, PININTCH( 0 )); // INT0
-	   	Chip_PININT_EnableIntHigh(LPC_GPIO_PIN_INT, PININTCH( 0 ));	// INT0
-
-
-	    //Borra el clear pending de la IRQ y lo activa
-	    NVIC_ClearPendingIRQ( PIN_INT0_IRQn );
-	    NVIC_EnableIRQ( PIN_INT0_IRQn );
+	//Borra el clear pending de la IRQ y lo activa
+	NVIC_ClearPendingIRQ( PIN_INT0_IRQn );
+	NVIC_EnableIRQ( PIN_INT0_IRQn );
 }
 
 void GPIO0_IRQHandler(void){
@@ -55,18 +48,16 @@ void GPIO0_IRQHandler(void){
 	status = getAudioProcessorFsmStatus(&audioProcessorFsmStruct);
 	// TECLA 1
 	if ( Chip_PININT_GetRiseStates(LPC_GPIO_PIN_INT) & PININTCH(0) ) {
-//		 buttonData.buttonState = RAISING;
-
+//		 RISING
 		if(status == ENABLE)status = DISABLE;
 		else if (status == DISABLE)status = ENABLE;
 
-		gpioWrite( AUDIO_BOARD_LED_BLUE, status);
 		setAudioProcessorFsmStatus(&audioProcessorFsmStruct, status);
 
 		   Chip_PININT_ClearRiseStates(LPC_GPIO_PIN_INT,PININTCH(0));
 	 }
 	 else{
-//		 buttonData.buttonState = FALLING;
+//		 FALLING
 		 Chip_PININT_ClearFallStates(LPC_GPIO_PIN_INT,PININTCH(0));
 	 }
 
