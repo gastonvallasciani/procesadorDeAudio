@@ -136,3 +136,7 @@ Hubo mejoras en la función que ejecuta los filtros FIR.
 FECHA: 20/09/2019
 
 Se generó la rama developUserInterface, en esta rama se implementa todo lo que tiene que ver con la interfaz de usuario para iniciar o finalizar el funcionamiento del procesador de audio. Además de todas las indicaciones de que este se encuentra funcionando correctamente.
+
+FECHA 20/09/2019
+
+Se terminó de implementar la interfaz de usuario.
