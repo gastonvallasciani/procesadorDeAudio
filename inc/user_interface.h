@@ -19,6 +19,7 @@ extern "C" {
 /*==================[definiciones de datos internos]=========================*/
 /*==================[definiciones de datos externos]=========================*/
 void ui_Config(void);
+uint8_t ui_VectorProcessor(uint16_t inputLength, int16_t *inputVector);
 /*==================[definiciones de funciones publicas]=====================*/
 #ifdef __cplusplus
 }

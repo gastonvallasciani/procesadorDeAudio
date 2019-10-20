@@ -20,10 +20,7 @@
 #include "stdlib.h"
 #include "user_interface.h"
 /*==================[definiciones y macros]==================================*/
-DEBUG_PRINT_ENABLE
-#define TEST_OFFLINE_ENABLE
 /*==================[definiciones de datos internos]=========================*/
-#define WAIT_DELAY 50
 #define VECTOR_SIZE 1500
 #define COMPLETE 	   1
 #define INIT   0
@@ -33,8 +30,6 @@ typedef struct{
 	uint16_t audioRightChannel;
 }audioChannel_t;
 /*==================[definiciones de datos internos]=========================*/
-gpioMap_t LED = LEDR;
-delay_t waitDelay;
 char buffer [33];
 audioChannel_t audioChannel;
 int16_t outVector[VECTOR_SIZE];
@@ -76,9 +71,6 @@ void tickTimerDacHandler( void *ptr );
 int main( void ){
    /// Inicializacion y configuracion de la plataforma
    boardConfig();
-   /// Inicializacion de UART_USB como salida de consola de debug
-   debugPrintConfigUart( UART_USB, 115200 );
-   debugPrintlnString( "UART_USB configurada.\n\r" );
    ///Inicializacion y configuracion del conversor digital-analogico DAC
    DACHARDWAREPROXY_initialize();
    DACHARDWAREPROXY_config();
@@ -88,17 +80,14 @@ int main( void ){
    adcStruct.adcInputStereo.adcRightChannel = ADC_CH1;
    adcStruct.adcInputStereo.adcLeftChannel = ADC_CH2;
    adcStruct.adcInputMonoStereo = ADC_CH3;
-
    //Inicializo la adquisicion de datos por el ADC
    initAqcuisition();
    configAqcuisition();
-   /// Led de debug
-   gpioWrite(LED2,ON); // Board Alive
    // Inicializo la interfaz de usuario
    ui_Config();
    /// Inicializacion TIMER 1  y TIMER 2 desborde con una frecuencia de 44.1KHz
-   Timer_Init( TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler );
-   Timer_Init( TIMER2 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerDacHandler );
+   Timer_Init(TIMER1 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerHandler);
+   Timer_Init(TIMER2 , ACQUISITION_FRECUENCY_44100HZ(), tickTimerDacHandler);
 
 /**
  * Inicializacion del PING-PONG-BUFFER
@@ -131,39 +120,18 @@ int main( void ){
    *DWT_CTRL |= 1;
 
    while( TRUE ){
-
-	   //gpioWrite( AUDIO_BOARD_LED_WHITE, 1 );
-	   //gpioWrite( AUDIO_BOARD_LED_BLUE, 1 );
-	   gpioWrite( AUDIO_BOARD_LED_YELLOW, 1 );
-	   ///Led loco para debug
-	   if (!waitDelay.running){
-			delayConfig(&waitDelay,WAIT_DELAY);
-			delayRead(&waitDelay);
-		}
-	   if (delayRead(&waitDelay)){
-	   gpioToggle( LED );
-	   //gpioToggle( AUDIO_BOARD_LED_WHITE );
-	   //gpioToggle( AUDIO_BOARD_LED_BLUE );
-	   //gpioToggle( AUDIO_BOARD_LED_YELLOW );
-	   }
 	   *DWT_CYCCNT = 0;
 	   updateAudioProcessorFsm(&audioProcessorFsmStruct);
-
-	   /// Mientras se estan adquiriendo datos no se hace el PING-PONG
 	   cyclesC = *DWT_CYCCNT;
+	   /// Mientras se estan adquiriendo datos no se hace el PING-PONG
 	   ///Si la transmision previa del DAC fue completada se inicia una nueva
 	   /// ya que se termino de procesar el vector posterior
 	   if (transmissionStatus == COMPLETE){
 		   transmissionStatus = INIT;
 		   transmitBuffer = outVector;
 	   }
-
 	   while(captureActive==1){
-		   gpioToggle( AUDIO_BOARD_LED_WHITE );
 	   }
-
-//		 cyclesC = *DWT_CYCCNT;
-
 	   /// Se ejecuta la conmutacion de los buffer. PING-PONG!!
 	   if(bufferPtr==0){
 		   bufferPtr=1;
@@ -177,10 +145,8 @@ int main( void ){
 		   audioProcessorFsmStruct.inputVector = activeBuffer;
 		   backBuffer=audioBuffer2;
 	   }
-
 	   /// Se inicia una nueva adquisicion de datos
 	   captureActive = 1;
-//	   *DWT_CYCCNT = 0;
    }
    // FIN DEL PROGRAMA
    return 0;

@@ -124,4 +124,6 @@ MisProyectos/procesadorDeAudio/out/MisProyectos/procesadorDeAudio/src/audioProce
  MisProyectos/procesadorDeAudio/inc/program.h \
  MisProyectos/procesadorDeAudio/inc/filterManager.h \
  MisProyectos/procesadorDeAudio/inc/clipperManager.h \
- MisProyectos/procesadorDeAudio/inc/compressorManager.h
+ MisProyectos/procesadorDeAudio/inc/compressorManager.h \
+ MisProyectos/procesadorDeAudio/inc/user_interface.h \
+ libs/lpc_open/lpc_chip_43xx/peripherals/inc/core_cm4.h

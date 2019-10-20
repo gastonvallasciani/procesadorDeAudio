@@ -11,17 +11,18 @@
 #include "stdlib.h"
 #include "audioProcessor.h"
 /*=========================[definiciones de datos internos]=========================*/
-#define FREE 0x00
-#define DESCENDENTE 0x02
-#define ASCENDENTE 0x03
+#define LEVEL_LOW 		341
+#define LEVEL_MID       682
+#define LEVEL_HIGH      1023
 /*=========================[definiciones de datos externos]=========================*/
 extern audioProcessorFsmStruct_t audioProcessorFsmStruct;
-
 /*=========================[declaraciones de funciones internas]====================*/
-
-/*==========================[definiciones de funciones internas]=====================*/
-
+void ui_inputLevelDetector(uint16_t input);
 /*=========================[definiciones de funciones publicas]=====================*/
+/**
+* @brief Configuracion de la interrupcion de nivel para la lectura de TEC1.
+* @return None
+*/
 void ui_Config(void){
 
 	//CONFIGURACION
@@ -42,7 +43,53 @@ void ui_Config(void){
 	NVIC_ClearPendingIRQ( PIN_INT0_IRQn );
 	NVIC_EnableIRQ( PIN_INT0_IRQn );
 }
+/**
+* @brief Funcion de deteccion de nivel de la señal de entrada. Realiza la lectura y
+* 		 enciende el led rojo, verde o amarillo segun el nivel.
+* @param inputLength
+* @return None
+*/
+uint8_t ui_VectorProcessor(uint16_t inputLength, int16_t *inputVector){
+	uint16_t i;
 
+	for (i=0; i<1500 ;i++){
+		ui_inputLevelDetector(inputVector[i]);
+	}
+	return 1;
+}
+/*==========================[definiciones de funciones internas]=====================*/
+/**
+* @brief Funcion de deteccion de nivel de la señal de entrada. Realiza la lectura y
+* 		 enciende el led rojo, verde o amarillo segun el nivel.
+* @param input nivel de la señal de entrada
+* @return None
+*/
+void ui_inputLevelDetector(uint16_t input)
+{
+	if((input >= 0) && (input < LEVEL_LOW))
+	{
+		gpioWrite( LED3, ON );
+		gpioWrite( LED2, OFF );
+		gpioWrite( LED1, OFF );
+	}
+	else if((input >= 341) && (input < LEVEL_MID))
+	{
+		gpioWrite( LED3, OFF );
+		gpioWrite( LED2, ON );
+		gpioWrite( LED1, OFF );
+	}
+	else if((input >= LEVEL_MID) && (input < LEVEL_HIGH))
+	{
+		gpioWrite( LED3, OFF );
+		gpioWrite( LED2, OFF );
+		gpioWrite( LED1, ON );
+	}
+}
+/**
+* @brief Handler de la interrupcion de nivel del pin conectado a la
+* 		 TECLA 1
+* @return None
+*/
 void GPIO0_IRQHandler(void){
 	uint8_t status;
 	status = getAudioProcessorFsmStatus(&audioProcessorFsmStruct);

@@ -12,8 +12,11 @@
 #include "filterManager.h"
 #include "clipperManager.h"
 #include "compressorManager.h"
+#include "user_interface.h"
 #include "stdlib.h"
 /*=========================[definiciones de datos internos]=========================*/
+#define WAIT_DELAY 50
+
 audioProcessorStates_t 	  audioProcessorStates;
 audioProcessorFsmStruct_t audioProcessorFsmStruct;
 
@@ -21,10 +24,12 @@ static int16_t firstOutputBuffer[AUDIO_VECTOR_SIZE];
 static int16_t lowBandBuffer[AUDIO_VECTOR_SIZE];
 static int16_t trebleBandBuffer[AUDIO_VECTOR_SIZE];
 
-
 static filterData_t lpf, lowBand, trebleBand;
 
-static IncreaseContinousValue = 0;
+static uint16_t IncreaseContinousValue = 0;
+
+gpioMap_t LED = LEDR;
+delay_t waitDelay;
 /*=========================[definiciones de datos externos]=========================*/
 extern compressorStruct_t compressorStruct;
 extern clipperStruct_t hardClipperStruct;;
@@ -59,7 +64,8 @@ uint8_t getAudioProcessorFsmStatus(audioProcessorFsmStruct_t *audioProcessorFsmS
 */
 void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 {
-	setAudioProcessorFsmStatus(&audioProcessorFsmStruct, DISABLE);
+	audioProcessorFsmStruct->audioProcessorStatus = DISABLE;
+	gpioWrite( AUDIO_BOARD_LED_BLUE, DISABLE);
 	audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
 	audioProcessorFsmStruct->vectorLength = AUDIO_VECTOR_SIZE;
 /**
@@ -83,6 +89,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
    clipperInit(&hardClipperStruct);
    setClipperThreshold(&hardClipperStruct, 900);
 
+   gpioWrite( AUDIO_BOARD_LED_YELLOW, ON );
 }
 /**
 * @brief Funcion de actualizacion de la maquina de estados que maneja el procesador
@@ -94,14 +101,17 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 {
 	uint8_t status = 0;
 	uint32_t k, stateCounter = 0;
+
+	ui_VectorProcessor(audioProcessorFsmStruct->vectorLength, &audioProcessorFsmStruct->inputVector[0]);
+
 	if(audioProcessorFsmStruct->audioProcessorStatus == ENABLE)
 	{
-		for(stateCounter = 0; stateCounter< 7;stateCounter++)
+		for(stateCounter = 0; stateCounter< STATES_NUMBER;stateCounter++)
 		{
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<550000;k++)//432500 395000
+				for(k=0;k<495000;k++)//432500 395000
 				{
 
 				}
@@ -158,6 +168,13 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
 				break;
 			}
+		}
+	}
+	else
+	{
+		for(k = 0; k < AUDIO_VECTOR_SIZE; k++)
+		{
+			audioProcessorFsmStruct->outputVector[k] = 0;
 		}
 	}
 }
