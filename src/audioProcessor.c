@@ -73,10 +73,10 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  */
 	compressorInit(&compressorStruct);
 	setCompressorRatio(&compressorStruct, 2);
-	setCompressorUmbral(&compressorStruct, 750);
+	setCompressorUmbral(&compressorStruct, 725);
 	setTimeBetweenInputSamples(&compressorStruct, 23);
-	setCompressorAttackTime(&compressorStruct, 3);
-	setCompressorReleaseTime(&compressorStruct, 3);
+	setCompressorAttackTime(&compressorStruct, 25);
+	setCompressorReleaseTime(&compressorStruct, 250);
 /**
  * Calculo de la cantidad de elementos del filtro y de la ganancia de continua
  */
@@ -87,7 +87,7 @@ void initAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
  *  Inicio el driver del clipper
  */
    clipperInit(&hardClipperStruct);
-   setClipperThreshold(&hardClipperStruct, 900);
+   setClipperThreshold(&hardClipperStruct, 200);
 
    gpioWrite( AUDIO_BOARD_LED_YELLOW, ON );
 }
@@ -111,7 +111,7 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 			switch(audioProcessorFsmStruct->actualState)
 			{
 			case AUDIO_PROCESSING_DELAY:
-				for(k=0;k<495000;k++)//432500 395000
+				for(k=0;k<360000;k++)//432500 395000
 				{
 
 				}
@@ -130,30 +130,30 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				audioProcessorFsmStruct->actualState = LPF_15KHZ_FILTER;
 				break;
 			case LPF_15KHZ_FILTER:
-//			    status = filterVectorProcessor(lpf.filterSize, &lpf15Khz[0],
-//					   	   	   	     audioProcessorFsmStruct->vectorLength,
-//									 &firstOutputBuffer[0],
-//									 &firstOutputBuffer[0]);
+			    status = filterVectorProcessor(lpf.filterSize, &lpf15Khz[0],
+					   	   	   	     audioProcessorFsmStruct->vectorLength,
+									 &firstOutputBuffer[0],
+									 &firstOutputBuffer[0]);
 				audioProcessorFsmStruct->actualState = PEAK_SYMMETRIZER;
 				break;
 			case PEAK_SYMMETRIZER:
 				status = compressorVectorProcessor(audioProcessorFsmStruct->vectorLength,
 										  &firstOutputBuffer[0],
-										  &audioProcessorFsmStruct->outputVector[0],
+										  &firstOutputBuffer[0],
 										  meanValueCompressor,
 										audioProcessorFsmStruct->continousValue);
 				audioProcessorFsmStruct->actualState = BAND_SPLIT;
 				break;
 			case BAND_SPLIT:
-//				status = filterVectorProcessor(lowBand.filterSize, &lpf2Khz[0],
-//											   audioProcessorFsmStruct->vectorLength,
-//											   &firstOutputBuffer[0],
-//											   &lowBandBuffer[0]);
-//				status = filterVectorProcessor(trebleBand.filterSize, &hpf2Khz[0],
-//											   audioProcessorFsmStruct->vectorLength,
-//											   &firstOutputBuffer[0],
-//											   &trebleBandBuffer[0]);
-				audioProcessorFsmStruct->actualState = SUM_BANDS;
+/*				status = filterVectorProcessor(lowBand.filterSize, &lpf2Khz[0],
+											   audioProcessorFsmStruct->vectorLength,
+											   &firstOutputBuffer[0],
+											   &lowBandBuffer[0]);
+				status = filterVectorProcessor(trebleBand.filterSize, &hpf2Khz[0],
+											   audioProcessorFsmStruct->vectorLength,
+											   &firstOutputBuffer[0],
+											   &trebleBandBuffer[0]);
+*/				audioProcessorFsmStruct->actualState = SUM_BANDS;
 				break;
 			case SUM_BANDS:
 //				sumBands(audioProcessorFsmStruct->vectorLength, &lowBandBuffer[0],
@@ -161,10 +161,10 @@ void updateAudioProcessorFsm(audioProcessorFsmStruct_t *audioProcessorFsmStruct)
 				audioProcessorFsmStruct->actualState = CLIPPER;
 				break;
 			case CLIPPER:
-				//hardClipperVectorProcessor(audioProcessorFsmStruct->vectorLength,
-				//						   &firstOutputBuffer[0],
-				//						   &audioProcessorFsmStruct->outputVector[0],
-				//						   audioProcessorFsmStruct->continousValue);
+				hardClipperVectorProcessor(audioProcessorFsmStruct->vectorLength,
+										   &firstOutputBuffer[0],
+										   &audioProcessorFsmStruct->outputVector[0],
+										   audioProcessorFsmStruct->continousValue);
 				audioProcessorFsmStruct->actualState = AUDIO_PROCESSING_DELAY;
 				break;
 			}
